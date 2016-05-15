@@ -98,6 +98,7 @@
 
     public function getDataFromServer($observer)
     {
+        return true;
         Mage::helper('xpos/message')->getDataFromServer($observer);
 
         $action = $observer->getEvent()->getAction();
