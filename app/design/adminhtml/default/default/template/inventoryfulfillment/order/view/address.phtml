@@ -1,0 +1,42 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventory
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+
+/**
+ * Inventory Adminhtml Controller
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventoryfulfillment
+ * @author      Magestore Developer
+ */
+?>
+<?php $_order = $this->getOrder() ?>
+<div class="entry-edit">
+    <!--
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-billing-address"><?php echo $this->getTitle() ?></h4>
+        <div class="tools"><?php echo $this->getAddressEditLink($this->getAddress())?></div>
+    </div>
+    -->
+    <fieldset>
+        <span class="title"><?php echo $this->getTitle() ?></span>
+        <address><?php echo $this->getFormattedAddress() ?></address>
+    </fieldset>
+</div>

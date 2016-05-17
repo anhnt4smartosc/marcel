@@ -1,0 +1,91 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventory
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+?>
+<div class="fulfillment-dashboard-template-item inventory-view-item">
+    <?php
+    $collection = Mage::helper('inventoryfulfillment')->getFulfillmentLogCollection();
+//    $remainingOrders = $this->countRemainingOrders($collection);
+    $collection = $this->getOrdersCollection($collection);
+    $chartData = $this->getChartData($collection);
+    ?>
+
+    <div class="chart-parent-div">
+        <script type="text/javascript">
+            var d = new Date();
+            var m = d.getMonth();
+            d.setMonth(d.getMonth() - 1);
+            if (d.getMonth() === m)
+                d.setDate(0);
+            d.setHours(0, 0, 0);
+            $_(function () {
+                $_('#<?php echo $this->getBlockName() ?>').highcharts({
+                        chart: {
+                            type: 'spline',
+                            width: 520
+                        },
+                        title: {
+                            text: '<?php echo $this->__(ucwords($this->getData('block_name'))) ?>'
+                        },
+                        xAxis: {
+                            type: 'datetime',
+                            dateTimeLabelFormats: {month: '%e. %b', year: '%b'},
+                            title: {text: 'Date'}
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: '<?php echo $this->__('Number orders') ?>'
+                            }
+                        },
+                        labels: {
+                            items: [{
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+                                }
+                            }]
+                        },
+                        plotOptions: {
+                            spline: {
+                                marker: {
+                                    enabled: false
+                                }
+                            }
+                        },
+                        series: [
+                            {
+                                name: '<?php echo $this->__('Number Orders') ?>',
+                                data: [<?php echo $chartData; ?>],
+                                pointStart: Date.UTC(d.getYear(), d.getMonth(), d.getDate()),
+                                pointInterval: 24 * 3600 * 1000, // one day
+                                marker: {
+                                    lineWidth: 1,
+                                    //lineColor: Highcharts.getOptions().colors[3],
+                                    fillColor: Highcharts.getOptions().colors[3]
+                                }
+                            }
+                        ]
+                    }
+                );
+            });
+        </script>
+        <div class="chart-child-div" id="<?php echo $this->getBlockName() ?>"></div>
+    </div>
+</div>

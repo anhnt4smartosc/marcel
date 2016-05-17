@@ -1,0 +1,41 @@
+/* Drop shipment */
+.link-button {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border: solid 1px #5CB85C;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: #5CB85C;
+    padding: 2px 10px;
+    text-decoration: none;
+    color: #FFFFFF;
+}
+.link-button a:link, .link-button a:hover, .link-button a:visited {
+    text-decoration: none;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    color: #FFFFFF;
+}
+
+.tracking-information-content {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.tracking-information {
+    margin-top: 20px
+}
+
+.success-msg {
+    color: #5CB85C;
+}
+
+.error-msg {
+    color: #ff0000;
+}
+
+.dropship-label {
+    font-weight: bold;
+}
+/* End of Drop shipment */

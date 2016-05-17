@@ -1,0 +1,64 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventory
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+
+/**
+ * Inventory Adminhtml Controller
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventoryfulfillment
+ * @author      Magestore Developer
+ */
+?>
+<?php $orderId = $this->getRequest()->getParam('order_id'); ?>
+<div id="order_history_block_<?php echo $orderId ?>">
+    <?php if ($this->canAddComment()):?>
+    <div id="history_form" class="order-history-form">
+        <span class="field-row">
+            <textarea name="history[comment]" placeholder="<?php echo Mage::helper('sales')->__('Add Order Comments') ?>" rows="3" cols="5" style="height:6em; width:99%;" id="history_comment"></textarea>
+        </span>
+        <div class="clear"></div>
+    </div>
+    <?php endif;?>
+    <a href='#' id='load-more-comments' onclick='Effect.toggle("slidedown-<?php echo $orderId; ?>", "slide"); fulfillmentObj.toggleButtonShowComments(); return false;'><span id="show_comments_link">Show comments <i class="fa fa-level-down"></i></span></a>
+    <div id="slidedown-<?php echo $orderId; ?>" style="display: none">
+        <ul class="note-list">
+        <?php foreach ($this->getOrder()->getStatusHistoryCollection(true) as $_item): ?>
+            <li>
+                <strong><?php echo $this->helper('core')->formatDate($_item->getCreatedAtDate(), 'medium') ?></strong>
+                <?php echo $this->helper('core')->formatTime($_item->getCreatedAtDate(), 'medium') ?><span class="separator">|</span><strong><?php echo $_item->getStatusLabel() ?></strong><br/><small><?php echo $this->helper('sales')->__('Customer') ?>
+                <strong class="subdue">
+                    <?php if ($this->isCustomerNotificationNotApplicable($_item)): ?>
+                    <?php echo $this->helper('sales')->__('Notification Not Applicable') ?>
+                    <?php elseif ($_item->getIsCustomerNotified()): ?>
+                    <?php echo $this->helper('sales')->__('Notified') ?>
+                    <img src="<?php echo $this->getSkinUrl('images/ico_success.gif') ?>" width="16" height="16" alt="" />
+                    <?php else: ?>
+                    <?php echo $this->helper('sales')->__('Not Notified') ?>
+                    <?php endif; ?>
+                </strong></small>
+                <?php if ($_item->getComment()): ?>
+                    <br/><?php echo $this->escapeHtml($_item->getComment(), array('b', 'br', 'strong', 'i', 'u', 'a')) ?>
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventorydropship
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+?>
+<?php  $_order = $this->getOrder() ?>
+<p class="order-links">
+
+</p>
+<h3 class="table-caption"><?php echo $this->__('Items Drop Shipped') ?></h3>
+<?php
+$dropships = Mage::getModel('inventorydropship/inventorydropship')->getCollection()
+                ->addFieldToFilter('order_id', array('eq' => $_order->getId()));
+?>
+<table class="data-table" id="my-dropshipment-table">
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
+    <thead>
+    <tr>
+        <th><?php echo $this->__('ID') ?></th>
+        <th><?php echo $this->__('Supplier Email') ?></th>
+        <th><?php echo $this->__('Status') ?></th>
+        <th ><?php echo $this->__('Tracking Information') ?></th>
+        <th ><?php echo $this->__('Products') ?></th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($dropships as $dropship): ?>
+        <tr>
+            <td><?php echo $dropship->getId() ?></td>
+            <td><?php echo $dropship->getSupplierEmail() ?></td>
+            <td><?php echo Mage::helper('inventorydropship')->getDropshipStatus()[$dropship->getStatus()] ?></td>
+            <td><?php echo $dropship->getTrackingInformation() ?></td>
+            <td>
+                <?php
+                $dropshipProducts = Mage::getModel('inventorydropship/inventorydropship_product')->getCollection()
+                    ->addFieldToFilter('dropship_id', $dropship->getId());
+                ?>
+                <table class="data-table" id="dropship-product-table-<?php echo $dropship->getId() ?>">
+                    <col width="1" />
+                    <col width="1" />
+                    <col width="1" />
+                    <thead>
+                    <tr>
+                        <th><?php echo $this->__('Product Name') ?></th>
+                        <th><?php echo $this->__('SKU') ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($dropshipProducts as $dropshipProduct): ?>
+                        <tr>
+                            <td><?php echo $dropshipProduct->getProductName() ?></td>
+                            <td><?php echo $dropshipProduct->getProductSku() ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>

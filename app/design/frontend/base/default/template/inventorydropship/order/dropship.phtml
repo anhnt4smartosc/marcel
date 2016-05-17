@@ -1,0 +1,58 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventorydropship
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+?>
+<div class="order-items order-details">
+    <?php if($this->helper('giftmessage/message')->getIsMessagesAvailable('order', $this->getOrder())): ?>
+        <script type="text/javascript">
+            //<![CDATA[
+            function giftMessageToogle(giftMessageIdentifier)
+            {
+                var link = $('order-item-gift-message-link-'+giftMessageIdentifier);
+                var container = $('order-item-gift-message-'+giftMessageIdentifier);
+                var row = $('order-item-row-'+giftMessageIdentifier);
+
+
+                if(link.expanded) {
+                    link.expanded = false;
+                    link.removeClassName('expanded');
+                    if(container.hasClassName('last')) {
+                        row.addClassName('last');
+                    }
+                    container.hide();
+                } else {
+                    link.expanded = true;
+                    link.addClassName('expanded');
+                    if(container.hasClassName('last')) {
+                        row.removeClassName('last');
+                    }
+                    container.show();
+                }
+
+                return false;
+            }
+            //]]>
+        </script>
+    <?php endif; ?>
+    <?php echo $this->getChildHtml('dropship_items') ?>
+    <div class="buttons-set">
+        <p class="back-link"><a href="<?php echo $this->getBackUrl() ?>"><small>&laquo; </small><?php echo $this->getBackTitle() ?></a></p>
+    </div>
+</div>

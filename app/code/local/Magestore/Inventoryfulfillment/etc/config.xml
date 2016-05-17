@@ -1,0 +1,243 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Inventoryfulfillment
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<config>
+    <modules>
+        <Magestore_Inventoryfulfillment>
+            <version>0.1.0</version>
+        </Magestore_Inventoryfulfillment>
+    </modules>
+    <frontend>
+        <routers>
+            <inventoryfulfillment>
+                <use>standard</use>
+                <args>
+                    <module>Magestore_Inventoryfulfillment</module>
+                    <frontName>inventoryfulfillment</frontName>
+                </args>
+            </inventoryfulfillment>
+        </routers>
+        <layout>
+            <updates>
+                <inventoryfulfillment>
+                    <file>inventoryfulfillment.xml</file>
+                </inventoryfulfillment>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Magestore_Inventoryfulfillment>
+                    <files>
+                        <default>Magestore_Inventoryfulfillment.csv</default>
+                    </files>
+                </Magestore_Inventoryfulfillment>
+            </modules>
+        </translate>
+    </frontend>
+    <admin> 
+        <routers> 
+            <adminhtml> 
+                <args> 
+                    <modules> 
+                        <magestore_inventoryfulfillment after="Mage_Adminhtml">Magestore_Inventoryfulfillment_Adminhtml</magestore_inventoryfulfillment> 
+                    </modules> 
+                </args> 
+            </adminhtml> 
+        </routers> 
+    </admin>   
+    <adminhtml>
+        <layout>
+            <updates>
+                <inventoryfulfillment>
+                    <file>inventoryfulfillment.xml</file>
+                </inventoryfulfillment>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Magestore_Inventoryfulfillment>
+                    <files>
+                        <default>Magestore_Inventoryfulfillment.csv</default>
+                    </files>
+                </Magestore_Inventoryfulfillment>
+            </modules>
+        </translate>
+    </adminhtml>   
+    <global>
+        <models>
+            <inventoryfulfillment>
+                <class>Magestore_Inventoryfulfillment_Model</class>
+                <resourceModel>inventoryfulfillment_mysql4</resourceModel>
+            </inventoryfulfillment>
+            <inventoryfulfillment_mysql4>
+                <class>Magestore_Inventoryfulfillment_Model_Mysql4</class>
+                <entities>
+                    <inventoryfulfillment>
+                        <table>inventoryfulfillment</table>
+                    </inventoryfulfillment>
+                    <fulfillmentlog>
+                        <table>erp_inventory_fulfillment_log</table>
+                    </fulfillmentlog>
+                    <package>
+                        <table>erp_inventory_fulfillment_package</table>
+                    </package>                    
+                </entities>
+            </inventoryfulfillment_mysql4>
+        </models>
+        <resources>
+            <inventoryfulfillment_setup>
+                <setup>
+                    <module>Magestore_Inventoryfulfillment</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </inventoryfulfillment_setup>
+            <inventoryfulfillment_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </inventoryfulfillment_write>
+            <inventoryfulfillment_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </inventoryfulfillment_read>
+        </resources>
+        <blocks>
+            <inventoryfulfillment>
+                <class>Magestore_Inventoryfulfillment_Block</class>
+            </inventoryfulfillment>
+        </blocks>
+        <helpers>
+            <inventoryfulfillment>
+                <class>Magestore_Inventoryfulfillment_Helper</class>
+            </inventoryfulfillment>
+        </helpers>
+        <events>
+            <inventoryfulfillment_order_pick_after>
+                <observers>
+                    <inventoryfulfillment_observers>
+                        <class>inventoryfulfillment/observer</class>
+                        <method>inventoryfulfillmentOrderPickAfter</method>
+                    </inventoryfulfillment_observers>
+                </observers>
+            </inventoryfulfillment_order_pick_after>
+            <inventoryfulfillment_order_pack_after>
+                <observers>
+                    <inventoryfulfillment_observers>
+                        <class>inventoryfulfillment/observer</class>
+                        <method>inventoryfulfillmentOrderPackAfter</method>
+                    </inventoryfulfillment_observers>
+                </observers>
+            </inventoryfulfillment_order_pack_after>
+            <inventoryfulfillment_order_ready_after>
+                <observers>
+                    <inventoryfulfillment_observers>
+                        <class>inventoryfulfillment/observer</class>
+                        <method>inventoryfulfillmentOrderReadyAfter</method>
+                    </inventoryfulfillment_observers>
+                </observers>
+            </inventoryfulfillment_order_ready_after>
+            <inventoryfulfillment_packages_ship_after>
+                <observers>
+                    <inventoryfulfillment_observers>
+                        <class>inventoryfulfillment/observer</class>
+                        <method>inventoryfulfillmentPackagesShipAfter</method>
+                    </inventoryfulfillment_observers>
+                </observers>
+            </inventoryfulfillment_packages_ship_after>
+            <!--
+            <inventoryfulfillment_order_ready_before>
+                <observers>
+                    <inventoryfulfillment_observers>
+                        <class>inventoryfulfillment/observer</class>
+                        <method>createGHNShippingOrder</method>
+                    </inventoryfulfillment_observers>
+                </observers>
+            </inventoryfulfillment_order_ready_before>
+            -->
+            <inventory_adminhtml_add_column_permission_grid>
+                <observers>
+                    <inventorywarehouse_observers>
+                        <class>inventoryfulfillment/observer</class>
+                        <method>add_warehouse_permission_grid</method>
+                    </inventorywarehouse_observers>
+                </observers>
+            </inventory_adminhtml_add_column_permission_grid>   
+            <inventory_adminhtml_add_more_permission>
+                <observers>
+                    <inventoryphysicalstocktaking_observers>
+                        <class>inventoryfulfillment/observer</class>
+                        <method>inventory_adminhtml_add_more_permission</method>
+                    </inventoryphysicalstocktaking_observers>
+                </observers>
+            </inventory_adminhtml_add_more_permission>                     
+        </events>
+        <template>
+            <email>
+                <inventoryplus_fulfillment_email_notify_to_customer translate="label" module="inventoryfulfillment">
+                    <label>Email template when notifying order fulfillment status changed</label>
+                    <file>inventoryfulfillment/notify_to_customer.html</file>
+                    <type>html</type>
+                </inventoryplus_fulfillment_email_notify_to_customer>
+            </email>
+        </template>
+    </global>
+    <default>
+        <inventoryplus>
+            <fulfillment>
+                <neworderstatus>fraud,holded,payment_review,paypal_reversed,pending,pending_ogone,pending_payment,pending_paypal,processing,processing_ogone,waiting_authorozation</neworderstatus>
+                <threshold_global_stock>20</threshold_global_stock>
+
+                <!--Cron job configuration-->
+                <cron_enable>1</cron_enable>
+                <cron_get_order_info>2</cron_get_order_info>
+                <!--End of Cron job configuration-->
+
+                <!--Default config for Giao Hang Nhanh-->
+                <ghn_api_url>https://testapipds.ghn.vn:9999/external/b2c/</ghn_api_url>
+                <ghn_client_id>28338</ghn_client_id>
+                <ghn_api_key>S5PyrzxcWSfMnjf4</ghn_api_key>
+                <ghn_secret_key>9BC05EFF5E65236798613BEC79D3B556</ghn_secret_key>
+                <ghn_password>a0RqkqqVueDV50wmF</ghn_password>
+                <!--End of Default config for Giao Hang Nhanh-->
+
+                <!--Email Notification-->
+                <email_notify_to_customer>inventoryfulfillment_email_notify_to_customer</email_notify_to_customer>
+                <!--End of Email Notification-->
+            </fulfillment>
+        </inventoryplus>        
+    </default>
+    <crontab>
+        <jobs>
+            <magestore_inventoryfulfillment>
+                <schedule>
+                    <cron_expr>*/5 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>inventoryfulfillment/ghnorder::getOrderStatus</model>
+                </run>
+            </magestore_inventoryfulfillment>
+        </jobs>
+    </crontab>
+</config>

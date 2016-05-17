@@ -1,0 +1,110 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventory
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+?>
+<?php $items = $this->getItems(); $warehouseId=$this->getWarehouseId()?>
+<div class="picking-list">
+    <div class="button-print" style-="width:100%; float:left;">
+        <button type="button" onclick="printAction();" style="padding: 5px; width: 90px; font-size: 16px; margin: 10px;"><?php echo $this->__('Print') ?></button>
+    </div>    
+    <div class="content-header">
+        <h3><?php echo $this->__('Picking List') ?> (<?php echo $this->helper('core')->formatDate(now(),'medium')?>)</h3>
+    </div>
+    <div class="list-content grid">
+<?php if(count($items)): ?>
+        <table cellspacing="0" class="data">
+            <tr class="headings">
+                <th><?php echo $this->__('No')?></th>
+                <th></th>
+                <th><?php echo $this->__('Pick Qty')?></th>
+                <th><?php echo $this->__('Product')?></th>
+                <th><?php echo $this->__('Product Location')?></th>
+                <th><?php echo $this->__('Barcode')?></th>
+                <th><?php echo $this->__('Check')?></th>
+            </tr>
+    <?php $i=1 ?>
+    <?php foreach($items as $item): ?>
+            <tr>
+                <td><?php echo $i++ ?></td>
+                <td>
+                    <?php try { ?>
+                    <img src="<?php echo $this->helper('catalog/image')->init($item->getProduct(), 'small_image')->resize(50) ?>"/>
+                    <?php } catch (Exception $e) { ?>
+                    <?php } ?>
+                </td>
+                <td><?php echo ($item->getPickQty() + 0)?></td>
+                <td>
+                    <?php echo $item->getProduct()->getName() ?> (<?php echo $item->getProduct()->getSku()?>)
+                    <?php if($attributeHtml = $this->helper('inventoryfulfillment/product')->getAttributeInfoHtml($item->getProduct())): ?>
+                        <?php echo '<br><i>' . $attributeHtml . '</i>' ?>
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <?php $productLocation = $this->helper('inventoryfulfillment')->getProductLocation($warehouseId,$item->getProductId()) ?>
+                    <?php echo $productLocation ?>
+                </td>
+                <td><?php echo implode(', ',$this->getBarCodes($item->getProductId())) ?></td>
+                <td><div class="checkbox"></div></td>
+            </tr>
+            <?php $totalQty += $item->getPickQty() ?>
+    <?php endforeach; ?>
+            <tr>
+                <td colspan="7" class="a-right"><strong><?php echo $this->__('Total') .': '. ($totalQty + 0) ?></strong></td>
+            </tr>
+<?php endif; ?>
+        </table>
+    </div>
+</div>
+<style type="text/css">
+    @media print {
+        .header{
+            display:none !important;
+        }
+        .demo-notice {
+            display:none !important;
+        }
+        .notification-global{
+            display:none !important;
+        }
+        .inventory-nav-bar{
+            display:none !important;
+        }
+        #inventory-title{
+            display:none !important;
+        }
+        .footer{
+            display:none !important;
+        }
+        .button-print{
+            display:none !important;
+        }
+    }
+    
+    div.checkbox{
+        width: 20px;
+        height: 20px;
+        border: solid 1px #ccc;
+    }
+</style>
+<script type="text/javascript">
+    function printAction(){
+        window.print();
+    }
+</script>

@@ -1,0 +1,59 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventory
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+/**
+ * Inventory Adminhtml Controller
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventoryfulfillment
+ * @author      Magestore Developer
+ */
+?>
+<?php $_order = $this->getOrder() ?>
+<div class="entry-edit">
+    <!--
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-shipping-method"><?php echo Mage::helper('sales')->__('Shipping &amp; Handling Information') ?></h4>
+    </div>
+    -->
+    <fieldset>
+        <?php if ($_order->getTracksCollection()->count()) : ?>
+            <a href="#" id="linkId" onclick="popWin('<?php echo $this->helper('shipping')->getTrackingPopupUrlBySalesModel($_order) ?>', 'trackorder', 'width=800,height=600,resizable=yes,scrollbars=yes')" title="<?php echo $this->__('Track Order') ?>"><?php echo $this->__('Track Order') ?></a>
+            <br/>
+        <?php endif; ?>
+        <?php if ($_order->getShippingDescription()): ?>
+            <strong><?php echo $this->escapeHtml($_order->getShippingDescription()) ?></strong>
+
+            <?php if ($this->helper('tax')->displayShippingPriceIncludingTax()): ?>
+                <?php $_excl = $this->displayShippingPriceInclTax($_order); ?>
+            <?php else: ?>
+                <?php $_excl = $this->displayPriceAttribute('shipping_amount', false, ' '); ?>
+            <?php endif; ?>
+            <?php $_incl = $this->displayShippingPriceInclTax($_order); ?>
+
+            <?php echo $_excl; ?>
+            <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+            <?php endif; ?>
+        <?php else: ?>
+            <?php echo $this->helper('sales')->__('No shipping information available'); ?>
+        <?php endif; ?>
+    </fieldset>
+</div>

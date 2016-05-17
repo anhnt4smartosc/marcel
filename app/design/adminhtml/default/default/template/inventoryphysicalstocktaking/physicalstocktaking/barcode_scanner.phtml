@@ -1,0 +1,75 @@
+<?php if (!$this->getRequest()->getParam('id')): ?>
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Barcode Scanner') ?></h4>
+        </div>
+    </div>
+    <div id="physicalstocktaking-barcode-scanner" class="fieldset ">
+        <input type="text" id="barcode_search" class="input-text package-barcode" name="barcode_query"
+               placeholder="<?php echo $this->__('Enter barcode here...') ?>"/><span id="barcode_search_indicator"
+                                                                                     class="autocomplete-indicator"
+                                                                                     style="display: none;">
+                    <img src="<?php echo $this->getSkinUrl('images/ajax-loader.gif') ?>" alt="Loading..."
+                         class="v-middle">
+                </span>
+        <div class="clear"></div>
+        <div id="barcode_search_autocomplete" class="autocomplete" style="display: none"></div>
+    </div>
+
+    <div class="last-scanned-items" id="last-scanned-items">
+        <table id="last-scanned-items-table" border="1">
+            <tr>
+                <th class="item-name">Name</th>
+                <th class="item-sku">SKU</th>
+                <th class="item-image">Image</th>
+            </tr>
+        </table>
+    </div>
+
+    <script type="text/javascript">
+        document.getElementById("barcode_search").focus();
+
+        new Ajax.PhysicalStockTakingBarcodeAutocompleter(
+            'barcode_search',
+            'barcode_search_autocomplete',
+            '<?php echo $this->getUrl('adminhtml/inph_physicalstocktaking/searchbarcode'); ?>',
+            {
+                paramName: "barcode_query",
+                minChars: 2,
+                indicator: "barcode_search_indicator",
+                updateElement: physicalStockTakingBarcodeCtrl.getSelectionId,
+                evalJSON: 'force'
+            }
+        );
+
+//        physicalStockTakingBarcodeCtrl.checkInputValueChanged('physicalstocktaking_products', function () {
+//            Element.show('loading-mask');
+//            var parameters = {product_data: $$('[name="physicalstocktaking_products"]')[0].value};
+//            var url = '<?php //echo Mage::helper('adminhtml')->getUrl('adminhtml/inph_physicalstocktaking/backupproductdata') ?>//';
+//            var request = new Ajax.Request(url, {
+//                method: 'post',
+//                parameters: parameters,
+//                onFailure: '',
+//                onSuccess: function (transport) {
+//                    if (transport.status == 200) {
+//                        var result = transport.responseText.evalJSON();
+//                    }
+//                }
+//            });
+//            console.log(atob('YWRqdXN0X3F0eT0x'));
+//            Element.hide('loading-mask');
+//        });
+    </script>
+<?php endif; ?>
+
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend">
+            <?php if ($this->getRequest()->getParam('id')): ?>
+                <?php echo $this->__('Products of Physical Stocktaking') ?>
+            <?php else: ?>
+                <?php echo $this->__('Product for Physical Stocktaking') ?>
+            <?php endif ?>
+        </h4>
+    </div>
+</div>

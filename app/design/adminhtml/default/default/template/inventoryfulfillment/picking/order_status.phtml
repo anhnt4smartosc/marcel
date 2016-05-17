@@ -1,0 +1,32 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventory
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+?>
+<!--
+<div id="picking-container">
+    <select class="select-order-status">
+        <option value="" selected="selected" disabled="disabled">Order status</option>
+        <?php $orderStatuses = Mage::getSingleton('inventoryfulfillment/order_fulfillmentstatus')->getOptionArray(); ?>
+        <?php foreach ($orderStatuses as $value => $label): ?>
+            <option value="<?php echo $value ?>"><?php echo $label ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
+-->

@@ -1,0 +1,70 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2014 X.commerce, Inc. (http://www.magento.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php $_item = $this->getItem() ?>
+<?php $this->setPriceDataObject($_item) ?>
+<?php $packages = $this->getPackageItems($_item) ?>  
+<?php $needToShipQty = $this->getNeedToShipQty($_item) ?>
+<?php if($needToShipQty): ?>
+<tr<?php if (!$this->canDisplayGiftmessage()): ?> class="border"<?php endif; ?>>
+    <td>
+        <?php if ($this->canDisplayContainer()): ?>
+        <div id="<?php echo $this->getHtmlId() ?>" class="item-container">
+            <?php endif; ?>
+            <div class="item-text">
+                <?php echo $this->getColumnHtml($_item, 'name') ?>
+            </div>
+            <?php if ($this->canDisplayContainer()): ?>
+        </div>
+    <?php endif ?>
+    </td>
+    <td class="a-left">
+        <?php if($_item->getChildrenItems()): ?>
+            <?php foreach($_item->getChildrenItems() as $cItem): ?>
+                <?php echo Mage::helper('inventoryfulfillment')->getBarcodeFromProductId($cItem->getProductId()); ?>
+                <br/>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <?php echo Mage::helper('inventoryfulfillment')->getBarcodeFromProductId($_item->getProductId()); ?>
+        <?php endif; ?>
+    </td>
+    <td class="a-left">
+        <?php echo $_item->getSku(); ?>
+    </td>
+    <td class="a-left">
+        <?php if(count($packages)): ?>
+            <?php foreach($packages as $packageId => $package): ?>
+                <input onchange="fulfillmentObj.checkPickQty(this);" type="number" min="0" max="<?php echo ($package->getNeedToPickQty() + 0) ?>" id="pick_qty_item_<?php echo $packageId ?>" class="input-text pick-qty" value="0" name="pick_qty_item_<?php echo $package->getItemId() ?>">
+                <?php echo '/ <span id="qty_to_ship_'. $package->getId() .'">'.($package->getNeedToPickQty() + 0) . '</span> ('. $this->getWarehouse($package->getWarehouseId())->getWarehouseName()  .')'?>
+                <br/>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </td>
+    <td class="a-right last">
+        <input type="checkbox" onclick="fulfillmentObj.confirmPackItem(this);" <?php echo ($selectBox ? ( $this->unCheckDefaultItem() ? '' : 'checked="true"')  : '' )?> id="item_<?php echo $_item->getId() ?>" class="checkbox required-<?php echo $this->getFulfillmentStep() ?>-item" value="" name="item_<?php echo $_item->getId() ?>">
+    </td>    
+</tr>
+<?php endif; ?>

@@ -1,0 +1,60 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventory
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+/**
+ * Inventory Adminhtml Controller
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventoryfulfillment
+ * @author      Magestore Developer
+ */
+?>
+<div class="fulfillment-order-view">
+    <fieldset>
+        <?php if($blockTitle = $this->getBlockTitle()): ?>
+            <legend><?php echo $blockTitle ?></legend>
+        <?php else: ?>
+            <legend><?php echo $this->__('Order') ?> #<?php echo $this->getOrder()->getIncrementId() ?></legend>
+        <?php endif; ?>
+        <?php echo $this->getTopChilds() ?>
+        <?php echo $this->getOrderItems() ?>
+        <div class="clear fix"></div>
+        <br/>
+        <div class="box clear bottom-box">
+            <div class="entry-edit left" style="width:53%">
+                <?php echo $this->getBottomLeftChilds() ?>               
+            </div>   
+            <?php if($bottomRightHtml = $this->getBottomRightChilds()): ?>
+                <div class="entry-edit left" style="width:30%; margin-left:10px;">
+                    <?php echo $this->getBottomRightChilds() ?>
+                </div>      
+                <div class="entry-edit right right-buttons" style="width:15%">
+                    <?php echo $this->getButtonsHtml('bottom_right') ?>
+                    <?php echo $this->getBelowButtonChilds() ?>
+                </div>      
+            <?php else: ?>
+                <div class="entry-edit right right-buttons" style="width:35%">
+                    <?php echo $this->getButtonsHtml('bottom_right') ?>
+                    <?php echo $this->getBelowButtonChilds() ?>
+                </div>         
+            <?php endif; ?>
+        </div>
+    </fieldset>
+</div>

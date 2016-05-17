@@ -1,0 +1,60 @@
+<?php
+$orderId = Mage::app()->getRequest()->getParam('order_id');
+if (is_null($orderId)) {
+    $orderId = Mage::app()->getRequest()->getParam('orderId');
+}
+$order = Mage::getModel('sales/order')
+    ->getCollection()
+    ->addFieldToFilter('entity_id', $orderId)
+    ->getFirstItem();
+$packageWebPath = $order->getData('package_web_path');
+$packagePhysicalPath = $order->getData('package_physical_path');
+$deletePackagePictureUrl = Mage::helper('adminhtml')->getUrl('adminhtml/inf_orderpacking/deletepackagepicture');
+
+$productsWebPath = $order->getData('products_web_path');
+$productsWebPathArray = explode(';', $productsWebPath);
+$productsPhysicalPath = $order->getData('products_physical_path');
+$productsPhysicalPathArray = explode(';', $productsPhysicalPath);
+$count = 0;
+$deleteProductsPictureUrl = Mage::helper('adminhtml')->getUrl('adminhtml/inf_orderpacking/deleteproductspicture');
+?>
+<div id="packing-container">
+    <div class="pictures">
+        <div class="product-picture">
+            <div id="my_camera" class="camera-image"></div>
+            <div id="list-picture" class="list-picture">
+                <?php foreach ($productsWebPathArray as $productWebUrl): ?>
+                    <?php if (is_file($productsPhysicalPathArray[$count])): ?>
+                        <div class="result-picture">
+                                <span class="delete-picture"
+                                      onclick="imageHandle.deleteProductsPicture('<?php echo $deleteProductsPictureUrl ?>', <?php echo $orderId ?>, '<?php echo $productWebUrl ?>')"><i
+                                        class="fa fa-trash"></i></span>
+                            <img src="<?php echo $productWebUrl; ?>" class="individual-product-image">
+                        </div>
+                    <?php endif; ?>
+                    <?php $count++; ?>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <div class="package-picture">
+            <div id="my_camera2" class="camera-image">
+                <?php if (is_file($packagePhysicalPath)): ?>
+                    <span class="delete-picture"
+                          onclick="imageHandle.deletePackagePicture('<?php echo $deletePackagePictureUrl ?>', <?php echo $orderId ?>)"><i
+                            class="fa fa-trash"></i></span>
+                    <img src="<?php echo $packageWebPath; ?>" class="individual-product-image">
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        Webcam.set({
+            image_format: 'png',
+        });
+        Webcam.attach('#my_camera');
+        <?php if (!is_file($packagePhysicalPath)): ?>
+        Webcam.attach('#my_camera2');
+        <?php endif; ?>
+    </script>
+</div>

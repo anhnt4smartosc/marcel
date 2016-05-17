@@ -1,0 +1,77 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventory
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+/**
+ * Inventory Adminhtml Controller
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventoryfulfillment
+ * @author      Magestore Developer
+ */
+?>
+<?php
+$orderId = Mage::app()->getRequest()->getParam('order_id');
+$order = $this->getOrder();
+$shipment = $order->getShipmentsCollection()->getFirstItem();
+$shipmentIncrementId = $shipment->getIncrementId();
+?>
+<div class="entry-edit">
+    <div id="barcode_form" class="barcode-field">
+        <input tabindex="1" style="width: 99%; height: 30px;" id="barcode_search_<?php echo $orderId ?>"
+                name="barcode_query" type="text" class="input-text" placeholder="<?php echo $this->__('Scan Barcode') ?>" autocomplete="off"/>
+        <span id="barcode_search_indicator_<?php echo $orderId ?>" class="autocomplete-indicator" style="display: none;">
+            <!--<img src="<?php echo $this->getSkinUrl('images/ajax-loader.gif') ?>" alt="Loading..." class="v-middle">-->
+        </span>
+        <div class="clear"></div>
+        <div id="barcode_search_autocomplete_<?php echo $orderId ?>" class="autocomplete" style="display: none; width:300px"></div>
+    </div>
+</div>
+
+<form id="ffm_printbarcode_form" target="_blank" action="<?php echo Mage::helper("adminhtml")->getUrl('adminhtml/inb_printbarcode/printBarcode/'); ?>" name="ffm_printbarcode_form" method="post">
+    <input type="hidden" name="form_key" value="<?php echo $this->getFormKey() ?>" />
+    <input type="hidden" id="barcodeId" name="barcodeId" value="1" />
+    <input type="hidden" id="image_width" name="image_width" value="198" />
+    <input type="hidden" id="type" name="type" value="code128" />
+    <input type="hidden" id="font_size" name="font_size" value="10" />
+    <input type="hidden" id="number_of_barcode" name="number_of_barcode" value="1" />
+    <input type="hidden" id="printing_format" name="printing_format" value="A7" />
+    <input type="hidden" id="barcode_template" name="barcode_template" value="5" />
+    <input type="hidden" id="heigth_barcode" name="heigth_barcode" value="70" />
+    <input type="hidden" id="text" name="text" value="<?php echo $shipmentIncrementId; ?>" />
+</form>
+
+<script type="text/javascript">
+    document.getElementById("barcode_search_<?php echo $orderId ?>").focus();
+
+    new Ajax.Barcodeautocompleter(
+        'barcode_search_<?php echo $orderId ?>',
+        'barcode_search_autocomplete_<?php echo $orderId ?>',
+        '<?php echo $this->getUrl('adminhtml/inf_orderpacking/searchbarcode'); ?>',
+        {
+            paramName: "barcode_query",
+            minChars: 2,
+            indicator: "barcode_search_indicator_<?php echo $orderId ?>",
+            updateElement: barcodeCtrl.getSelectionId,
+            evalJSON: 'force'
+        },
+        <?php echo $orderId; ?>,
+        '<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/inf_orderpacking/markitemchecked') ?>'
+    );
+</script>

@@ -1,0 +1,343 @@
+/* Order Packing - Take picture */
+.inventoryplus .scan_barcode {
+    width: 100% !important;
+    color: gray;
+    height: 50px !important;
+}
+
+.inventoryplus .select-order-status {
+    width: 100% !important;
+}
+
+.inventoryplus .pictures {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.inventoryplus .product-picture {
+    float: left;
+    width: 48%;
+    height: inherit;
+}
+
+.inventoryplus .list-picture {
+    width: inherit;
+}
+
+.inventoryplus .individual-product-image {
+    margin-top: 5px;
+    border: solid 3px #dddbda;
+    border-radius: 20px;
+}
+
+.inventoryplus .package-picture {
+    float: right;
+    width: 48%;
+    height: inherit;
+}
+
+.inventoryplus .camera-image {
+    min-width:250px;
+    min-height:200px;
+}
+
+.inventoryplus .camera-image .delete-picture {
+    position: absolute;
+    top: 1px;
+    right: 2px;
+    z-index: 100;
+    background-color: #FFF;
+    padding: 5px 2px 2px;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: .2;
+    text-align: center;
+    font-size: 22px;
+    line-height: 10px;
+    border-radius: 50%;
+}
+
+.inventoryplus .camera-image:hover .delete-picture {
+    opacity: 1;
+}
+
+/* End of Order Packing - Take picture */
+
+/* General elements */
+
+.inventoryplus .fulfillment .grid table td{
+    padding: 8px 4px !important;
+    
+}
+
+.inventoryplus .fulfillment .grid table.order-tables td{
+    border-bottom: 1px solid #dfdfdf;
+}
+/* Tabs */
+
+.inventoryplus .fulfillment div.main-col {
+    margin-left: 0px;
+}
+.inventoryplus .fulfillment .columns{
+    background: none;
+}
+.inventoryplus .fulfillment div.side-col {
+    margin-right: 0px;
+    width: 100%;
+}
+.inventoryplus .fulfillment div.side-col ul.tabs {
+    background: #e7efef;
+}
+
+.inventoryplus .fulfillment div.side-col{
+    padding-bottom: 0;
+    border-bottom: 1px solid #bebebe;
+}
+.inventoryplus ul#fulfillment_tabs {
+    border-top: 0;
+    clear: both;
+    margin-left: 30px;
+}
+
+.inventoryplus div.side-col ul#fulfillment_tabs li{
+    border-left: 1px solid #bebebe;
+    border-right: 1px solid #bebebe;
+    border-top: 1px solid #bebebe;
+    margin-right: 10px;  
+    float: left;
+    width: auto;
+    padding: 0 0 0 0px;    
+}
+.inventoryplus ul#fulfillment_tabs li a{
+    border-bottom: 0;
+}
+.inventoryplus ul#fulfillment_tabs li a.active{
+    border-bottom: 1px solid #fff;
+    margin-bottom: -1px;
+}
+.inventoryplus ul#fulfillment_tabs li a>span{
+    display: block;
+    height: 30px;
+    padding: 8px 20px 0;
+    font-weight: bold;
+}
+/* End of Tabs */
+
+/* Order view */
+.inventoryplus .show_hide_plus{
+    cursor: pointer;
+}
+.inventoryplus .show_hide_minus{
+    cursor: pointer;
+}
+
+.inventoryplus .fulfillment-order-view {
+    padding: 10px;
+}
+
+.inventoryplus .fulfillment-order-view fieldset {
+    border-radius: 15px;
+}
+
+.inventoryplus .grid .fulfillment-order-view .form-list{
+    margin: 0 !important;
+}
+
+.inventoryplus .fulfillment-order-view .entry-edit span.title{
+    float:right;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.inventoryplus .fulfillment-order-view .grid.order-items td span{
+    display: unset;
+    font-weight: normal !important;
+}
+
+.inventoryplus .fulfillment-order-view .order-items .unchecked{
+    border: 1px solid #ff0000 !important;
+}
+
+.inventoryplus .fulfillment-order-view .grid.order-items tr.headings th{
+    font-weight: normal;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.inventoryplus .fulfillment-order-view .box.bottom-box {
+    border: 0;
+    padding: 0;
+}
+
+.inventoryplus .fulfillment-order-view .bottom-box fieldset {
+    border: 0;
+}
+
+.inventoryplus .fulfillment-order-view .bottom-box .right-buttons button{
+    width: 100%;
+    margin: 0 0 5px 0;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: left !important;
+}
+
+.inventoryplus .fulfillment-order-view .order-history-form {
+    margin-top: 10px;
+}
+/* End of Order view */
+
+/* Shipping Methods */
+.inventoryplus .fulfillment-order-view #order-shipping-method-choose {
+    padding: 0 20px;
+}
+.inventoryplus .fulfillment-order-view .shipment-methods dt {
+    text-align: right;
+}
+.inventoryplus .fulfillment-order-view .shipment-methods input{
+    float: right;
+    margin: 3px 0 0 10px;
+}
+.inventoryplus .fulfillment-order-view .shipment-methods label{
+    float: right;
+}
+/* End of Shipping Methods */
+
+/* Barcode scan */
+.inventoryplus .fulfillment-order-view .barcode-field input.input-text {
+    border: 1px solid #c4c4c4;
+    color: #4f4f4f;
+    font-size: 18px;
+    font-style: italic;
+    height: 40px;
+    text-transform: uppercase;    
+}
+/* End of Barcode scan */
+
+/* End of General elements */
+
+/* Order verifying */
+
+.inventoryplus .fulfillment-order-view > fieldset {
+    padding: 10px 10px;
+    border:0 !important;
+}
+
+.inventoryplus .fulfillment-order-view > fieldset legend {
+    background: #6f6f6f none repeat scroll 0 0;
+    color: #fff;
+    display: block !important;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0;
+    padding: 10px 0;
+    visibility: visible;
+    width: 100%;
+}
+
+.inventoryplus .fulfillment .order-items .instock {
+    color: #00ce78;
+}
+.inventoryplus .fulfillment .order-items .outstock {
+    color: #ff0000;
+}
+.inventoryplus .fulfillment .order-items select.warehouse-shipment {
+    height: 32px;
+    width: 160px;
+}
+.inventoryplus .fulfillment .order-items input.pick-qty {
+    width: 60px;
+    height: 32px;
+    font-size: 13px;
+    text-align: center;
+}
+/* End of Order verifying */
+
+/* Order Shipping */
+.inventoryplus .fulfillment-shipping-order-list>fieldset {
+    display: unset;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    padding: 0 20px;
+}
+
+.inventoryplus .fulfillment-shipping-order-list>fieldset legend {
+    background: #6f6f6f;
+    color: #fff;
+    display: block !important;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;  
+    visibility: visible;
+    padding: 15px 50px;
+    width: auto;
+}
+.inventoryplus .fulfillment-shipping-order-list .order-group-summary {
+    border-top:1px solid #9f9f9f;
+    margin: 10px 0 0;
+    width: 100%;
+    display: block;
+    padding-top: 10px;
+}
+
+.inventoryplus .fulfillment-shipping-order-list .order-group-summary .package-summary {
+    text-align: right;
+    font-size: 30px;
+    font-weight: bold;
+    width: 60%;
+    text-align: right;
+    padding: 12px 0;
+    color: #4f4f4f;
+}
+
+.inventoryplus .fulfillment-shipping-order-list .order-group-summary .package-barcode {
+    width: 320px;
+    height: 40px;
+    padding: 0 0 0 30px;
+    font-size: 18px;
+    text-transform: uppercase;
+    font-style: italic;
+    color: #4f4f4f;
+    border: 1px solid #7f7f7f;
+}
+
+.inventoryplus .fulfillment-shipping-order-list .order-group-summary button{
+    display: block;
+    margin: 10px 0;
+    width: 160px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+/* End of Order Shipping */
+
+/* Order comments */
+.inventoryplus #load-more-comments {
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+}
+
+.inventoryplus #load-more-comments:hover {
+    color:#FFCC00;
+}
+/* End of Order comments */
+
+/* Fulfillment dashboard section */
+
+.inventoryplus .fulfillment-dashboard-template-item {
+    background-color: #FFF;
+    border: 2px dashed #b6b4b3;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+    min-height: 400px;
+}
+
+.inventoryplus .highcharts-container {
+    overflow: visible !important;
+}
+/* End of Fulfillment dashboard section */

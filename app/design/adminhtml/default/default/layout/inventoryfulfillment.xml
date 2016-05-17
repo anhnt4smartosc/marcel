@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Inventoryfulfillment
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<layout version="0.1.0">
+    <adminhtml_inf_fulfillment_index>
+        <update handle="adminhtml_inventoryplus_layout"/>
+        <reference name="head">
+            <action method="addCss">
+                <script>css/magestore/inventoryfulfillment/style.css</script>
+            </action>
+            <action method="addJs">
+                <script>magestore/inventoryfulfillment/webcamjs/webcam.js</script>
+            </action>
+            <action method="addJs">
+                <name>magestore/scriptaculous/scriptaculous.js</name>
+            </action>
+            <action method="addJs">
+                <script>magestore/inventoryfulfillment/image-handle.js</script>
+            </action>
+            <action method="addJs">
+                <script>magestore/inventoryfulfillment/barcode.js</script>
+            </action>
+            <action method="addJs">
+                <script>magestore/inventoryfulfillment/package-barcode.js</script>
+            </action>
+            <action method="addJs">
+                <script>magestore/inventoryfulfillment/grid.js</script>
+            </action>            
+            <action method="addJs">
+                <script>magestore/inventoryfulfillment/imfulfillment.js</script>
+            </action>
+            <action method="addJs">
+                <script>magestore/adminhtml/inventory/dashboard/lib/js</script>
+            </action>
+            <action method="addJs">
+                <script>magestore/adminhtml/inventory/dashboard/lib/js_003</script>
+            </action>
+            <action method="addJs">
+                <script>magestore/adminhtml/inventory/dashboard/lib/js_002</script>
+            </action>
+            <action method="addJs">
+                <script>magestore/adminhtml/inventory/dashboard/lib/dashboards</script>
+            </action>
+            <action method="addJs">
+                <script>magestore/adminhtml/inventory/reports/lib/charts/highcharts.js</script>
+            </action>
+            <action method="addJs">
+                <script>magestore/adminhtml/inventory/reports/lib/charts/modules/no-data-to-display.js</script>
+            </action>
+        </reference>
+        <reference name="js">
+           <block type="inventoryfulfillment/adminhtml_js" />
+        </reference>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>inventoryfulfillment/page-2column-left.phtml</template>
+            </action> 
+        </reference>       
+    </adminhtml_inf_fulfillment_index>
+    
+    <adminhtml_inf_fulfillment_step>
+        <update handle="adminhtml_inf_fulfillment_index" />
+        <reference name="content">
+            <block type="inventoryfulfillment/adminhtml_fulfillment_headertitle" name="header_title"/>       
+        </reference>        
+    </adminhtml_inf_fulfillment_step>
+    
+    <adminhtml_inf_fulfillment_dashboard>
+        <block type="core/text_list" name="root">
+            <block type="inventoryfulfillment/adminhtml_fulfillment_dashboard" name="inventoryfulfillment_adminhtml_fulfillment_dashboard"/>
+        </block>
+    </adminhtml_inf_fulfillment_dashboard>
+
+    <!--Dashboard-->
+    <adminhtml_inf_dashboard_index>
+        <block type="core/text_list" name="root">
+            <block type="inventoryfulfillment/adminhtml_fulfillment_dashboard" name="inventoryfulfillment_adminhtml_fulfillment_dashboard"/>
+        </block>
+    </adminhtml_inf_dashboard_index>
+    <!--End of Dashboard-->
+
+    <!-- Order Verifying -->
+    <adminhtml_inf_orderverifying_index>
+        <block type="core/text_list" name="root">
+            <block type="inventoryfulfillment/adminhtml_fulfillment_verifying" name="inventory_adminhtml_fulfilment_verifying_grid" />          
+        </block>
+    </adminhtml_inf_orderverifying_index>
+    <adminhtml_inf_orderverifying_list>
+        <update handle="adminhtml_inf_fulfillment_step" />
+        <reference name="content">
+            <block type="inventoryfulfillment/adminhtml_fulfillment_verifying" name="inventory_adminhtml_fulfilment_verifying_grid" />          
+        </reference>
+    </adminhtml_inf_orderverifying_list>        
+    <adminhtml_inf_orderverifying_postorder>
+        <block type="inventoryfulfillment/adminhtml_order_view_comment" name="order_comment_history" template="inventoryfulfillment/order/view/comment.phtml" output="toHtml"/>
+    </adminhtml_inf_orderverifying_postorder>        
+    <!-- End of Order Verifying -->
+    
+    <!-- Order Picking -->
+    <adminhtml_inf_orderpicking_index>
+        <block type="core/text_list" name="root">
+            <block type="inventoryfulfillment/adminhtml_fulfillment_picking" name="inventory_adminhtml_fulfilment_picking_grid"/>
+        </block>
+    </adminhtml_inf_orderpicking_index>
+    <adminhtml_inf_orderpicking_list>
+        <update handle="adminhtml_inf_fulfillment_step" />
+        <reference name="content">
+            <block type="inventoryfulfillment/adminhtml_page_warehouses" name="inventory_adminhtml_page_warehouses" />          
+            <block type="inventoryfulfillment/adminhtml_fulfillment_picking" name="inventory_adminhtml_fulfilment_picking_grid" />          
+        </reference>
+    </adminhtml_inf_orderpicking_list>       
+    <!-- End of Order Picking -->
+    
+    <!-- Order Packing -->
+    <adminhtml_inf_orderpacking_index>
+        <block type="core/text_list" name="root">
+            <block type="inventoryfulfillment/adminhtml_page_warehouses" name="inventory_adminhtml_page_warehouses" />  
+            <block type="inventoryfulfillment/adminhtml_fulfillment_packing" name="inventory_adminhtml_fulfilment_packing_grid" />
+        </block>
+    </adminhtml_inf_orderpacking_index>   
+    <adminhtml_inf_orderpacking_list>
+        <update handle="adminhtml_inf_fulfillment_step" />
+        <reference name="content">
+            <block type="inventoryfulfillment/adminhtml_page_warehouses" name="inventory_adminhtml_page_warehouses" />  
+            <block type="inventoryfulfillment/adminhtml_fulfillment_packing" name="inventory_adminhtml_fulfilment_packing_grid" />          
+        </reference>
+    </adminhtml_inf_orderpacking_list>      
+    <adminhtml_inf_orderpacking_view>
+        <block type="core/text_list" name="root">
+            <block type="inventoryfulfillment/adminhtml_fulfillment_packing_view" name="inventoryplus_adminhtml_fulfillment_packing_view" />
+        </block>
+    </adminhtml_inf_orderpacking_view>
+    <adminhtml_inf_orderpacking_addcomment>
+        <block type="inventoryfulfillment/adminhtml_order_view_comment" name="order_comment_history" template="inventoryfulfillment/order/view/comment.phtml" output="toHtml"/>
+    </adminhtml_inf_orderpacking_addcomment>
+    <adminhtml_inf_orderpacking_postorder>
+        <block type="inventoryfulfillment/adminhtml_order_view_comment" name="order_comment_history" template="inventoryfulfillment/order/view/comment.phtml" output="toHtml"/>
+    </adminhtml_inf_orderpacking_postorder>
+    <adminhtml_inf_orderpacking_massprintpickinglist>
+        <update handle="adminhtml_fulfillment_blank" />
+        <reference name="content">
+            <block type="inventoryfulfillment/adminhtml_fulfillment_packing_print_list" name="inventory_adminhtml_fulfillment_packing_print_list" />
+        </reference>
+    </adminhtml_inf_orderpacking_massprintpickinglist>        
+    <!-- End of Order Packing -->
+
+    <!-- Order Shipping -->
+    <adminhtml_inf_ordershipping_index>
+        <block type="core/text_list" name="root">
+            <block type="inventoryfulfillment/adminhtml_page_warehouses" name="inventory_adminhtml_page_warehouses" />          
+            <block type="inventoryfulfillment/adminhtml_fulfillment_shipping" name="inventoryfulfillment_adminhtml_fulfillment_ship"/>
+        </block>
+    </adminhtml_inf_ordershipping_index>  
+    <adminhtml_inf_ordershipping_list>
+        <update handle="adminhtml_inf_fulfillment_step" />
+        <reference name="content">
+            <block type="inventoryfulfillment/adminhtml_page_warehouses" name="inventory_adminhtml_page_warehouses" />          
+            <block type="inventoryfulfillment/adminhtml_fulfillment_shipping" name="inventoryfulfillment_adminhtml_fulfillment_ship" />          
+        </reference>
+    </adminhtml_inf_ordershipping_list>       
+    <adminhtml_inf_ordershipping_packagegrid>
+        <block type="core/text_list" name="root">
+            <block type="inventoryfulfillment/adminhtml_fulfillment_shipping_packagegrid" name="inventoryfulfillment_adminhtml_fulfillment_shipping_packagegrid"/>
+        </block>
+    </adminhtml_inf_ordershipping_packagegrid>   
+    <adminhtml_inf_ordershipping_view>
+        <block type="core/text_list" name="root">
+            <block type="inventoryfulfillment/adminhtml_fulfillment_shipping_view" name="inventoryplus_adminhtml_fulfillment_shipping_view" />
+        </block>
+    </adminhtml_inf_ordershipping_view>        
+    <!-- End of Order Shipping -->
+    
+    <!-- Shipping Progress -->  
+    <adminhtml_inf_shipprogressing_index>
+        <block type="core/text_list" name="root">
+            <block type="inventoryfulfillment/adminhtml_fulfillment_shipprogressing" name="inventory_adminhtml_fulfilment_shipprogressing_grid" />
+        </block>
+    </adminhtml_inf_shipprogressing_index>
+    <adminhtml_inf_shipprogressing_list>
+        <update handle="adminhtml_inf_fulfillment_step" />
+        <reference name="content">
+            <block type="inventoryfulfillment/adminhtml_fulfillment_shipprogressing" name="inventory_adminhtml_fulfilment_shipprogressing_grid" />          
+        </reference>
+    </adminhtml_inf_shipprogressing_list>      
+    <!-- End of Shipping Progress -->
+    
+    <!-- Blank layout -->  
+    <adminhtml_fulfillment_blank>
+        <update handle="adminhtml_inventoryplus_layout" />
+        <reference name="root">
+            <remove name="header" />
+            <remove name="menu" />
+            <remove name="left_menu" />            
+            <remove name="notifications" />            
+        </reference>     
+        <reference name="head">           
+            <action method="addCss">
+                <stylesheet>css/magestore/inventoryplus/popup-list.css</stylesheet>
+            </action>                       
+        </reference>        
+    </adminhtml_fulfillment_blank>     
+    <!-- End of blank layout -->  
+</layout>

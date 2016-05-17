@@ -1,0 +1,68 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventory
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+/**
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventoryfulfillment
+ * @author      Magestore Developer
+ */
+?>
+<fieldset>
+    <legend><?php echo $this->getGroupTitle() ?></legend>
+    <div class="order-group">
+        <?php echo $this->getPackageGrid() ?>
+        <div class="clear fix"></div>
+        <div class="order-group-summary">
+            <div class="left package-summary">
+                <?php echo $this->__('Total') ?>: <span class="total_package"><?php echo $this->getTotalPackages() ?><span>
+            </div>
+            <div class="right">
+                <input type="text" id="barcode_search" class="input-text package-barcode" name="barcode_query" placeholder="<?php echo $this->__('Barcode Scanning...') ?>"/>
+                <span id="barcode_search_indicator" class="autocomplete-indicator" style="display: none;">
+                    <img src="<?php echo $this->getSkinUrl('images/ajax-loader.gif') ?>" alt="Loading..." class="v-middle">
+                </span>
+                <div class="clear"></div>
+                <div id="barcode_search_autocomplete" class="autocomplete" style="display: none; width:300px"></div>
+                <div class="clear fix"></div>
+                <div class="right">
+                    <?php echo $this->getButtonsHtml('bottom_right') ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+<script type="text/javascript">
+    document.getElementById("barcode_search").focus();
+
+    new Ajax.PackageBarcodeautocompleter(
+        'barcode_search',
+        'barcode_search_autocomplete',
+        '<?php echo $this->getUrl('adminhtml/inf_ordershipping/searchpackagebarcode'); ?>',
+        {
+            paramName: "barcode_query",
+            minChars: 2,
+            indicator: "barcode_search_indicator",
+            updateElement: packagebarcodeCtrl.getSelectionId,
+            evalJSON: 'force'
+        }
+    );
+</script>

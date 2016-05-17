@@ -1,0 +1,100 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventory
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+?>
+<?php $warehouses = $this->getPermittedWarehouses($this->getFulfillmentAction()) ?>
+<?php $isShowWarehouseSelect = (count($warehouses) == 1) ? false : true; ?>
+<div class="clear fix"></div>
+<?php if(!$this->hasPermission()): ?>
+    <div id="warehouse_permission_notice">
+        <ul class="messages">
+            <li class="notice-msg">
+                <ul>
+                    <li>
+                        <span>
+                            <?php echo $this->__('You have no permission to do this action on any Warehouse.') ?>
+                        </span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>    
+<?php else: ?>
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <?php if($isShowWarehouseSelect): ?>
+                <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Select Warehouse') ?></h4>
+            <?php else: ?>
+                <?php foreach($warehouses as $warehouse): ?>
+                    <h4 class="icon-head head-edit-form fieldset-legend">
+                        <b><?php echo $this->__('Warehouse:').' '.$warehouse ?></b>
+                    </h4>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+      <?php if($isShowWarehouseSelect): ?>
+        <div class="fieldset" id="">
+            <div class="input-box">
+                <?php echo $this->__('Please select a warehouse to view fulfillment') ?><br>
+                <div>
+                    <select onchange="return switchWarehouse(this);" id="select_warehouse" name="select_warehouse">
+                        <?php if (count($warehouses)): ?>
+                            <?php foreach ($warehouses as $warehouseId => $warehouseName): ?>
+                                <option value="<?php echo $warehouseId ?>" <?php if ($warehouseId == $this->getCurrWarehouseId()) echo 'selected="selected"' ?>>
+                                    <?php echo $warehouseName ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
+                </div>
+                <script type="text/javascript">
+                    switchWarehouse($('select_warehouse'));
+
+                    function switchWarehouse(obj) {
+                        var url = '<?php echo $this->getUrl('adminhtml/inf_fulfillment/changewarehouse') ?>';
+                        var warehouseParam = obj.value ? 'warehouse_id/' + obj.value + '/' : '';
+                        url += warehouseParam;
+                        var request = new Ajax.Request(url, {
+                            method: 'get',
+                            parameters: '',
+                            onFailure: '',
+                            onSuccess: function (transport) {
+                                if (transport.status == 200) {
+                                    var grid = obj.up('.entry-edit').next('div');
+                                    if(grid && grid.id){
+                                        eval(grid.id + 'JsObject.doFilter();');
+                                    }
+                                    var orderGroups = $$('div.order-group');
+                                    for(var i=0; i< orderGroups.length; i++) {
+                                        grid = orderGroups[i].down('div');
+                                        if(grid && grid.id){
+                                            eval(grid.id + 'JsObject.doFilter();');
+                                        }                                    
+                                    }
+                                }
+                            }
+                        });
+                    }
+                </script>
+            </div>
+        </div>
+      <?php endif; ?>  
+    </div>
+<?php endif; ?>

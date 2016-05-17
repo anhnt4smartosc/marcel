@@ -1,0 +1,45 @@
+<?php
+/**
+ * Magestore
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magestore
+ * @package     Magestore_Inventory
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+?>
+<script type="text/javascript">
+
+    var fulfillmentObj = new fulfillmentControl(
+        '<?php echo $this->getGridObject() ?>',
+        '<?php echo $this->getPickOrderUrl() ?>',
+        '<?php echo $this->getPackOrderUrl() ?>',
+        '<?php echo $this->getShipOrderUrl() ?>',
+        '<?php echo $this->getShipPackagesUrl() ?>',
+        '<?php echo $this->getPrintOrderListUrl() ?>',
+        '<?php echo $this->getCheckGlobalStockUrl() ?>',
+        '<?php echo $this->getRefreshWarehouseListUrl() ?>',
+        '<?php echo $this->getCancelUrl() ?>'
+    );
+
+    fulfillmentObj.initMessages(
+        '<?php echo $this->getOrderErrorMessage() ?>',
+        '<?php echo $this->getUnCheckItemMessage() ?>',
+        '<?php echo $this->getShipOrderConfirmMessage() ?>',
+        '<?php echo $this->getCheckGlobalStockErrorMessage() ?>',
+        '<?php echo $this->getRefreshWarehouseListErrorMessage() ?>',
+        '<?php echo $this->getConfirmOrderMessage() ?>'
+    );
+
+</script>
