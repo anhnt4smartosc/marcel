@@ -128,8 +128,8 @@ class SM_XPos_Helper_Product extends Mage_Core_Helper_Abstract {
         $products = Mage::getResourceModel('catalog/product_collection')
             ->addStoreFilter($storeId);
         if ($warehouseId) {
-            $products->getSelect()->joinLeft(Mage::getConfig()->getTablePrefix() . 'sm_product_warehouses', 'entity_id =' . Mage::getConfig()->getTablePrefix() . 'sm_product_warehouses.product_id', array("warehouse_id", "enable"))
-                ->where(Mage::getConfig()->getTablePrefix() . "sm_product_warehouses.warehouse_id = " . $warehouseId . " AND " . Mage::getConfig()->getTablePrefix() . "sm_product_warehouses.enable = 1");
+            $products->getSelect()->joinLeft(Mage::getConfig()->getTablePrefix() . 'erp_inventory_warehouse_product', 'entity_id =' . Mage::getConfig()->getTablePrefix() . 'erp_inventory_warehouse_product.product_id', array("warehouse_id"))
+                ->where(Mage::getConfig()->getTablePrefix() . "erp_inventory_warehouse_product.warehouse_id = " . $warehouseId);
         }
 
         return $products->getSize();
@@ -160,8 +160,8 @@ class SM_XPos_Helper_Product extends Mage_Core_Helper_Abstract {
 
 
         if ($this->_xposHelperData->isIntegrateWithXMWH($warehouseId)) {
-            $productCollection->getSelect()->joinLeft(Mage::getConfig()->getTablePrefix() . 'sm_product_warehouses', 'entity_id =' . Mage::getConfig()->getTablePrefix() . 'sm_product_warehouses.product_id', array("warehouse_id", "enable"))
-                ->where(Mage::getConfig()->getTablePrefix() . "sm_product_warehouses.warehouse_id = " . $warehouseId . " AND " . Mage::getConfig()->getTablePrefix() . "sm_product_warehouses.enable = 1");
+            $productCollection->getSelect()->joinLeft(Mage::getConfig()->getTablePrefix() . 'erp_inventory_warehouse_product', 'entity_id =' . Mage::getConfig()->getTablePrefix() . 'erp_inventory_warehouse_product.product_id', array("warehouse_id"))
+                ->where(Mage::getConfig()->getTablePrefix() . "erp_inventory_warehouse_product.warehouse_id = " . $warehouseId);
         }
 
         $productCollection = $this->queryProduct($productCollection);
@@ -216,12 +216,12 @@ class SM_XPos_Helper_Product extends Mage_Core_Helper_Abstract {
                 continue;
 
             if ($this->_xposHelperData->isIntegrateWithXMWH($warehouseId)) {
-                $collection_qty = Mage::getModel('xwarehouse/warehouse_product')->getCollection()
+                $collection_qty = Mage::getModel('inventoryplus/warehouse_product')->getCollection()
                     ->addFieldToFilter('warehouse_id', array('eq' => $warehouseId))
                     ->addFieldToFilter('product_id', array('eq' => $product->getId()));
                 $info_array = $collection_qty->getData();
 
-                $pInfo['qty'] = $info_array[0]['qty'];
+                $pInfo['qty'] = $info_array[0]['available_qty'];
 
             } elseif ($this->_xposHelperData->isIntegrateWithMageStoreMWH($warehouseId)) {
                 if (isset($allowProduct[$product->getId()])) {
@@ -231,6 +231,7 @@ class SM_XPos_Helper_Product extends Mage_Core_Helper_Abstract {
                     $pInfo['qty'] = 0;
             } else
                 $pInfo['qty'] = $stock->getQty();
+
 
             $pInfo['is_qty_decimal'] = $stock->getData('is_qty_decimal');
             $pInfo['has_manager_inventory'] = $stock->getData('use_config_manage_stock');
@@ -261,7 +262,7 @@ class SM_XPos_Helper_Product extends Mage_Core_Helper_Abstract {
             if (!empty($warehouseId)) {
                 $currentUserId = Mage::getSingleton('admin/session')->getUser()->getId();
                 if (!empty($currentUserId)) {
-                    $warehouseItems = Mage::getModel('xwarehouse/warehouse_product')->getCollection();
+                    $warehouseItems = Mage::getModel('inventoryplus/warehouse_product')->getCollection();
                     $warehouseItems->addFieldToFilter('warehouse_id', array('eq' => $warehouseId));
                     foreach ($warehouseItems as $item) {
                         if ($item->getData('enable') == 1) {
@@ -423,7 +424,7 @@ class SM_XPos_Helper_Product extends Mage_Core_Helper_Abstract {
             $pInfo = $this->extractData($controller, $product, $billingAdd, $shippingAdd, $customerId);
 
             if ($warehouseId) {
-                $collection_qty = Mage::getModel('xwarehouse/warehouse_product')->getCollection()
+                $collection_qty = Mage::getModel('inventoryplus/warehouse_product')->getCollection()
                     ->addFieldToFilter('warehouse_id', array('eq' => $warehouseId))
                     ->addFieldToFilter('product_id', array('eq' => $product->getId()));
                 $info_array = $collection_qty->getData();
@@ -896,7 +897,7 @@ class SM_XPos_Helper_Product extends Mage_Core_Helper_Abstract {
             $pInfo = $this->extractData($controller, $product, $billingAdd, $shippingAdd, $this->_defaultCustomerId);
 
             if ($warehouseId) {
-                $collection_qty = Mage::getModel('xwarehouse/warehouse_product')->getCollection()
+                $collection_qty = Mage::getModel('inventoryplus/warehouse_product')->getCollection()
                     ->addFieldToFilter('warehouse_id', array('eq' => $warehouseId))
                     ->addFieldToFilter('product_id', array('eq' => $product->getId()));
                 $info_array = $collection_qty->getData();

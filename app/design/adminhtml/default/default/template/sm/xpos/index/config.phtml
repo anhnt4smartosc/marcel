@@ -11,13 +11,14 @@
         <li id="staft_menu_item"><a href="<?php echo Mage::helper("adminhtml")->getUrl("*/cashier");?>" target="_blank" class="staff"><?php echo $this->__("Staff") ?></a></li>
         <?php if(!!Mage::helper('xpos/configXPOS')->getIntegrateXmwhEnable()){ ?>
             <li id="warehouse_menu_item"><a href="javascript:" onclick="xpos_change_warehouse()" class="warehouse"><?php echo $this->__("Warehouse") ?></a></li>
-        <?php }else{ ?>
+        <?php }
+//        else{ ?>
             <li id="cashdrawer_menu_item"><a href="javascript:" onclick="showTransactionList()" class="cashdrawer"><?php echo $this->__("Cash Drawer") ?></a></li>
-        <?php } ?>
+<!--        --><?php //} ?>
         <li id="admin_menu_item"><a href="<?php echo Mage::helper("adminhtml")->getUrl("*/system_config/edit/section/xpos/");?>" target="_blank" class="admin"><?php echo $this->__("Setting") ?></a></li>
-        <?php if(!Mage::helper('xpos/configXPOS')->getIntegrateXmwhEnable()){ ?>
+<!--        --><?php //if(!Mage::helper('xpos/configXPOS')->getIntegrateXmwhEnable()){ ?>
         <li id="update_item" ><a onclick="updateHard();" href="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/xpos/flushXPosCache");?>" target="_self"  class="update"><?php echo $this->__("Update") ?></a></li>
-        <?php }?>
+<!--        --><?php //}?>
         <li id="warehouse_menu_item"><a href="javascript:" onclick="xpos_change_store()" class="warehouse"><?php echo $this->__("Store") ?></a></li>
         <?php if(Mage::helper('xpos/configXPOS')->getEnableCashier()){ ?>
         <li id="logout_menu_item"><a href="javascript:" onclick="xpos_user_logout()" class="logout"><?php echo $this->__("Logout") ?></a></li>

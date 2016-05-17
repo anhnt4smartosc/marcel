@@ -94,7 +94,7 @@ class SM_XPos_Adminhtml_TillController extends Mage_Adminhtml_Controller_Action 
         $warehouse_id = $this->getRequest()->getParam('warehouse_id');
         //Mage::register("warehouse_id",$warehouse_id);
         //$this->_getSession()->setWarehouseId((int) $warehouse_id);
-        Mage::getSingleton('adminhtml/session')->setWarehouseId($warehouse_id);
+        Mage::getSingleton('inventoryxpos/session')->setWarehouseId($warehouse_id);
 //        $collection = Mage::getModel('xpos/till')->getCollection()
 //            ->addFieldToFilter('warehouse_id', $warehouse_id)
 //            ->addFieldToFilter('is_active', 1);

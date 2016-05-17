@@ -54,7 +54,8 @@ class SM_XPos_Block_Report_Eodreport_Filter_Form extends Mage_Sales_Block_Adminh
 //            'label' => Mage::helper('reports')->__('Group by period'),
 //            'title' => Mage::helper('reports')->__('Group by period')
 //        ));
-
+//        var_dump(Mage::getModel('xpos/till'));
+//        die;
         $data_till = Mage::getModel('xpos/till')->getCollection();
         $listTill = array();
         $listTill[] = array('value' => 0 , 'label' => 'Any');
@@ -68,11 +69,11 @@ class SM_XPos_Block_Report_Eodreport_Filter_Form extends Mage_Sales_Block_Adminh
         ));
 
         if(Mage::helper('xpos/configXPOS')->getIntegrateXmwhEnable()){
-            $data_warehouse = Mage::getModel('xwarehouse/warehouse')->getCollection();
+            $data_warehouse = Mage::getModel('inventoryplus/warehouse')->getCollection();
             $lstWarehouse = array();
             $lstWarehouse[] = array('value' => 0 , 'label' => 'Any');
             foreach($data_warehouse as $row){
-                $lstWarehouse[] = array('value' => $row->getWarehouseId() , 'label' => $row->getLabel());
+                $lstWarehouse[] = array('value' => $row->getWarehouseId() , 'label' => $row->getWarehouseName());
             }
             $fieldset->addField('warehouse_id', 'select', array(
                 'label' => Mage::helper('xpos')->__('Warehouse'),
