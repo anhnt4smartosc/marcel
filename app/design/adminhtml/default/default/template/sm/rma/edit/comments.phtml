@@ -1,0 +1,21 @@
+<div class="entry-edit">
+	<div class="entry-edit-head"><h4><?php echo $this->_label ?></h4></div>
+	<div class="fieldset">
+		<ul id="comments" class="note-list">
+        <?php if($this->getCollection()->count()): ?>
+			<?php foreach($this->getCollection() as $message): ?>
+				<li class="helpdesk-message">
+					<h5><?php echo $message->getCustomerName() ?> <span class="separator">|</span><?php echo $this->DTFormat($message->getCreatedTime());?></h5>
+					<small style="display:block;">
+						<?php echo $message->getContent(); ?>
+					</small>
+				</li>
+			<?php endforeach; ?>
+        <?php else: ?>
+            <li id="no-comments">
+                <center><i><?php echo Mage::helper('rma')->__("No comments")?></i></center>
+            </li>
+		<?php endif; ?>		
+		</ul>
+	</div>
+</div>

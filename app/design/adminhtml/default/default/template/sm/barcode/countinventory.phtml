@@ -1,0 +1,49 @@
+<?php
+/**
+ * SmartOSC Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ *
+ * @category   SM
+ * @package    SM_Barcode
+ * @version    2.0
+ * @author     thangnv@smartosc.com
+ * @copyright  Copyright (c) 2013-2014 SmartOSC Co. (http://www.smartosc.com)
+ */
+?>
+
+<div id="barcodeMessage" style="display:none;">
+    <ul class="messages">
+        <li id="barcode-li-message" class="success-msg">
+            <ul><li id="barcodeMessageContent" /></ul>
+        </li>
+    </ul>
+</div>
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td style="width:50%;"><h3 class="icon-head head-products"><?php echo Mage::helper('barcode')->__('Barcode - Count Inventory') ?></h3></td>
+        </tr>
+    </table>
+</div>
+<div class="barcode-order">
+    <form id="frmBarcodeID" method="post" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/barcode_countinventory/ajaxgetgridinfo/"); ?>" >
+    <div class="order-left" style="width:186px;">
+        <input type="hidden" name="form-key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+        <div class="order-left-orderid">
+            Product Barcode # : <br />
+            <input type="text" id="barcode-id" name="barcode_id" class="input-text" onfocus="javascript:this.value='';" style="text-align: center;" />
+            <input type="hidden" id="sm-symbology-type" value="<?php echo Mage::getStoreConfig('barcode/general/symbology')?>" />
+        </div>
+        <div id="barcode-view" class="order-left-barcode-view"></div>
+        <div style="clear: both;" ></div>
+    </div>
+    <div class="order-right" style="width: 82%">
+        <?php echo $this->getProductInforGridHtml(); ?>
+    </div>
+    </form>
+    <input type='hidden' id="ajax-mass-action-execute" value="<?php echo Mage::helper("adminhtml")->getUrl("*/barcode_countinventory/ajaxmassactionexecute")?>"/>
+</div>

@@ -1,0 +1,15 @@
+<?php
+    $_order = $this->getOrder();
+?>
+<div class="entry-edit">
+    <!--Payment Method-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-payment-method"><?php echo Mage::helper('rma')->__('Payment Information') ?></h4>
+        </div>
+        <fieldset>
+            <?php echo $this->getPaymentHtml() ?>
+            <div><?php echo Mage::helper('rma')->__('Order was placed using %s', $_order->getOrderCurrencyCode()) ?></div>
+        </fieldset>
+    </div>
+</div> 

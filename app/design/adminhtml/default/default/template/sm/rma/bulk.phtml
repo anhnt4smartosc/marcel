@@ -1,0 +1,390 @@
+<?php ?>
+    <div id="barcodeMessage" style="display:none;"><ul class="messages"><li id="barcode-li-message" class="success-msg"><ul><li id="barcodeMessageContent"></li></ul></li></ul></div>
+    <div class="content-header">
+        <table cellspacing="0">
+            <tr>
+                <td style="width:50%;"><h3 class="icon-head head-products"><?php echo Mage::helper('rma')->__('Bulk - Manage order') ?></h3></td>
+                <td class="a-right">
+                    <?php //echo $this->getButtonsHtml() ?>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="barcode-order">
+        <form id="frmOrder" method="post" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/rma_ajax/save/"); ?>">
+            <div class="order-left">
+<!--                <input type="hidden" name="form_key" value="--><?php //echo Mage::getSingleton('core/session')->getFormKey() ?><!--" />-->
+                <input type="hidden"  id="save-action" name="save_action" value="" />
+
+
+                <!--div class="order-left-webcam">Webcam</div-->
+                <div id="barcode-view" class="order-left-barcode-view"></div>
+                <div style="clear:both"></div>
+            </div>
+            <div class="order-right"><?php echo $this->getReturnProductsGridHtml() ?>
+            </div>
+        </form>
+        <div style="text-align: right; width:100%; height: 40px; float: right;">
+
+            <button id="barcode-button-resetall" class="scalable task" type="button"  onclick="manualResetAll(this);"><span><?php echo $this->__('Reset All') ?></span></button>
+        </div>
+    </div>
+    <script type="text/javascript">
+    rmaReturnProductsGrid_massactionJsObject.setUseAjax(true);
+
+    function checkAction(obj){
+           // var conceptName = jQuery('.check_action_order').find(":selected").val();
+            //var url_cancel = jQuery('.check_action_order').find(":selected").attr("id");
+        var conceptName = jQuery(obj).val();
+        //alert(conceptName);
+        var url_cancel = "cancel";
+        var url_invoice = "invoice";
+        var url_ship = "ship";
+        var url_refund = "refund";
+
+//            alert(conceptName);
+//            alert(url_cancel);
+            var action = conceptName.split("_");
+//            alert(action);
+            switch (action[0]){
+                case "scan": window.location = BASE_URL + "barcode_order/?id="+action[1]; break;
+                case "cancel":
+                    new Ajax.Request("<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/rma_bulk/cancel')?>", {
+                        method: 'post',
+                        parameters: {order_id: action[1]},
+                        onComplete: function(transport){
+                            result = transport.responseText;
+                            location.reload();
+//                            alert(result);
+                        }
+                    });
+
+                    break;
+                case "invoice":
+                    new Ajax.Request("<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/rma_bulk/invoice')?>", {
+                        method: 'post',
+                        parameters: {order_id: action[1]},
+                        onComplete: function(transport){
+                            result = transport.responseText;
+                            location.reload();
+                            //alert(result);
+                        }
+                    });
+                    break;
+
+                case "ship":
+                    new Ajax.Request("<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/rma_bulk/ship')?>", {
+                        method: 'post',
+                        parameters: {order_id: action[1]},
+                        onComplete: function(transport){
+                            result = transport.responseText;
+                            location.reload();
+                            //alert(result);
+                        }
+                    });
+                    break;
+
+                case "refund":
+                    new Ajax.Request("<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/rma_bulk/refund')?>", {
+                        method: 'post',
+                        parameters: {order_id: action[1]},
+                        onComplete: function(transport){
+                            result = transport.responseText;
+                            location.reload();
+                            //alert(result);
+                        }
+                    });
+                    break;
+            }
+
+//            alert(conceptName);
+//        var optionSelected = jQuery("option:selected",this);
+//        var valueSelected = jQuery(this.val);
+//        console.log(valueSelected);
+//        alert(optionSelected);
+
+    }
+
+
+    function scanned(obj,act){
+        //alert(act);
+        //var product_id_nam = $(this).attr('pro_id');
+        //alert(product_id_nam+"id la");
+        ajaxLoadBarcodeImage(obj,act);
+        // obj.checked = false;
+    }
+
+    function rmaShowOrderProducts(){
+        var url = '<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/rma_ajax/checkReturnOrderBulk') ?>';
+        new Ajax.Request(url, {
+            method: 'post',
+            parameters: $('frmOrder').serialize(true),
+            onComplete: function(transport) {
+                var data = transport.responseText.evalJSON();
+                if(!data.error){
+                    if (!data.valid_duration || data.valid_duration=="false"){
+                        openMessagePopup('The order is invalid for RMA duration!');
+                    }
+                    $('order-id').value = '';
+                    $('order-id').focus();
+                    //$('order-id').writeAttribute('readonly', 'readonly');
+                   // $('product-id').value = '';
+                  //  $('barcode-view').innerHTML = '';
+
+                  //  $('product-id').focus();
+                    enableButton('barcode-button-resetall');
+                }
+                else{
+                    $('order-id').value = '';
+                    disableButton('barcode-button-return');
+                    $('order-id').focus();
+
+                    //show error
+                    $('barcode-li-message').className = "error-msg";
+                    $('barcodeMessageContent').innerHTML = data.message;
+                    $('barcodeMessage').show();
+                    Element.hide.delay(10, $('barcodeMessage'));
+                }
+                rmaReturnProductsGridJsObject.addVarToUrl('order_id', data.order_id);
+<!--                rmaReturnProductsGridJsObject.addVarToUrl('form_key', '--><?php //echo Mage::getSingleton('adminhtml/session')->getFormKey() ?><!--');-->
+                if (data.order_id)
+                    rmaReturnProductsGridJsObject.doFilter();
+            }
+        });
+    }
+
+    function ajaxLoadBarcodeImage(pro_id,act){
+        var reloadurl = '<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/rma_ajax/loadreturnbarcodeimage') ?>';
+        new Ajax.Request(reloadurl, {
+            method: 'post',
+            parameters: $('frmOrder').serialize()+'&product_id_nam='+pro_id,
+            onComplete: function(transport) {
+                var data = transport.responseText.evalJSON();
+                if(data.error != ''){
+                    $('barcode-view').innerHTML = data.error;
+                }
+                else{
+                    if(act==1 || act==3){
+                        $('barcode-view').innerHTML = '<img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) ?>barcode/'+data.image_name+'_<?php echo Mage::getStoreConfig('barcode/general/symbology');?>_bc.png?<?php echo time();?>"  alt="" style="vertical-align:middle;" />';
+                        if(data.product_in_order){
+                            $('barcode-view').innerHTML += '<img src="<?php echo $this->getSkinUrl('sm/images/barcode_success.gif') ?>" width="16px" height="16px" alt="OK" />';
+                            var qty_returned = $('qty-returned-'+data.product_id).innerHTML*1;
+                            var qty_scanned = $('qty-scanned-'+data.product_id).innerHTML*1;
+                            var qty_shipped = $('qty-shipped-'+data.product_id).innerHTML*1;
+                            if((qty_scanned+qty_returned) < qty_shipped){
+                                $('qty-scanned-'+data.product_id).innerHTML = $('qty-scanned-'+data.product_id).innerHTML*1+1;
+                                $('qty-scanned-hidden-'+data.product_id).value = $('qty-scanned-hidden-'+data.product_id).value*1+1;
+                                if(($('qty-scanned-'+data.product_id).innerHTML*1+$('qty-returned-'+data.product_id).innerHTML*1) == $('qty-shipped-'+data.product_id).innerHTML*1){
+                                    $('qty-valid-'+data.product_id).innerHTML = '<img src="<?php echo $this->getSkinUrl('images/ico_success.gif') ?>" width="16px" height="16px" alt="Valid" />';
+                                }
+
+                                enableButton('barcode-button-return');
+                            }
+                            else{
+                                $('barcode-li-message').className = "error-msg";
+                                $('barcodeMessageContent').innerHTML = 'Out of Qty Shipped';
+                                $('barcodeMessage').show();
+
+                                Element.hide.delay(10, $('barcodeMessage'));
+                            }
+                        }
+                        else{
+                            $('barcode-view').innerHTML += '<img src="<?php echo $this->getSkinUrl('sm/images/barcode_error.gif') ?>" width="16px" height="16px" alt="ERROR" />';
+                        }
+                    }
+                    if(act==0){
+                        $('barcode-view').innerHTML = '<img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) ?>barcode/'+data.image_name+'_<?php echo Mage::getStoreConfig('barcode/general/symbology');?>_bc.png?<?php echo time();?>"  alt="" style="vertical-align:middle;" />';
+                        if(data.product_in_order){
+                            $('barcode-view').innerHTML += '<img src="<?php echo $this->getSkinUrl('sm/images/barcode_success.gif') ?>" width="16px" height="16px" alt="OK" />';
+                            var qty_returned = $('qty-returned-'+data.product_id).innerHTML*1;
+                            var qty_scanned = $('qty-scanned-'+data.product_id).innerHTML*1;
+                            var qty_shipped = $('qty-shipped-'+data.product_id).innerHTML*1;
+                            if(qty_scanned >0 ){
+                                $('qty-scanned-'+data.product_id).innerHTML = $('qty-scanned-'+data.product_id).innerHTML*1-1;
+                                $('qty-scanned-hidden-'+data.product_id).value = $('qty-scanned-hidden-'+data.product_id).value*1-1;
+                                if(($('qty-scanned-'+data.product_id).innerHTML*1+$('qty-returned-'+data.product_id).innerHTML*1) == $('qty-shipped-'+data.product_id).innerHTML*1){
+                                    $('qty-valid-'+data.product_id).innerHTML = '<img src="<?php echo $this->getSkinUrl('images/ico_success.gif') ?>" width="16px" height="16px" alt="Valid" />';
+                                }
+                                else{
+                                    $('qty-valid-'+data.product_id).innerHTML="";
+                                }
+
+                                enableButton('barcode-button-return');
+                            }
+                            else{
+                                $('barcode-li-message').className = "error-msg";
+                                $('barcodeMessageContent').innerHTML = 'Qty Scanned is 0';
+                                $('barcodeMessage').show();
+
+                                Element.hide.delay(10, $('barcodeMessage'));
+                            }
+                        }
+                        else{
+                            $('barcode-view').innerHTML += '<img src="<?php echo $this->getSkinUrl('sm/images/barcode_error.gif') ?>" width="16px" height="16px" alt="ERROR" />';
+                        }
+                    }
+                    if(act==2){
+                        $('barcode-view').innerHTML = '<img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) ?>barcode/'+data.image_name+'_<?php echo Mage::getStoreConfig('barcode/general/symbology');?>_bc.png?<?php echo time();?>"  alt="" style="vertical-align:middle;" />';
+                        if(data.product_in_order){
+                            $('barcode-view').innerHTML += '<img src="<?php echo $this->getSkinUrl('sm/images/barcode_success.gif') ?>" width="16px" height="16px" alt="OK" />';
+                            var qty_returned = $('qty-returned-'+data.product_id).innerHTML*1;
+                            var qty_scanned = $('qty-scanned-'+data.product_id).innerHTML*1;
+                            var qty_shipped = $('qty-shipped-'+data.product_id).innerHTML*1;
+                            var qty_ordered = $('qty-ordered-'+data.product_id).innerHTML*1;
+                            if(qty_scanned != qty_shipped){
+                                $('qty-scanned-'+data.product_id).innerHTML = qty_ordered;
+                                $('qty-scanned-hidden-'+data.product_id).value = qty_ordered;
+                                if(($('qty-scanned-'+data.product_id).innerHTML*1+$('qty-returned-'+data.product_id).innerHTML*1) == $('qty-shipped-'+data.product_id).innerHTML*1){
+                                    $('qty-valid-'+data.product_id).innerHTML = '<img src="<?php echo $this->getSkinUrl('images/ico_success.gif') ?>" width="16px" height="16px" alt="Valid" />';
+                                }
+                                else{
+                                    $('qty-valid-'+data.product_id).innerHTML="";
+                                }
+
+                                enableButton('barcode-button-return');
+                            }
+                            else{
+                                $('barcode-li-message').className = "error-msg";
+                                $('barcodeMessageContent').innerHTML = 'Qty Scanned is full';
+                                $('barcodeMessage').show();
+
+                                Element.hide.delay(10, $('barcodeMessage'));
+                            }
+                        }
+                        else{
+                            $('barcode-view').innerHTML += '<img src="<?php echo $this->getSkinUrl('sm/images/barcode_error.gif') ?>" width="16px" height="16px" alt="ERROR" />';
+                        }
+                    }
+
+                }
+
+                // reset product-id
+                $('product-id').value='';
+                $('product-id').focus();
+            }
+        });
+
+    }
+
+    function ajaxSaveOrder(obj, act){
+        if(obj.className != "scalable task"){
+            return false;
+        }
+        $('save-action').value = act;
+        var url = '<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/rma_ajax/save') ?>';
+        new Ajax.Request(url, {
+            method: 'post',
+            parameters: $('frmOrder').serialize(true),
+            onComplete: function(transport){
+                var data = transport.responseText.evalJSON();
+                if(data.error){
+                    $('barcode-li-message').className = "error-msg";
+                }
+                else{
+                    $('barcode-li-message').className = "success-msg";
+                    resetAll();
+                }
+                $('barcodeMessageContent').innerHTML = data.message;
+                $('barcodeMessage').show();
+
+                Element.hide.delay(10, $('barcodeMessage'));
+            }
+        });
+    }
+
+    function manualResetAll(obj){
+
+       // if(obj.className != "scalable task"){
+       //     return false;
+       // }
+       // else{
+            resetAll();
+       // }
+    }
+
+    function resetAll(){
+        $('frmOrder').reset();
+        $('order-id').writeAttribute('readonly', false);
+        $('order-id').focus();
+        $('barcode-view').innerHTML = '';
+        resetProductsGrid();
+        disableButton('barcode-button-return');
+        disableButton('barcode-button-partial');
+        disableButton('barcode-button-hold');
+        disableButton('barcode-button-backorder');
+        disableButton('barcode-button-resetall');
+    }
+
+    function disableButton(id){
+        if($(id))
+            $(id).className = "scalable inactive";
+        return;
+    }
+
+    function enableButton(id){
+        if($(id))
+            $(id).className = "scalable task";
+        return;
+    }
+
+    function resetProductsGrid(){
+
+        var url = '<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/rma_ajax/resetAllBulk') ?>';
+        new Ajax.Request(url, {
+            method: 'post',
+            parameters: $('frmOrder').serialize(),
+            onComplete: function(transport) {
+                location.reload();
+            }
+        });
+        rmaReturnProductsGridJsObject.addVarToUrl('order_id', 0);
+<!--        rmaReturnProductsGridJsObject.addVarToUrl('form_key', '--><?php //echo Mage::getSingleton('adminhtml/session')->getFormKey() ?><!--');-->
+        rmaReturnProductsGridJsObject.doFilter();
+//
+
+    }
+
+    </script>
+    <div id="message-popup-window-mask" style="display:none;"></div>
+    <div id="message-popup-window" class="message-popup">
+        <div class="message-popup-head">
+            <a href="#" onclick="closeMessagePopup(); return false;" title="Close"><span>Close</span></a>
+            <h2>SmartOSC Barcode/RMA</h2>
+        </div>
+        <div class="message-popup-content">
+            <div class="message">
+                <span class="message-icon message-notice" style="background-image:url(http://widgets.magentocommerce.com/1.6.1.0/SEVERITY_NOTICE.gif);">notice</span>
+                <p class="message-text">This order has exceeded the <strong><?php echo Mage::getStoreConfig('barcode/rma/valid_duration')?> days</strong> return period. You can still create an RMA as an admin.</p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        //<![CDATA[
+        var messagePopupClosed = false;
+        function openMessagePopup() {
+            var height = $('html-body').getHeight();
+            $('message-popup-window-mask').setStyle({'height':height+'px'});
+            toggleSelectsUnderBlock($('message-popup-window-mask'), false);
+            Element.show('message-popup-window-mask');
+            $('message-popup-window').addClassName('show');
+        }
+
+        function closeMessagePopup() {
+            toggleSelectsUnderBlock($('message-popup-window-mask'), true);
+            Element.hide('message-popup-window-mask');
+            $('message-popup-window').removeClassName('show');
+            messagePopupClosed = true;
+        }
+
+        //    Event.observe(window, 'keyup', function(evt) {
+        //        if(messagePopupClosed) return;
+        //        var code;
+        //        if (evt.keyCode) code = evt.keyCode;
+        //        else if (evt.which) code = evt.which;
+        //        if (code == Event.KEY_ESC) {
+        //            closeMessagePopup();
+        //        }
+        //    });
+        //]]>
+    </script>
+<?php

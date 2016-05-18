@@ -1,0 +1,32 @@
+<?php
+/**
+ * SmartOSC Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * 
+ * @category   SM
+ * @package    SM_Barcode
+ * @version    2.7
+ * @author     truongnq@smartosc.com
+ * @copyright  Copyright (c) 2010-2011 SmartOSC Co. (http://www.smartosc.com)
+ */
+ ?>
+<div class="content-header">
+<table cellspacing="0">
+    <tr>
+        <td style="width:50%;"><h3 class="icon-head head-products"><?php echo Mage::helper('catalog')->__('Products List') ?></h3></td>
+        <td class="a-right">
+            <?php //echo $this->getButtonsHtml() ?>
+        </td>
+    </tr>
+</table>
+</div>
+<div>
+    <form id="frmBarcodeGrid" method="post" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/barcode_print/multi"); ?>">
+        <input type="hidden" name="form_key" value="<?php echo $this->getFormKey() ?>" />
+    <?php echo $this->getBarcodeGridHtml() ?>
+    </form>
+</div>

@@ -1,0 +1,17 @@
+class SM_Barcode_Controller_Adminhtml_Action extends Mage_Adminhtml_Controller_Action {
+
+    protected $_validated = false;
+
+    public function preDispatch() {
+        parent::preDispatch();        
+        if (!Mage::helper('barcode/license')->checkLicense(SM_Barcode_Helper_Abstract::PRODUCT, Mage::getStoreConfig('barcode/general/key')) || !Mage::helper("barcode")->isEnable()) {
+            return $this->_redirect("adminhtml/system_config/edit/section/barcode");
+        } $this->_validated = true;
+    }
+
+    protected function _isAllowed()
+    {
+        return true;
+    }
+
+}

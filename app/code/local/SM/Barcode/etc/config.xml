@@ -1,0 +1,370 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <SM_Barcode>
+            <version>0.2.7</version>
+        </SM_Barcode>
+    </modules>
+    <global>
+        <blocks>
+            <barcode>
+                <class>SM_Barcode_Block</class>
+            </barcode>
+            <adminhtml>
+                <rewrite>
+                    <catalog_product_grid>SM_Barcode_Block_Adminhtml_Catalog_Product_Grid</catalog_product_grid>
+                    <sales_order_grid>SM_Barcode_Block_Adminhtml_Sales_Order_Grid</sales_order_grid>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+        <helpers>
+            <barcode>
+                <class>SM_Barcode_Helper</class>
+            </barcode>
+        </helpers>
+        <models>
+            <barcode>
+                <class>SM_Barcode_Model</class>
+            </barcode>
+            <sales>
+                <rewrite>
+                    <!--<order_pdf_invoice>SM_Barcode_Model_Order_Pdf_Invoice</order_pdf_invoice>-->
+                    <order_pdf_items_invoice_default>SM_Barcode_Model_Order_Pdf_Items_Invoice_Default</order_pdf_items_invoice_default>
+                    <!--<order_pdf_shipment>SM_Barcode_Model_Order_Pdf_Shipment</order_pdf_shipment>-->
+                    <order_pdf_product>SM_Barcode_Model_Order_Pdf_Product</order_pdf_product>
+                </rewrite>
+            </sales>
+        </models>
+        <resources>
+            <barcode_setup>
+                <setup>
+                    <module>SM_Barcode</module>
+                    <class>Mage_Catalog_Model_Resource_Eav_Mysql4_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </barcode_setup>
+            <barcode_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </barcode_write>
+            <barcode_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </barcode_read>
+        </resources>
+        <!--Support barcode in multiple warehouse extension -->
+        <!--global/warehouse_helpers/barcode-->
+        <warehouse_helpers>
+            <barcode>
+                <sm_barcode>
+                    <helper>barcode/product_barcode</helper>
+                </sm_barcode>
+            </barcode>
+        </warehouse_helpers>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <barcode before="Mage_Adminhtml">SM_Barcode_Adminhtml</barcode>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>        
+        <layout>
+            <updates>
+                <barcode>
+                    <file>sm/barcode.xml</file>
+                </barcode>
+            </updates>
+        </layout>
+    </admin>
+    <adminhtml>
+        <menu>
+
+            <catalog>
+                <children>
+                    <printlabels>
+                        <title>Print Barcode Labels</title>
+                        <sort_order>1</sort_order>
+                        <action>adminhtml/barcode_label</action>
+                    </printlabels>
+                </children>
+            </catalog>
+
+            <smartosc>
+                <title>SmartOSC</title>
+                <sort_order>72</sort_order>
+                <children>
+                    <barcode>
+                        <title>XBarcode</title>
+                        <sort_order>0</sort_order>            
+                        <action>adminhtml/barcode_order</action>
+                        <children>
+
+                            <printlabels>
+                                <title>Print Barcode Labels</title>
+                                <sort_order>1</sort_order>
+                                <action>adminhtml/barcode_label</action>
+                            </printlabels>
+
+                            <manage>
+                                <title>Manage Order</title>
+                                <sort_order>2</sort_order>
+                                <action>adminhtml/barcode_order</action>
+                            </manage>
+
+                            <bulk>
+                                <title>Bulk - Manage order</title>
+                                <sort_order>3</sort_order>
+                                <action>adminhtml/rma_bulk</action>
+                            </bulk>
+
+                            <!--<stock>-->
+                                <!--<title>Manage Stock</title>-->
+                                <!--<sort_order>3</sort_order>-->
+                                <!--<action>adminhtml/barcode_stock</action>-->
+                            <!--</stock>-->
+
+                            <countinventory>
+                                <title>Count Inventory</title>
+                                <sort_order>4</sort_order>
+                                <action>adminhtml/barcode_countinventory/index</action>
+                            </countinventory>`
+                        </children>
+                    </barcode>
+
+                    <config>
+                        <title>Settings</title>
+                        <sort_order>1</sort_order>
+                        <action>adminhtml/system_config/edit/section/barcode</action>
+                    </config>                    
+                </children>
+            </smartosc>
+        </menu>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <catalog>
+                            <children>
+                                <printlabels>
+                                    <title>Print Barcode Labels</title>
+                                    <sort_order>1</sort_order>
+                                    <action>adminhtml/barcode_label</action>
+                                </printlabels>
+                            </children>
+                        </catalog>
+                        <smartosc>
+                            <title>SmartOSC</title>
+                            <sort_order>72</sort_order>
+                            <children>
+                                <barcode>
+                                    <title>XBarcode</title>
+                                    <sort_order>0</sort_order>
+                                    <action>adminhtml/barcode_order</action>
+                                    <children>
+
+                                        <printlabels>
+                                            <title>Print Barcode Labels</title>
+                                            <sort_order>0</sort_order>
+                                            <action>adminhtml/barcode_label</action>
+                                        </printlabels>
+
+                                        <manage>
+                                            <title>Manage Order</title>
+                                            <sort_order>1</sort_order>
+                                            <action>adminhtml/barcode_order</action>
+                                        </manage>
+
+                                        <bulk>
+                                            <title>Bulk - Manage order</title>
+                                            <sort_order>2</sort_order>
+                                            <action>adminhtml/rma_bulk</action>
+                                        </bulk>
+                                        <!--<stock>-->
+                                            <!--<title>Manage Stock</title>-->
+                                            <!--<sort_order>0</sort_order>-->
+                                            <!--<action>adminhtml/barcode_stock</action>-->
+                                        <!--</stock>-->
+
+                                        <countinventory>
+                                            <title>Count Inventory</title>
+                                            <sort_order>3</sort_order>
+                                            <action>adminhtml/barcode_countinventory/index</action>
+                                        </countinventory>
+                                    </children>
+                                </barcode>
+                                <config>
+                                    <title>Settings</title>
+                                    <sort_order>1</sort_order>
+                                    <action>adminhtml/system_config/edit/section/barcode</action>
+                                </config>
+                            </children>
+                        </smartosc>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <barcode>
+                                            <title>Barcode/RMA Module Option</title>
+                                        </barcode>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <layout>
+            <updates>
+                <barcode>
+                    <file>sm/barcode.xml</file>
+                </barcode>
+            </updates>
+        </layout>        
+        <events>
+            <admin_system_config_changed_section_barcode>
+                <observers>
+                    <sm_barcode_init_service>
+                        <type>singleton</type>
+                        <class>barcode/observer</class>
+                        <method>refreshStatus</method>
+                    </sm_barcode_init_service>
+
+                    <generate_barcode_fun>
+                        <type>singleton</type>
+                        <class>barcode/observer</class>
+                        <method>generateBarcode</method>
+                    </generate_barcode_fun>
+                    <generate_barcode_fun>
+                        <type>singleton</type>
+                        <class>barcode/observer</class>
+                        <method>saveModifiedDate</method>
+                    </generate_barcode_fun>
+                </observers>
+            </admin_system_config_changed_section_barcode>
+            <catalog_product_save_before>
+                <observers>
+                    <generate_barcode_veryfun>
+                        <type>singleton</type>
+                        <class>barcode/observer</class>
+                        <method>generateBarcodeForSingleProduct</method>
+                    </generate_barcode_veryfun>
+                </observers>
+            </catalog_product_save_before>
+
+            <catalog_product_save_after>
+                <observers>
+                    <generate_barcode_veryfun>
+                        <type>singleton</type>
+                        <class>barcode/observer</class>
+                        <method>catalogProductSaveAfter</method>
+                    </generate_barcode_veryfun>
+                </observers>
+            </catalog_product_save_after>
+
+            <catalog_model_product_duplicate>
+                <observers>
+                    <barcode_duplicate_product>
+                        <type>singleton</type>
+                        <class>barcode/observer</class>
+                        <method>catalogModelProductDuplicate</method>
+                    </barcode_duplicate_product>
+                </observers>
+            </catalog_model_product_duplicate>
+
+            <controller_action_predispatch_adminhtml_catalog_product_save>
+                <observers>
+                    <smvendors>
+                        <type>singleton</type>
+                        <class>barcode/observer</class>
+                        <method>hookSaveProductBefore</method>
+                    </smvendors>
+                </observers>
+            </controller_action_predispatch_adminhtml_catalog_product_save>
+        </events>             
+    </adminhtml>
+
+    <default>
+        <barcode>
+            <general>
+                <symbology>4</symbology>
+                <generate_per_request>50</generate_per_request>
+            </general>
+            <product>
+                <conversion>1</conversion>
+                <barcode_value>0</barcode_value>
+                <orientation>P</orientation>
+                <width>55</width>
+                <height>22</height>
+                <barcode_width>25</barcode_width>
+                <barcode_height>10</barcode_height>
+                <rows_display>10</rows_display>
+                <columns_display>3</columns_display>
+                <page_margin_top>13</page_margin_top>
+                <page_margin_left>18</page_margin_left>
+                <label_margin_top>2</label_margin_top>
+                <label_margin_left>2</label_margin_left>
+                <label_padding_top>1</label_padding_top>
+                <label_padding_bottom>0</label_padding_bottom>
+                <label_padding_left>2</label_padding_left>
+                <label_padding_right>1</label_padding_right>
+                <preview_qty>30</preview_qty>
+                <include_logo>0</include_logo>
+                <barcode_width>25</barcode_width>
+                <barcode_height>10</barcode_height>
+                <barcode_settings>28,10</barcode_settings>
+                <name_visible>1</name_visible>
+                <product_name_settings>0,0,10</product_name_settings>
+                <product_name_leng>50</product_name_leng>
+                <price_visible>1</price_visible>
+                <price_settings>0,9,10</price_settings>
+                <slot1_visible>0</slot1_visible>
+                <slot2_visible>0</slot2_visible>
+                <slot3_visible>0</slot3_visible>
+                <slot4_visible>0</slot4_visible>
+                <font_size>9</font_size>
+            </product>
+
+            <order>
+
+                <invoice_enabled>1</invoice_enabled>
+                <invoice_position>1</invoice_position>
+                <packingslip_enabled>1</packingslip_enabled>
+                <packingslip_position>1</packingslip_position>
+                <include_logo>0</include_logo>
+                <barcode_width>50</barcode_width>
+                <barcode_height>25</barcode_height>
+                <enabled_leading_digits>1</enabled_leading_digits>
+            </order>
+
+            <rma>                
+                <valid_duration>30</valid_duration>
+                <stock_update>1</stock_update>
+                <handling_fee_default>0</handling_fee_default>
+            </rma>      
+        </barcode>
+    </default>
+</config>
+

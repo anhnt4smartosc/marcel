@@ -1,0 +1,25 @@
+<?php
+/**
+ * SmartOSC Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * 
+ * @category   SM
+ * @package    SM_Barcode
+ * @version    2.0
+ * @author     hoadx@smartosc.com
+ * @copyright  Copyright (c) 2010-2011 SmartOSC Co. (http://www.smartosc.com)
+ */
+ ?>
+<?php
+$products = Mage::getSingleton('core/session')->getPrintArr();
+if(count($products)>0):
+?>
+<script type="text/javascript">
+    var href="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/barcode_print/show/"); ?>";
+    window.open(href, "_blank","toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=760, height=600, left=20, top=20");
+</script>
+<?php endif; ?>

@@ -1,0 +1,50 @@
+<?php
+	$coll = $this->getCollection();
+	$coll->load();
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('My RMA Requests') ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php if( count($this->getOrders())): ?>
+<div class="page-head">
+    <button type="button" class="form-button button" onclick="window.location='<?php echo $this->getUrl('rma/customer/new') ?>'"><span><?php echo $this->__('New RMA Request') ?></span></button>
+</div>
+<?php endif; ?>
+<br />
+<?php if( $this->getCollection() && $this->count()): ?>
+        <table class="data-table box-table" id="my-orders-table" cellspacing="0">
+			<col width="80" />
+			<col width="80" />
+			<col width="100"/>
+			<col width="140" />
+			<col width="100" />
+			<thead>
+				<tr>
+					<th><?php echo $this->__('RMA #') ?></th>
+					<th><?php echo $this->__('Date') ?></th>
+					<th><?php echo $this->__('Order #') ?></th>
+					<th><?php echo $this->__('Status') ?></th>
+					<th><?php echo $this->__('Actions') ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($coll as $_hd): ?>
+				<tr onclick="window.location.href='<?php echo $this->getRequestLink($_hd->getId())?>'" class="ticket-row">
+					<td ><?php echo "#".$_hd->getId() ?></td>
+                    <td style="white-space:nowrap;"><?php echo $this->formatDate($_hd->getCreatedTime()) ?></td>
+					<td ><?php echo "#".$_hd->getOrderIncrementId() ?></td>
+					<td ><?php echo $_hd->getStatusLabel($_hd->getStatus()) ?></td>
+					<td class="last a-center"><a href="<?php echo $this->getRequestLink($_hd->getId()) ?>"><?php echo $this->__('View request') ?></a></td>
+				</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+        <script type="text/javascript">decorateTable('my-orders-table')</script>
+<?php else: ?>
+    <?php if($this->getNumberOrders()): ?>
+        <p><?php echo $this->__('You have submitted no requests') ?></p>
+    <?php else: ?>
+        <p>You have no <a href="<?php echo $this->getUrl('sales/order/history') ?>">orders</a> to create request.</p>
+    <?php endif; ?>
+<?php endif; ?>

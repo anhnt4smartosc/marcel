@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <adminhtml_barcode_order_grid>
+        <block type="barcode/adminhtml_order_grid" name="barcode_order_products" output="toHtml"></block>
+    </adminhtml_barcode_order_grid>
+
+    <adminhtml_barcode_stock_grid>
+        <block type="barcode/adminhtml_stock_grid" name="barcode_stock_products" output="toHtml"></block>
+    </adminhtml_barcode_stock_grid>
+
+    <adminhtml_barcode_print_oneproduct>
+        <reference name="root">
+            <action method="setTemplate"><template>sm/barcode/print_barcode.phtml</template></action>
+        </reference>
+    </adminhtml_barcode_print_oneproduct>
+
+    <adminhtml_barcode_product_index>
+        <reference name="head">
+            <action method="addJs"><script>sm/xbarcode/jquery.latest.js</script></action>
+        </reference>
+        <reference name="content">
+            <block type="barcode/adminhtml_barcode" name="barcode_barcode_grid" />
+        </reference>
+    </adminhtml_barcode_product_index>
+
+    <adminhtml_barcode_label_index>
+        <reference name="content">
+            <block type="barcode/adminhtml_label" name="barcode_label_grid" />
+        </reference>
+    </adminhtml_barcode_label_index>
+
+    <adminhtml_barcode_label_grid>
+        <!--<block type="barcode/adminhtml_label_grid" name="barcode_label_grid" output="toHtml"></block>-->
+        <reference name="content">
+            <block type="barcode/adminhtml_label" name="barcode_label_grid" />
+        </reference>
+    </adminhtml_barcode_label_grid>
+
+    <adminhtml_barcode_print_multi>
+        <reference name="content">
+            <block type="barcode/adminhtml_barcode" name="barcode_barcode_grid" />
+            <block type="core/template" name="show_print_form" template="sm/barcode/show_print_form.phtml" />
+        </reference>
+    </adminhtml_barcode_print_multi>
+    <adminhtml_barcode_print_show>
+        <reference name="root">
+            <action method="setTemplate"><template>sm/barcode/print_multi_barcode.phtml</template></action>
+        </reference>
+    </adminhtml_barcode_print_show>
+
+    <adminhtml_barcode_order_index>
+        <reference name="head">
+            <!--            <action method="addCss"><name>custom.css</name></action>-->
+            <action method="addCss"><name>sm/barcode.css</name></action>
+            <!--            <action method="addCss"><name>print.css</name><params>media="print"</params></action>-->
+        </reference>
+        <reference name="content">
+            <block type="barcode/adminhtml_order" name="barcode_adminhtml_order" />
+        </reference>
+    </adminhtml_barcode_order_index>
+
+    <adminhtml_barcode_stock_index>
+        <reference name="head">
+            <action method="addCss"><name>sm/barcode.css</name></action>
+        </reference>
+        <reference name="content">
+            <block type="barcode/adminhtml_stock" name="barcode_adminhtml_stock" />
+        </reference>
+    </adminhtml_barcode_stock_index>
+
+    <adminhtml_barcode_countinventory_index>
+        <reference name="head">
+            <action method="addCss"><name>sm/barcode.css</name></action>
+            <action method="addJs"><script>sm/xbarcode/jquery-1.10.2.min.js</script></action>
+            <action method="addJs"><name>sm/xbarcode/barcode.js</name></action>
+        </reference>
+
+        <reference name="content">
+            <block type="barcode/adminhtml_countinventory" name="barcode_adminhtml_countinventory"/>
+        </reference>
+    </adminhtml_barcode_countinventory_index>
+
+    <adminhtml_barcode_countinventory_grid>
+        <block type="barcode/adminhtml_countinventory_grid" name="barcode_countinventory_grid" output="toHtml"></block>
+    </adminhtml_barcode_countinventory_grid>
+</layout>

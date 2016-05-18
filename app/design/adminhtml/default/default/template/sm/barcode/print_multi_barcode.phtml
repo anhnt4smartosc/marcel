@@ -1,0 +1,187 @@
+<?php
+/**
+ * SmartOSC Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * 
+ * @category   SM
+ * @package    SM_Barcode
+ * @version    2.0
+ * @author     hoadx@smartosc.com
+ * @copyright  Copyright (c) 2010-2011 SmartOSC Co. (http://www.smartosc.com)
+ */
+?>
+<?php
+$url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS);
+$code = Mage::getStoreConfig('barcode/general/symbology');
+$dir = Mage::getBaseDir("media") . DS . "barcode" . DS;
+?>
+<html>
+<head>
+
+
+<?php
+if (Mage::getStoreConfig("barcode/product/bcodelayout") == "1" || Mage::getStoreConfig("barcode/product/bcodelayout") == "0" ) {
+ ?>
+
+<?php
+    $columns = intval(Mage::getStoreConfig("barcode/product/columns_display"));
+    if($columns == 0) $columns = 2;
+
+    $rows = intval(Mage::getStoreConfig("barcode/product/rows_display"));
+    if($rows == 0) $rows = 5;
+
+    $marginBottom = 3.2;
+    if ($rows >= 6) $marginBottom = 2.5;
+    if ($rows == 8) $marginBottom = 2;
+?>
+
+<?php
+    $maxWidth =  99 /$columns;
+    $maxHeight = 100 / $rows;
+
+    $width = 0.9*$maxWidth;
+    $height = $maxHeight;
+
+    ?>
+    <style type="text/css">
+
+    body {
+        margin: 0;
+    }
+
+        .pak {
+            float: left;
+            width: <?php echo intval(100 /$columns) - 1; ?>%;
+            height: <?php echo intval(100 / $rows) ; ?>%;
+            margin-right: 1%;
+            text-align: left;
+        }
+
+        .chrome .pak {
+            height: auto !important;
+        }
+
+        .pokemon
+        {
+            max-height:  100%;
+            max-width: 100%;
+            height: auto;
+            width: auto;
+        }
+        .pak img.wide {
+            max-width: 100%;
+            max-height: 100%;
+            height: auto;
+        }
+        .pak img.tall {
+            max-height: 100%;
+            max-width: 100%;
+            width: auto;
+        }​
+        #page_wrap {
+            width: 100%;
+            height:auto;
+        }
+        #page_content {
+            margin: 0;
+            float: left;
+        }
+    </style>
+    <script type="text/javascript" src="<?php echo $url.'jquery/jquery.latest.js'; ?>"></script>
+    <script type="text/javascript" charset="utf-8">
+        function css_browser_selector(u) {
+            var ua = u.toLowerCase(), is = function (t) {
+                return ua.indexOf(t) > -1
+            }, g = 'gecko', w = 'webkit', s = 'safari', o = 'opera', m = 'mobile', h = document.documentElement, b = [(!(/opera|webtv/i.test(ua)) && /msie\s(\d)/.test(ua)) ? ('ie ie' + RegExp.$1) : is('firefox/2') ? g + ' ff2' : is('firefox/3.5') ? g + ' ff3 ff3_5' : is('firefox/3.6') ? g + ' ff3 ff3_6' : is('firefox/3') ? g + ' ff3' : is('gecko/') ? g : is('opera') ? o + (/version\/(\d+)/.test(ua) ? ' ' + o + RegExp.$1 : (/opera(\s|\/)(\d+)/.test(ua) ? ' ' + o + RegExp.$2 : '')) : is('konqueror') ? 'konqueror' : is('blackberry') ? m + ' blackberry' : is('android') ? m + ' android' : is('chrome') ? w + ' chrome' : is('iron') ? w + ' iron' : is('applewebkit/') ? w + ' ' + s + (/version\/(\d+)/.test(ua) ? ' ' + s + RegExp.$1 : '') : is('mozilla/') ? g : '', is('j2me') ? m + ' j2me' : is('iphone') ? m + ' iphone' : is('ipod') ? m + ' ipod' : is('ipad') ? m + ' ipad' : is('mac') ? 'mac' : is('darwin') ? 'mac' : is('webtv') ? 'webtv' : is('win') ? 'win' + (is('windows nt 6.0') ? ' vista' : '') : is('freebsd') ? 'freebsd' : (is('x11') || is('linux')) ? 'linux' : '', 'js'];
+            c = b.join(' ');
+            h.className += ' ' + c;
+            return c;
+        }
+        ;
+        css_browser_selector(navigator.userAgent);
+    </script>
+</head>
+
+<body>
+    <div id="page_wrap">
+        <div id="page_content">
+            <?php
+
+
+            $products = Mage::getSingleton('core/session')->getPrintArr();
+            if(count($products) > 0){
+                foreach($products as $key=>$value){
+                    for($i=0; $i<$value; $i++){
+                        $image_path = $dir . $key.'_'.$code.'.png';
+                        $image_content = base64_encode(file_get_contents($image_path));
+                        $image_base64_encoded = '<img class="pokemon" src="data:image/png;base64,' . $image_content.'"  />';
+                        echo '<div class="pak">'.$image_base64_encoded.'</div>'; 
+
+                    }
+
+                }
+            }
+            Mage::getSingleton('core/session')->setPrintArr();
+            ?>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(window).load(function(){
+            $('.pak').find('img').each(function(){
+                var imgClass = (this.width/this.height > 1) ? 'wide' : 'tall';
+                $(this).addClass(imgClass);
+            })
+        })
+
+    </script>
+</body>
+
+<?php } elseif (Mage::getStoreConfig("barcode/product/bcodelayout") == "0") { ?>
+</head>
+<body>
+<div style="width: 750px; height:auto;">
+    <div style="margin: 0;float: left;">
+        <?php
+        $products = Mage::getSingleton('core/session')->getPrintArr();
+        if(count($products) > 0){
+            $count = 0;
+            foreach($products as $key=>$value){
+                for($i=0; $i<$value; $i++){
+                    
+                    $image_path = $dir . $key.'_'.$code.'.png';
+                    $image_content = base64_encode(file_get_contents($image_path));
+                    $image_base64_encoded = '<img class="pokemon" src="data:image/png;base64,' . $image_content.'" alt="'.$key.'"/>';
+
+                    if($count%2==0){
+                        echo '<div style="margin: 0 90px 56px 0; float: left;">'.$image_base64_encoded.'</div>';
+                    }
+                    else{
+
+                        echo '<div style="margin: 0 0 56px 0; float: left;">'.$image_base64_encoded.'</div>';
+                    }
+                    $count++;
+
+                    if ( ($count % 14 == 0) &&  ($count >= 14))
+                    {
+                        echo '<div style="height: 52px; width: 100%; float: left;">&nbsp;</div>';
+                    }
+                }
+
+            }
+        }
+        Mage::getSingleton('core/session')->setPrintArr();
+        ?>
+    </div>
+</div>
+
+<?php } ?>
+<script type="text/javascript">
+    window.print();
+</script>
+</body>
+</html>

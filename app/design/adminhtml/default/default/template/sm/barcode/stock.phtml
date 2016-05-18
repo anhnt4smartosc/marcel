@@ -1,0 +1,190 @@
+<?php
+/**
+ * SmartOSC Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * 
+ * @category   SM
+ * @package    SM_Barcode
+ * @version    2.0
+ * @author     hoadx@smartosc.com
+ * @copyright  Copyright (c) 2010-2011 SmartOSC Co. (http://www.smartosc.com)
+ */
+ ?>
+<div id="barcodeMessage" style="display:none;">
+    <ul class="messages">
+        <li id="barcode-li-message" class="success-msg">
+            <ul>
+                <li id="barcodeMessageContent" />
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="content-header">
+<table cellspacing="0">
+    <tr>
+        <td style="width:50%;"><h3 class="icon-head head-products"><?php echo Mage::helper('barcode')->__('Barcode - Stock Manager') ?></h3></td>
+        <td class="a-right">
+            <?php //echo $this->getButtonsHtml() ?>
+        </td>
+    </tr>
+</table>
+</div>
+<div class="barcode-order">
+    <form id="frmOrder" method="post" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/barcode_stock/save/"); ?>">
+    <div class="order-left">
+        <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+        <input type="hidden"  id="save-action" name="save_action" value="" />
+        <div class="order-left-orderid">Product # :<br />
+            <input type="text" id="order-id" name="product_barcode" class="input-text" style="text-align:center;" />
+        </div>
+<!--            cha hieu sao phai cho cai nay vao moi duoc-->
+        <input type="hidden" id="product-id" name="order_product_id" class="input-text" onfocus="javascript:this.value='';" style="text-align:center;" />
+
+        <div id="barcode-view" class="order-left-barcode-view"></div>
+        <div style="clear:both"></div>
+    </div>
+
+<!--    <form id="fmGrid" method="POST">-->
+    <div class="order-right">
+        <?php echo $this->getStockProductsGridHtml() ?>
+        <button id="barcode-button-complete" class="scalable inactive" type="button"  onclick="qty_keypressHandler(this);"><span><?php echo $this->__('Save') ?></span></button>
+    </div>
+<!--    </form>-->
+    </form>
+
+</div>
+<script type="text/javascript">
+$('order-id').focus();
+$('order-id').observe('keypress', order_keypressHandler);
+
+function order_keypressHandler(event){
+	if(event.keyCode == 13 && $('order-id').value.length >= 0){
+		barcodeShowOrderProducts();
+        $('order-id').value = ''
+        $('order-id').focus();
+	}
+}
+
+function hideFilter() {
+    $$('.filter').each(
+            function(e) {
+                e.setStyle({display:'none'});
+            }
+    )
+}
+
+
+
+function qty_keypressHandler(event) {
+        $('order-id').value = ''
+        var url = '<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/barcode_stock/updateStock') ?>';
+        new Ajax.Request(url, {
+            method: 'post',
+            parameters: $('frmOrder').serialize(true),
+            onComplete: function(transport) {
+                var data = transport.responseText.evalJSON();  
+                if(!data.error){
+                    // alert('Update quantity successful!')
+                }
+                else {
+                    alert('Update quantity fail, please try again!');
+                    DisableButton('barcode-button-complete');
+                }
+            },
+            onFailure: function() {
+                alert('Update quantity fail, please try again!');
+                $('loading_mask_loader').setStyle({display:'none'});
+                $('loading-mask').setStyle({display:'none'});
+                DisableButton('barcode-button-complete');
+            }
+        });
+
+//
+}
+
+function barcodeShowOrderProducts(){
+	var url = '<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/barcode_stock/checkStock') ?>';
+	new Ajax.Request(url, {
+		method: 'post',
+		parameters: $('frmOrder').serialize(true),
+		onComplete: function(transport) {
+			var data = transport.responseText.evalJSON();
+			if(!data.error){
+				$('product-id').value = '';
+				$('barcode-view').innerHTML = '';
+				
+				$('product-id').focus();
+                enableButton('barcode-button-complete');
+			}
+			else{
+				$('order-id').value = '';
+
+				$('order-id').focus();
+				
+				//show error
+				$('barcode-li-message').className = "error-msg";
+				$('barcodeMessageContent').innerHTML = data.message;
+				$('barcodeMessage').show();
+				Element.hide.delay(20, $('barcodeMessage'));
+			}
+//			barcodeOrderProductsGridJsObject.addVarToUrl('product_id', data.order_id);
+            if (data.product_id) {
+            barcodeStockProductsGridJsObject.addVarToUrl('product_id', data.product_id);
+            barcodeStockProductsGridJsObject.doFilter();
+            } else {
+                alert('Product barcode not found.');
+            }
+
+		}
+	});
+}
+
+
+
+
+
+function manualResetAll(obj){
+    if(obj.className != "scalable task"){
+        return false;
+    }
+    else{
+        resetAll();
+    }
+}
+
+function resetAll(){
+    $('frmOrder').reset();
+    $('order-id').writeAttribute('readonly', false);
+    $('order-id').focus();
+    $('barcode-view').innerHTML = '';
+    resetProductsGrid();
+    disableButton('barcode-button-complete');
+    disableButton('barcode-button-partial');
+    disableButton('barcode-button-hold');
+    disableButton('barcode-button-backorder');
+    disableButton('barcode-button-resetall');
+}
+
+function disableButton(id){
+    if($(id))
+        $(id).className = "scalable inactive";
+    return;
+}
+
+function enableButton(id){
+    if($(id))
+        $(id).className = "scalable task";
+    return;
+}
+
+function resetProductsGrid(){
+    barcodeOrderProductsGridJsObject.addVarToUrl('product_id', 0);
+    barcodeOrderProductsGridJsObject.addVarToUrl('form_key', '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>');
+    barcodeOrderProductsGridJsObject.doFilter();
+}
+
+</script>

@@ -1,0 +1,21 @@
+
+<div class="entry-edit">
+    <!--Payment Method-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-payment-method"><?php echo Mage::helper('rma')->__('Payment Totals') ?></h4>
+        </div>
+        <fieldset>
+            <table>
+            <?php foreach($this->getTotals() as $total): ?>
+                <tr>
+                    <td width="250" <?php if (isset($total['is_formated'])) echo 'style="font-weight :bold;"' ?>  ><?php echo $total['label'] ?></td>
+                    <td <?php if (isset($total['is_formated'])) echo 'style="font-weight :bold; color:#EB5E00"' ?>><?php echo Mage::app()->getStore()->formatPrice($total['value'])  ?></td>
+                </tr>
+            <?php endforeach; ?>
+        
+            
+        </table>
+        </fieldset>
+    </div>
+</div> 

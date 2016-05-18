@@ -1,0 +1,60 @@
+/*barcode*/
+div.barcode-order{
+}
+div.order-left {
+    border: 1px solid #CBD3D4;
+    float: left;
+    padding: 10px;
+    width: 280px;
+    font-size: 10px;
+}
+div.order-right{
+    float: right;
+    width: 65%;
+}
+div.order-left-orderid{float: left; width: 50%;}
+div.order-left-productid{float: left; width: 50%;}
+div.order-left-webcam{float: left; width: 90%; height: 200px; border: 1px solid #000000; margin: 10px 0;}
+div.order-left-barcode-view{float: left; width: 100%; height: 300px;}
+button.inactive {
+	background-color: #FFFFFF;
+	background-image: url("images/btn_back_bg.gif");
+	border-color: #CCCCCC #AAAAAA #AAAAAA #CCCCCC;
+	color: #555555;
+} 
+
+div.barcode-license{
+    background: none repeat scroll 0 0 #FDFAA4;
+    border-bottom: 1px solid #988753;
+    bottom: 0;
+    display: block;
+    opacity: 0.85;
+    position: fixed;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    z-index: 100;
+}
+
+div.barcode-license-content {
+    font-weight: bold;
+    margin: 30px auto;
+    width: 90%;
+}
+
+input.scalable {
+    -webkit-appearance: button;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ed6502 #a04300 #a04300 #ed6502;
+    padding: 1px 7px 2px 7px;
+    background: #ffac47 url(images/btn_bg.gif) repeat-x 0 100%;
+    color: #fff;
+    font: bold 12px arial, helvetica, sans-serif;
+    cursor: pointer;
+    text-align: center !important;
+    white-space: nowrap;
+}
+input.scalable:hover{
+    background: #f77c16 url(images/btn_over_bg.gif) repeat-x 0 0;
+}

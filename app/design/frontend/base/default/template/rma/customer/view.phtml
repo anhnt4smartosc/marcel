@@ -1,0 +1,104 @@
+<?php
+    $_rma = $this->getRMA();
+?> 
+<div class="page-head">
+    <h3><?php echo $this->__('Request Details') ?></h3>
+</div>
+<p></p>
+<div class="account-box ad-account-info customer-box">
+    <div class="inner-head">
+        <h5><?php echo $this->__('Request Information') ?></h5>
+    </div>
+    <div class="col2-set">
+        <div class="col-1">
+            <div class="col2-set-child">
+                <div class="col2-set-child-left"><?php echo $this->__('RMA ID') ?>:</div>
+                <div class="col2-set-child-right"><?php echo '#'.$_rma->getId() ?></div>
+            </div>
+            <div class="col2-set-child">
+                <div class="col2-set-child-left"><?php echo $this->__('Order ID') ?>:</div>
+                <div class="col2-set-child-right"><?php echo '#'.$_rma->getOrderIncrementId() ?></div>
+            </div>
+            <div class="col2-set-child">
+                <div class="col2-set-child-left"><?php echo $this->__('Status') ?>:</div>
+                <div class="col2-set-child-right"><?php echo $_rma->getStatusLabel($_rma->getStatus()) ?></div>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="col2-set-child">
+                <div class="col2-set-child-left"><?php echo $this->__('Request Type') ?>:</div>
+                <div class="col2-set-child-right"><?php echo $_rma->getTypeLabel($_rma->getRequestType()) ?></div>
+            </div>
+            <div class="col2-set-child">
+                <div class="col2-set-child-left"><?php echo $this->__('Package Opened') ?>:</div>
+                <div class="col2-set-child-right"><?php echo $_rma->getPackageStatus($_rma->getPackageOpened()) ?></div>
+            </div>
+            <div class="col2-set-child">
+                <div class="col2-set-child-left"><?php echo $this->__('Created Time') ?>:</div>
+                <div class="col2-set-child-right"><?php echo Mage::helper('core')->formatDate($_rma->getCreatedTime(), 'short', true); ?></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="account-box ad-account-info customer-box">
+    <div class="inner-head">
+        <h5><?php echo $this->__('RMA Items') ?></h5>
+    </div>
+    <div class="col2-set">
+        <table class="data-table box-table" id="my-orders-table" cellspacing="0">
+			<col width="80" />
+			<col width="80" />
+			<col width="200"/>
+			<col width="100" />
+            <col width="100"/>
+			<thead>
+				<tr>
+					<th><?php echo $this->__('Item #') ?></th>
+					<th><?php echo $this->__('Product #') ?></th>
+					<th><?php echo $this->__('Product Name') ?></th>
+					<th><?php echo $this->__('Qty Shipped') ?></th>
+                    <th><?php echo $this->__('Qty To Return') ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($_rma->getAllItems() as $_value): ?>
+                <?php $_item = Mage::getModel('sales/order_item')->load($_value->getItemId()) ?>
+                <?php
+                        $product = $_item;
+                        if ($_item->getParentItemId())
+                            $product = Mage::getModel('sales/order_item')->load($_item->getParentItemId()) 
+                        ?>
+				<tr class="ticket-row">
+					<td ><?php echo $_item->getId() ?></td>
+                    <td ><?php echo $_item->getProductId() ?></td>
+					<td ><?php echo $_item->getName() ?></td>
+					<td style="text-align:center;"><?php echo intval($product->getQtyShipped()) ?></td>
+                    <td style="text-align:center;"><?php echo intval($_value->getQtyToReturn()) ?></td>
+				</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+        <script type="text/javascript">decorateTable('my-orders-table')</script>
+    </div>
+</div>
+<div class="account-box ad-account-info customer-box">
+    <div class="inner-head">
+        <h5><?php echo $this->__('Comments') ?></h5>
+    </div>
+    <div class="col2-set">
+    <?php $_comments = $_rma->getAllComments(); ?>
+    <?php if($_comments->getSize()): ?>
+        <?php foreach($_rma->getAllComments() as $_comment): ?>
+        <p class="rma-comment">
+            <div class="rma-comment-title"><?php echo $_comment->getCustomerName() ?> <span class="separator">|</span><?php echo Mage::helper('core')->formatDate($_comment->getCreatedTime(), 'short', true); ?></div>
+            <div class="rma-comment-content"><?php echo $_comment->getContent() ?></div>
+        </p>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p class="rma-comment"><em><?php echo $this->__('No comments') ?></em></p>
+    <?php endif; ?>
+    </div>
+</div>
+<div class="button-set" style="width:98%;">
+    <a class="left" href="javascript:history.back();"><?php echo $this->__('« Back') ?></a>
+</div>

@@ -1,0 +1,12 @@
+<ul>
+<?php 
+foreach ($items as $item): ?>
+    <li<?php foreach($item as $k=>$v):?> <?php echo $k?>="<?php echo $v?>"<?php endforeach;?>>
+        <strong><?php echo $this->htmlEscape($item['name']) ?></strong><br/>
+        <span class="informal"><?php echo $item['sku'] ?></span>
+        <?php if(sizeof($items) == 1):?>
+        <script type="text/javascript">alert($$('li#<?php echo $item['id'] ?>').first());</script>
+        <?php endif;?>
+    </li>
+<?php endforeach ?>
+</ul>

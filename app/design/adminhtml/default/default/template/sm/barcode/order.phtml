@@ -1,0 +1,336 @@
+<?php
+/**
+ * SmartOSC Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * 
+ * @category   SM
+ * @package    SM_Barcode
+ * @version    2.0
+ * @author     hoadx@smartosc.com
+ * @copyright  Copyright (c) 2010-2011 SmartOSC Co. (http://www.smartosc.com)
+ */
+ ?>
+<div id="barcodeMessage" style="display:none;"><ul class="messages"><li id="barcode-li-message" class="success-msg"><ul><li id="barcodeMessageContent"></li></ul></li></ul></div>
+<div class="content-header">
+<table cellspacing="0">
+    <tr>
+        <td style="width:50%;"><h3 class="icon-head head-products"><?php echo Mage::helper('barcode')->__('Barcode - Order Manager') ?></h3></td>
+        <td class="a-right">
+            <?php //echo $this->getButtonsHtml() ?>
+        </td>
+    </tr>
+</table>
+</div>
+<div class="barcode-order">
+    <form id="frmOrder" method="post" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/barcode_ajax/save/"); ?>">
+    <div class="order-left">
+        <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+        <input type="hidden"  id="save-action" name="save_action" value="" />
+        <div class="order-left-orderid">Order Barcode #:<br />
+            <input type="text" id="order-id" name="order_id" class="input-text" style="text-align:center;" />
+        </div>
+        <div class="order-left-orderid">Product Barcode #:<br />
+            <input type="text" id="product-id" name="order_product_id" class="input-text" onfocus="javascript:this.value='';" style="text-align:center;" />
+        </div>        
+        <div id="barcode-view" class="order-left-barcode-view"></div>
+        <div style="clear:both"></div>
+    </div>
+    <div class="order-right"><?php echo $this->getOrderProductsGridHtml() ?>
+    </div>
+
+    <div style="text-align: right; width:100%; height: 40px; float: right;">
+        <span><input type="checkbox" name="shipment[send_email]" value="1" checked="checked"/>Email Copy of Shipment</span>
+        <button id="barcode-button-complete" class="scalable inactive" type="button"  onclick="ajaxSaveOrder(this,'complete');"><span><?php echo $this->__('Complete') ?></span></button>
+        <button id="barcode-button-partial" class="scalable inactive" type="button" onclick="ajaxSaveOrder(this, 'partial');"><span><?php echo $this->__('Partial') ?></span></button>
+        <button id="barcode-button-hold" class="scalable inactive" type="button" onclick="ajaxSaveOrder(this, 'hold');"><span><?php echo $this->__('Hold') ?></span></button>
+        <button id="barcode-button-resetall" class="scalable inactive" type="button"  onclick="manualResetAll(this);"><span><?php echo $this->__('Reset All') ?></span></button>
+        <button id="barcode-button-printbarcode" class="scalable inactive" type="button"  onclick="printBarcode(this);"><span><?php echo $this->__('Print Barcode') ?></span></button>
+    </div>
+    </form>
+</div>
+<script type="text/javascript">
+document.observe('dom:loaded', function() {
+    // initially hide all containers for tab content
+    var url = document.URL;
+    var kq = url.split("/");
+    var number = kq.length;
+    var kq1 = kq[6].split("=");
+    var result = kq1[1];
+    if(result.length >=3){
+        $('order-id').setValue(result);
+        barcodeShowOrderProducts();
+    }
+    else{
+        $('order-id').setValue("");
+        $('order-id').focus();
+    }
+});
+$('order-id').focus();
+$('order-id').observe('keypress', order_keypressHandler);
+$('product-id').observe('keypress', product_keypressHandler);
+
+function order_keypressHandler(event){
+	if(event.keyCode == 13 && $('order-id').value.length >= 3){
+		barcodeShowOrderProducts();
+	}
+    //XBAR-680 - tungdt2
+    localStorage.clear();
+}
+
+function product_keypressHandler(event){
+	if(event.keyCode == 13 && $('product-id').value.length >= 3){
+		ajaxLoadBarcodeImage();
+	}
+}
+
+function barcodeShowOrderProducts(){
+	var url = '<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/barcode_ajax/checkOrder') ?>';
+	new Ajax.Request(url, {
+		method: 'post',
+		parameters: $('frmOrder').serialize(true),
+		onComplete: function(transport) {
+			var data = transport.responseText.evalJSON();
+			if(!data.error){
+                $('order-id').writeAttribute('readonly', 'readonly');
+				$('product-id').value = '';
+				$('barcode-view').innerHTML = '';
+				
+				$('product-id').focus();
+				enableButton('barcode-button-backorder');
+				enableButton('barcode-button-hold');
+				enableButton('barcode-button-resetall');
+                enableButton('barcode-button-printbarcode');
+                $('barcodeMessage').hide();
+			}
+			else{
+				$('order-id').value = '';
+				disableButton('barcode-button-complete');
+				disableButton('barcode-button-hold');
+				disableButton('barcode-button-partial');
+				disableButton('barcode-button-backorder');
+                disableButton('barcode-button-printbarcode');
+				$('order-id').focus();
+				
+				//show error
+				$('barcode-li-message').className = "error-msg";
+				$('barcodeMessageContent').innerHTML = data.message;
+				$('barcodeMessage').show();
+//				Element.hide.delay(20, $('barcodeMessage'));
+			}
+			barcodeOrderProductsGridJsObject.addVarToUrl('order_id', data.order_id);			
+			barcodeOrderProductsGridJsObject.doFilter();
+		}
+	});
+}
+
+function ajaxLoadBarcodeImage(){
+    var reloadurl = '<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/barcode_ajax/loadbarcodeimage') ?>';
+    var code = '<?php echo Mage::getStoreConfig('barcode/general/symbology') ?>';
+    new Ajax.Request(reloadurl, {
+        method: 'post',
+        parameters: $('frmOrder').serialize(true),
+        onComplete: function(transport) {
+            var data = transport.responseText.evalJSON();
+            if(data.error != ''){
+                $('barcode-view').innerHTML = data.error;
+            }
+            else{
+                //$('barcode-view').innerHTML = '<br/><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) ?>barcode/'+data.image_name + '_' + code + '_bc.png?<?php echo time();?>" alt="barcode" style="vertical-align:middle;" />';
+                $('barcode-view').innerHTML = '<br/>'+data.image_name+'    ';
+                if(data.product_in_order){
+//                   var giatri = $$('.qty-scanned-'+data.product_id+':eq(1)')[0].innerHTML;
+//
+//                    console.log(giatri);
+                    var count = data.count;
+//                    console.log(count);
+                    if(count==1){
+                        $('barcode-view').innerHTML += '<img src="<?php echo $this->getSkinUrl('sm/images/barcode_success.gif') ?>" width="16px" height="16px" alt="OK" />';
+                        var qty_ordered = $('qty-ordered-'+data.product_id).innerHTML*1;
+                        var qty_scanned = $('qty-scanned-'+data.product_id).innerHTML*1;
+                        var qty_shipped = $('qty-shipped-'+data.product_id).innerHTML*1;
+                        if ((qty_scanned) < (qty_ordered - qty_shipped)) {
+//                            $('qty-scanned-'+data.product_id).innerHTML = $('qty-scanned-'+data.product_id).innerHTML*1+1;
+
+                            //XBAR-726 - tungdt2
+                            $('qty-scanned-'+data.product_id).innerHTML = $('qty-scanned-'+data.product_id).innerHTML*1+1;
+                            var quantity = $('qty-scanned-'+data.product_id).innerHTML;
+                            if(quantity!=0){
+                                localStorage.setItem('qty-scanned-'+data.product_id, quantity);
+                            }
+                            document.getElementById('qty-scanned-'+data.product_id).innerHTML = localStorage.getItem('qty-scanned-'+data.product_id);
+
+                            $('qty-ship-'+data.product_id).value = $('qty-ship-'+data.product_id).value*1+1;
+                            var qty_ordered = $('qty-ordered-'+data.product_id).innerHTML*1;
+                            var qty_scanned = $('qty-scanned-'+data.product_id).innerHTML*1;
+                            var qty_shipped = $('qty-shipped-'+data.product_id).innerHTML*1;
+                            if (qty_scanned  == (qty_ordered - qty_shipped)) {
+                                $('qty-valid-'+data.product_id).innerHTML = '<img src="<?php echo $this->getSkinUrl('sm/images/barcode_success.gif') ?>" width="16px" height="16px" alt="Valid" />';
+                            }
+                            enableButton('barcode-button-partial');
+                        }
+                        else{
+                            $('barcode-li-message').className = "error-msg";
+                            $('barcodeMessageContent').innerHTML = 'Out of Qty Ordered';
+                            $('barcodeMessage').show();
+                            Element.hide.delay(20, $('barcodeMessage'));
+                        }
+
+                        var isFull = true;
+                        data.product_ids.each(function(s){
+                                if(($('qty-scanned-'+s).innerHTML*1 + $('qty-shipped-'+s).innerHTML*1) != $('qty-ordered-'+s).innerHTML*1 ){
+                                    isFull = false;
+                                }
+                            }
+                        );
+                        if(isFull){
+                            enableButton('barcode-button-complete');
+                            disableButton('barcode-button-partial');
+                        }
+                        else{
+                            disableButton('barcode-button-complete');
+                        }
+                    }
+                    if(count>1){
+                        var i=0;
+                        $('barcode-view').innerHTML += '<img src="<?php echo $this->getSkinUrl('sm/images/barcode_success.gif') ?>" width="16px" height="16px" alt="OK" />';
+                        for(i=0;i<count;i++){
+                            var qty_ordered = $$('.qty-ordered-'+data.product_id+':eq('+i+')')[0].innerHTML*1;
+                            var qty_scanned = $$('.qty-scanned-'+data.product_id+':eq('+i+')')[0].innerHTML*1;
+                            var qty_shipped = $$('.qty-shipped-'+data.product_id+':eq('+i+')')[0].innerHTML*1;
+
+                            if(qty_scanned < qty_ordered){
+                                $$('.qty-scanned-'+data.product_id+':eq('+i+')')[0].innerHTML = $$('.qty-scanned-'+data.product_id+':eq('+i+')')[0].innerHTML*1+1;
+                                //$$('.qty-shipped-'+data.product_id+':eq('+i+')')[0].innerHTML = $$('.qty-shipped-'+data.product_id+':eq('+i+')')[0].innerHTML*1+1;
+                                if(($$('.qty-scanned-'+data.product_id+':eq('+i+')')[0].innerHTML*1)  == $$('.qty-ordered-'+data.product_id+':eq('+i+')')[0].innerHTML*1){
+                                    $$('.qty-valid-'+data.product_id+':eq('+i+')')[0].innerHTML = '<img src="<?php echo $this->getSkinUrl('sm/images/barcode_success.gif') ?>" width="16px" height="16px" alt="Valid" />';
+                                }
+                                enableButton('barcode-button-partial');
+                                break;
+                            }
+                            else{
+                                if(i==count-1){
+                                    $('barcode-li-message').className = "error-msg";
+                                    $('barcodeMessageContent').innerHTML = 'Out of Qty Ordered';
+                                    $('barcodeMessage').show();
+                                    Element.hide.delay(20, $('barcodeMessage'));
+                                }
+                                else
+                                continue;
+                            }
+
+                            var isFull = true;
+                            data.product_ids.each(function(s){
+                                    if(($('qty-scanned-'+s).innerHTML*1 + $('qty-shipped-'+s).innerHTML*1) != $('qty-ordered-'+s).innerHTML*1 ){
+                                        isFull = false;
+                                    }
+                                }
+                            );
+                            if(isFull){
+                                enableButton('barcode-button-complete');
+                                disableButton('barcode-button-partial');
+                            }
+                            else{
+                                disableButton('barcode-button-complete');
+                            }
+                        }
+
+                    }
+
+
+                }
+                else{
+                    $('barcode-view').innerHTML += '<img src="<?php echo $this->getSkinUrl('sm/images/barcode_error.gif') ?>" width="16px" height="16px" alt="ERROR" />';
+                }
+            }
+            
+            // reset product-id
+            $('product-id').value='';
+            $('product-id').focus();
+        }
+    });
+
+}
+
+function ajaxSaveOrder(obj, act){
+	if(obj.className != "scalable task"){
+		return false;
+	}
+	$('save-action').value = act;
+	var url = '<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/barcode_ajax/save') ?>';
+	new Ajax.Request(url, {
+		method: 'post',
+		parameters: $('frmOrder').serialize(true),
+        onComplete: function(transport){
+            var data = transport.responseText.evalJSON();
+            if(data.error){
+              $('barcode-li-message').className = "error-msg";
+            }
+            else{
+              $('barcode-li-message').className = "success-msg";
+              resetAll();
+            }
+            $('barcodeMessageContent').innerHTML = data.message;
+            $('barcodeMessage').show();
+
+            Element.hide.delay(20, $('barcodeMessage'));
+        }
+	});
+}
+
+function manualResetAll(obj){
+    if(obj.className != "scalable task"){
+        return false;
+    }
+    else{
+        resetAll();
+    }
+}
+
+function resetAll(){
+    $('frmOrder').reset();
+    $('order-id').writeAttribute('readonly', false);
+    $('order-id').focus();
+    $('barcode-view').innerHTML = '';
+    resetProductsGrid();
+    disableButton('barcode-button-complete');
+    disableButton('barcode-button-partial');
+    disableButton('barcode-button-hold');
+    disableButton('barcode-button-backorder');
+    disableButton('barcode-button-resetall');
+    disableButton('barcode-button-printbarcode');
+}
+
+function disableButton(id){
+    if($(id))
+        $(id).className = "scalable inactive";
+    return;
+}
+
+function enableButton(id){
+    if($(id))
+        $(id).className = "scalable task";
+    return;
+}
+
+function resetProductsGrid(){
+    barcodeOrderProductsGridJsObject.addVarToUrl('order_id', 0);
+    barcodeOrderProductsGridJsObject.addVarToUrl('form_key', '<?php echo Mage::getSingleton('core/session')->getFormKey() ?>');
+    barcodeOrderProductsGridJsObject.doFilter();
+}
+
+function printBarcode(id) {
+    if ($(id).hasClassName('inactive')) return;
+
+    var order_id = document.getElementById("order-id");
+    var url = '<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/barcode_print/printOrderBarcode'); ?>';
+    url = url + "?order_id=" + order_id.value;
+
+    window.open(url, "_blank");
+
+}
+
+</script>

@@ -1,0 +1,63 @@
+<?php
+/**
+ * SmartOSC Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ *
+ * @category   SM
+ * @package    SM_Barcode
+ * @version    2.7
+ * @author     truongnq@smartosc.com
+ * @copyright  Copyright (c) 2010-2011 SmartOSC Co. (http://www.smartosc.com)
+ */
+ ?>
+<div class="content-header">
+<table cellspacing="0">
+    <tr>
+        <td style="width:50%;"><h3 class="icon-head head-products"><?php echo Mage::helper('catalog')->__('Products List') ?></h3></td>
+        <td class="a-right">
+            <?php //echo $this->getButtonsHtml() ?>
+        </td>
+    </tr>
+</table>
+</div>
+<div>
+    <form id="frmBarcodeGrid" method="post" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/barcode_print/multi"); ?>">
+        <input type="hidden" name="form_key" value="<?php echo $this->getFormKey() ?>" />
+        <div style="width: 100%; text-align: right;"><button id="btn-barcode-print-all" class="scalable task" type="button"><span><?php echo $this->__('Print All Barcodes') ?></span></button></div>
+    <?php echo $this->getBarcodeGridHtml() ?>
+    </form>
+    <script>
+        //XBAR-450 huypq
+        jQuery('#btn-barcode-print-all').click(function () {
+            totalQty = 0;
+            jQuery('input[id^="xbar_product_"]').each(function(_index, _value) {
+                totalQty += parseInt(_value.value);
+            });
+            if (totalQty < 100 || !!window.confirm("Please note, that you are about to generate more than 100 labels in one go, this can give performance issues. We suggest making the labels in more than one file. Please note if you wish to continue.")) {
+                jQuery('#frmBarcodeGrid').submit();
+            }
+        });
+//        //XBAR-602
+//        jQuery('input[id^="xbar_product_"]').each(function(_index, _value) {
+//            jQuery(_value).keypress(function(e){
+//                if (isNaN(String.fromCharCode(e.charCode))) {
+//                    e.preventDefault(); //accept numbers only
+//                }
+//            });
+//        });
+
+        //XBAR-727 tungdt2
+        function isNumberKey(evt)
+        {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+
+            return true;
+        }
+    </script>
+</div>

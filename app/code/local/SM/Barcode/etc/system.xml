@@ -1,0 +1,1224 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <smartosc_extensions>
+            <label>SmartOSC Extensions</label>
+            <sort_order>2000</sort_order>
+        </smartosc_extensions>
+    </tabs>
+    <sections>
+        <barcode>
+            <label>Barcode/RMA Configuration</label>
+            <tab>smartosc_extensions</tab>
+            <sort_order>1020</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <expanded>1</expanded>
+
+            <groups>
+                <general translate="label">
+                    <label>General</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>00</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <comment>
+                        <![CDATA[
+                    <div class="box">
+                        <p>Please contact <a href="mailto:magento@smartosc.com">SmartOSC</a> for support or if you require further customisations.
+                        <em>Version: 3.1 Released on 24th October 2015.</em></p>
+                    </div>
+                    ]]>
+
+                    </comment>
+                    <fields>
+                        <date_modified translate="label">
+                            <label>Last change by</label>
+                            <frontend_type>label</frontend_type>
+                            <backend_model>barcode/adminhtml_system_config_backend_datemodified</backend_model>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Format day: mm/dd/yy</comment>
+                        </date_modified>
+                        <!--<last_save_setting translate="label">-->
+                            <!--<label>Last change by</label>-->
+                            <!--<frontend_type>label</frontend_type>-->
+                            <!--<backend_model>barcode/adminhtml_system_config_backend_lastSaveSetting</backend_model>-->
+                            <!--<sort_order>8</sort_order>-->
+                            <!--<show_in_default>1</show_in_default>-->
+                            <!--<show_in_website>0</show_in_website>-->
+                            <!--<show_in_store>1</show_in_store>-->
+                        <!--</last_save_setting>-->
+
+                        <enabled translate="label">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>00</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Toggle the module</comment>
+                        </enabled>
+
+
+
+                        <key translate="label">
+                            <label>License Key</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_class>required-entry</frontend_class>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enter your license code</comment>
+                        </key>
+                        <license_status translate="label">
+                            <label>License Status</label>
+                            <frontend_type>label</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment></comment>
+                        </license_status>
+
+                        <!-- <compability translate="label">
+                            <label>Compability Mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>barcode/system_config_source_version</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <comment>Select your Magento version</comment>
+                        </compability> -->
+
+                        <symbology translate="label">
+                            <label>Barcode Symbology</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>barcode/system_config_source_symbology</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Choose barcode symbology.</comment>
+                        </symbology>
+
+                        <input_size_unit translate="label">
+                            <label>Unit</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>barcode/system_config_source_unit</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </input_size_unit>
+
+                        <logo_image_file> <!-- Make up a field key -->
+                            <label>Logo image file</label>
+                            <frontend_type>image</frontend_type>
+                            <!-- <backend_model>adminhtml/system_config_backend_image</backend_model> -->
+                            <backend_model>barcode/system_config_source_uploadlogo</backend_model>
+                            <upload_dir config="system/filesystem/media" scope_info="1">barcode</upload_dir>
+                            <!-- would upload into media/uploaddir -->
+                            <base_url type="media" scope_info="1">barcode</base_url>
+                            <!-- same as previous line -->
+                            <sort_order>51</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[
+                        Currently only supports <span style="color:red; font-weight:bold;">JPG, PNG, GIF</span> format.<br />
+                        ]]></comment>
+                        </logo_image_file>
+
+                        <action_save_config_and_apply translate="label">
+                            <label>Save and apply</label>
+                            <frontend_model>barcode/adminhtml_system_config_form_field_general</frontend_model>
+                            <sort_order>55</sort_order>
+
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[
+                                        <span style="color:red;">Note</span>: When changing settings for Barcode Conversion or changing Barcode symbology it is necessary to regenerate new product barcodes.
+                                        ]]>
+                            </comment>
+                        </action_save_config_and_apply>
+
+                        <generate_per_request translate="label">
+                            <label>Generate per request</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_class>required-entry validate-number</frontend_class>
+                            <sort_order>56</sort_order>
+                            <validate>validate-greater-than-zero</validate>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </generate_per_request>
+                        <reset_default translate="label">
+                            <label>Reset default</label>
+                            <frontend_model>barcode/adminhtml_system_config_form_field_reset</frontend_model>
+                            <sort_order>57</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </reset_default>
+
+                    </fields>
+                </general>
+                <product translate="label">
+                    <label>Product Barcode</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>0</expanded>
+                    <frontend_class>complex</frontend_class>
+
+                    <fields>
+
+                        <heading_conversion translate="label">
+                            <label>Barcode Conversion</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_conversion>
+
+                        <conversion translate="label">
+                            <label>Barcode Conversion</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>barcode/system_config_source_conversion</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Toggle barcode conversion.</comment>
+                        </conversion>
+
+                        <barcode_value translate="label">
+                            <label>Barcode value</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>barcode/system_config_source_source</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Choose the attribute that contains the barcode value</comment>
+                            <depends>
+                                <conversion>0</conversion>
+                            </depends>
+                        </barcode_value>
+
+                        <barcode_field translate="label">
+                            <label>Generate Barcode Using</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>barcode/system_config_source_attribute</source_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Choose barcode source</comment>
+                            <depends>
+                                <conversion>1</conversion>
+                            </depends>
+                        </barcode_field>
+
+                        <barcode_source translate="label">
+                            <label>Custom attribute</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>barcode/system_config_source_source</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Choose barcode source</comment>
+                            <depends>
+                                <barcode_field>2</barcode_field>
+                                <conversion>1</conversion>
+                            </depends>
+                        </barcode_source>
+
+
+                        <heading_label_and_hangtab_layout translate="label">
+                            <label>Label and Hangtag Layout</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_label_and_hangtab_layout>
+
+                        <paper_size translate="label comment">
+                            <label>Paper size</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>barcode/system_config_source_pagesize</source_model>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Set paper size for printing. Default is A4</comment>
+                        </paper_size>
+
+                        <paper_width translate="label">
+                            <label>Paper Width</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>22</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-greater-than-zero</validate>
+                            <comment>Example: 100 (100mm)</comment>
+                            <depends>
+                                <paper_size>Custom</paper_size>
+                            </depends>
+                        </paper_width>
+
+                        <paper_height translate="label">
+                            <label>Paper Height</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>23</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-greater-than-zero</validate>
+                            <comment>Example: 50 (50mm)</comment>
+                            <depends>
+                                <paper_size>Custom</paper_size>
+                            </depends>
+                        </paper_height>
+
+                        <!--<bcodelayout translate="label">-->
+                        <!--<label>Barcode Print Layout</label>-->
+                        <!--<frontend_type>select</frontend_type>-->
+                        <!--<source_model>barcode/system_config_source_layout</source_model>-->
+                        <!--<sort_order>22</sort_order>-->
+                        <!--<show_in_default>1</show_in_default>-->
+                        <!--<show_in_website>1</show_in_website>-->
+                        <!--<show_in_store>1</show_in_store>-->
+                        <!--<comment>Toggle barcode Layout.</comment>-->
+                        <!--</bcodelayout>-->
+
+                        <orientation translate="label">
+                            <label>Orientation</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>barcode/system_config_source_orientation</source_model>
+                            <sort_order>24</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </orientation>
+
+                        <width translate="label">
+                            <label>Label Width</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                            <validate>validate-greater-than-zero</validate>
+                            <!--<depends>-->
+                            <!--<bcodelayout>0</bcodelayout>-->
+                            <!--</depends>-->
+                        </width>
+
+                        <height translate="label">
+                            <label>Label Height</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>26</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                            <validate>validate-greater-than-zero</validate>
+                            <!--<depends>-->
+                            <!--<bcodelayout>0</bcodelayout>-->
+                            <!--</depends>-->
+                        </height>
+
+                        <barcode_width translate="label">
+                            <label>Barcode Width</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>27</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Should be smaller than Label Width</comment>
+                            <validate>validate-greater-than-zero</validate>
+                            <!--<depends>-->
+                            <!--<bcodelayout>0</bcodelayout>-->
+                            <!--</depends>-->
+                        </barcode_width>
+
+                        <barcode_height translate="label">
+                            <label>Barcode Height</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Should be smaller than Label Height</comment>
+                            <validate>validate-greater-than-zero</validate>
+                            <!--<depends>-->
+                            <!--<bcodelayout>0</bcodelayout>-->
+                            <!--</depends>-->
+                        </barcode_height>
+
+                        <!-- <rows_display translate="label comment">
+                            <label>Rows display:</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-rows</validate>
+                            <sort_order>29</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-greater-than-zero</validate>
+                            <comment>Number of rows in print page, default is 5. Range from 1 to 8. </comment>
+                        </rows_display> -->
+
+                        <rows_display translate="label comment">
+                            <label>Rows display:</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-rows</validate>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-greater-than-zero</validate>
+                            <comment>Number of rows in print page, default is 5.</comment>
+                        </rows_display>
+
+                        <columns_display translate="label comment">
+                            <label>Columns display:</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-columns</validate>
+                            <sort_order>31</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-greater-than-zero</validate>
+                            <comment>Number of columns in print page, default is 5.</comment>
+                            <!-- <depends>
+                                <bcodelayout>1</bcodelayout>
+                            </depends> -->
+                        </columns_display>
+
+                        <page_margin_top translate="label comment">
+                            <label>Page margin top</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-columns</validate>
+                            <sort_order>32</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-zero-or-greater</validate>
+                            <comment>Default is 0. Note that most printers can not print to the edge of the page, and
+                                therefore often add an extra border to the printed page.
+                            </comment>
+                        </page_margin_top>
+
+                        <page_margin_left translate="label comment">
+                            <label>Page margin left</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-columns</validate>
+                            <sort_order>33</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-zero-or-greater</validate>
+                            <comment>Default is 0. Note that most printers can not print to the edge of the page, and
+                                therefore often add an extra border to the printed page.
+                            </comment>
+                        </page_margin_left>
+
+
+                        <label_margin_top translate="label comment">
+                            <label>Label margin top</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-columns</validate>
+                            <sort_order>34</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-zero-or-greater</validate>
+                            <comment>Default is 0</comment>
+                        </label_margin_top>
+
+
+                        <label_margin_left translate="label comment">
+                            <label>Label margin left</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-columns</validate>
+                            <sort_order>35</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-zero-or-greater</validate>
+                            <comment>Default is 0</comment>
+                        </label_margin_left>
+
+
+                        <label_padding_top translate="label comment">
+                            <label>Label padding top</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-columns</validate>
+                            <sort_order>36</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-zero-or-greater</validate>
+                            <comment>Default is 0</comment>
+                        </label_padding_top>
+
+                        <label_padding_bottom translate="label comment">
+                            <label>Label padding bottom</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-columns</validate>
+                            <sort_order>37</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-zero-or-greater</validate>
+                            <comment>Default is 0</comment>
+                        </label_padding_bottom>
+
+
+                        <label_padding_left translate="label comment">
+                            <label>Label padding left</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-columns</validate>
+                            <sort_order>38</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-zero-or-greater</validate>
+                            <comment>Default is 0</comment>
+                        </label_padding_left>
+
+                        <label_padding_right translate="label comment">
+                            <label>Label padding right</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-columns</validate>
+                            <sort_order>39</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-zero-or-greater</validate>
+                            <comment>Default is 0</comment>
+                        </label_padding_right>
+
+                        <heading_product_barcode_preview translate="label">
+                        <label>Preview Product Barcode</label>
+                        <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                        <sort_order>1000</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        </heading_product_barcode_preview>
+
+                        <preview_product_id translate="label comment">
+                            <label>Product ID</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-columns</validate>
+                            <sort_order>10001</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-zero-or-greater</validate>
+                        </preview_product_id>
+
+                        <preview_qty translate="label comment">
+                            <label>Quantity</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>validate-columns</validate>
+                            <sort_order>10002</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-zero-or-greater</validate>
+                        </preview_qty>
+
+
+                        <product_barcode_preview translate="label">
+                        <label></label>
+                        <frontend_type>text</frontend_type>
+                        <frontend_model>barcode/adminhtml_system_config_form_field_productpreview</frontend_model>
+                        <sort_order>10003</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <comment>Enter a Product ID, then click Preview. E.g: 166</comment>
+                        </product_barcode_preview>
+
+
+                        <heading_logo_configuration translate="label">
+                        <label>Logo configuration</label>
+                        <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                        <sort_order>130</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        </heading_logo_configuration>
+
+                        <include_logo translate="label">
+                        <label>Include logo</label>
+                        <frontend_type>select</frontend_type>
+                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                        <sort_order>131</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                        <comment>Show logo in barcode</comment>
+                        </include_logo>
+
+
+                        <logo_width translate="label">
+                            <label>Logo Width</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>134</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-greater-than-zero</validate>
+                            <comment></comment>
+                            <depends>
+                                <include_logo>1</include_logo>
+                            </depends>
+                        </logo_width>
+
+                        <logo_height translate="label">
+                            <label>Logo Height</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>135</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-greater-than-zero</validate>
+                            <comment></comment>
+                            <depends>
+                                <include_logo>1</include_logo>
+                            </depends>
+                        </logo_height>
+
+
+                        <logo_settings translate="label">
+                            <label>Logo position</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>136</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[
+                                <a href="#X" title="Horizontal position">X</a>,
+                                <a href="#Y" title="Vertical position">Y</a>,
+                                e.g: 0,20
+                                ]]>
+                            </comment>
+                            <depends>
+                                <include_logo>1</include_logo>
+                            </depends>
+                        </logo_settings>
+
+
+                        <heading_barcode translate="label">
+                            <label>Barcode</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_barcode>
+
+                        <barcode_width translate="label">
+                            <label>Barcode Width</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>210</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Should be smaller than Label Width</comment>
+                            <validate>validate-greater-than-zero</validate>
+                            <!--<depends>-->
+                            <!--<bcodelayout>0</bcodelayout>-->
+                            <!--</depends>-->
+                        </barcode_width>
+
+                        <barcode_height translate="label">
+                            <label>Barcode Height</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>220</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Should be smaller than Label Height</comment>
+                            <validate>validate-greater-than-zero</validate>
+                            <!--<depends>-->
+                            <!--<bcodelayout>0</bcodelayout>-->
+                            <!--</depends>-->
+                        </barcode_height>
+
+                        <barcode_settings translate="label">
+                            <label>Barcode Settings</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>X,Y; e.g: 2,20</comment>
+                        </barcode_settings>
+
+
+                        <heading_product_information translate="label">
+                            <label>Product information</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_product_information>
+
+                        <name_visible translate="label">
+                            <label>Show product name</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>310</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </name_visible>
+
+                        <product_name_settings translate="label">
+                            <label>Product name settings</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>311</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[
+                                <a href="#X" title="Horizontal position">X</a>,
+                                <a href="#Y" title="Vertical position">Y</a>,
+                                <a href="#FontSize" title="Font Size = 9">FontSize</a>,
+                                <a href="#FontStyle" title="Font Style = BIU ;  B (bold), I (Italic), U (Underline), S (Strike through), O (Overline) , BI (Bold and Italic), BIU (Bold, Italic and Underline); BIS ((Bold, Italic and Strike through))  ">FontStyle</a>,
+                                e.g: 0,5,9,BIUS
+                                ]]>
+                            </comment>
+                            <depends>
+                                <name_visible>1</name_visible>
+                            </depends>
+                        </product_name_settings>
+
+                        <product_name_leng translate="label">
+                            <label>Product name wrap</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>311</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>e.g: 50mm. Default is null, it means showing all.</comment>
+                            <depends>
+                                <name_visible>1</name_visible>
+                            </depends>
+                        </product_name_leng>
+
+
+                        <price_visible translate="label">
+                            <label>Show price</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>320</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </price_visible>
+
+                        <price_settings translate="label">
+                            <label>Price settings</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>321</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[                                 <a href="#X" title="Horizontal position">X</a>,                                 <a href="#Y" title="Vertical position">Y</a>,                                 <a href="#FontSize" title="Font Size = 9">FontSize</a>,                                 <a href="#FontStyle" title="Font Style = BIU ;  B (bold), I (Italic), U (Underline), S (Strike through), O (Overline) , BI (Bold and Italic), BIU (Bold, Italic and Underline); BIS ((Bold, Italic and Strike through))  ">FontStyle</a>,                                 e.g: 0,5,9,BIUS                                 ]]></comment>
+                            <depends>
+                                <price_visible>1</price_visible>
+                            </depends>
+                        </price_settings>
+
+
+                        <slot1_visible translate="label">
+                            <label>Additional information 1st :</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>330</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </slot1_visible>
+
+                        <slot1 translate="label">
+                            <label>Select an attribute:</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>barcode/system_config_source_allattribute</source_model>
+                            <sort_order>331</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                            <depends>
+                                <slot1_visible>1</slot1_visible>
+                            </depends>
+                        </slot1>
+
+
+                        <slot1_settings translate="label">
+                            <label>Settings</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>332</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[                                 <a href="#X" title="Horizontal position">X</a>,                                 <a href="#Y" title="Vertical position">Y</a>,                                 <a href="#FontSize" title="Font Size = 9">FontSize</a>,                                 <a href="#FontStyle" title="Font Style = BIU ;  B (bold), I (Italic), U (Underline), S (Strike through), O (Overline) , BI (Bold and Italic), BIU (Bold, Italic and Underline); BIS ((Bold, Italic and Strike through))  ">FontStyle</a>,                                 e.g: 0,5,9,BIUS                                 ]]></comment>
+                            <depends>
+                                <slot1_visible>1</slot1_visible>
+                            </depends>
+                        </slot1_settings>
+
+
+                        <slot2_visible translate="label">
+                            <label>Additional information 2nd :</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>340</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </slot2_visible>
+
+                        <slot2 translate="label">
+                            <label>Select an attribute:</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>barcode/system_config_source_allattribute</source_model>
+                            <sort_order>341</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                            <depends>
+                                <slot2_visible>1</slot2_visible>
+                            </depends>
+                        </slot2>
+
+
+                        <slot2_settings translate="label">
+                            <label>Settings</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>342</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[                                 <a href="#X" title="Horizontal position">X</a>,                                 <a href="#Y" title="Vertical position">Y</a>,                                 <a href="#FontSize" title="Font Size = 9">FontSize</a>,                                 <a href="#FontStyle" title="Font Style = BIU ;  B (bold), I (Italic), U (Underline), S (Strike through), O (Overline) , BI (Bold and Italic), BIU (Bold, Italic and Underline); BIS ((Bold, Italic and Strike through))  ">FontStyle</a>,                                 e.g: 0,5,9,BIUS                                 ]]></comment>
+                            <depends>
+                                <slot2_visible>1</slot2_visible>
+                            </depends>
+                        </slot2_settings>
+
+
+                        <slot3_visible translate="label">
+                            <label>Additional information 3th :</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>350</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </slot3_visible>
+
+                        <slot3 translate="label">
+                            <label>Select an attribute:</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>barcode/system_config_source_allattribute</source_model>
+                            <sort_order>351</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                            <depends>
+                                <slot3_visible>1</slot3_visible>
+                            </depends>
+                        </slot3>
+
+
+                        <slot3_settings translate="label">
+                            <label>Settings</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>352</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[                                 <a href="#X" title="Horizontal position">X</a>,                                 <a href="#Y" title="Vertical position">Y</a>,                                 <a href="#FontSize" title="Font Size = 9">FontSize</a>,                                 <a href="#FontStyle" title="Font Style = BIU ;  B (bold), I (Italic), U (Underline), S (Strike through), O (Overline) , BI (Bold and Italic), BIU (Bold, Italic and Underline); BIS ((Bold, Italic and Strike through))  ">FontStyle</a>,                                 e.g: 0,5,9,BIUS                                 ]]></comment>
+                            <depends>
+                                <slot3_visible>1</slot3_visible>
+                            </depends>
+                        </slot3_settings>
+
+                        <slot4_visible translate="label">
+                            <label>Additional information 4th :</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>360</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </slot4_visible>
+
+                        <slot4 translate="label">
+                            <label>Select an attribute:</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>barcode/system_config_source_allattribute</source_model>
+                            <sort_order>361</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                            <depends>
+                                <slot4_visible>1</slot4_visible>
+                            </depends>
+                        </slot4>
+
+
+                        <slot4_settings translate="label">
+                            <label>Settings</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>362</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[                                 <a href="#X" title="Horizontal position">X</a>,                                 <a href="#Y" title="Vertical position">Y</a>,                                 <a href="#FontSize" title="Font Size = 9">FontSize</a>,                                 <a href="#FontStyle" title="Font Style = BIU ;  B (bold), I (Italic), U (Underline), S (Strike through), O (Overline) , BI (Bold and Italic), BIU (Bold, Italic and Underline); BIS ((Bold, Italic and Strike through))  ">FontStyle</a>,                                 e.g: 0,5,9,BIUS                                 ]]></comment>
+                            <depends>
+                                <slot4_visible>1</slot4_visible>
+                            </depends>
+                        </slot4_settings>
+
+
+                        <heading_adjustment_product_information translate="label">
+                            <label>Font</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>400</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_adjustment_product_information>
+
+                        <!--<text_padding_top translate="label">-->
+                        <!--<label>Product Information[padding-top]</label>-->
+                        <!--<frontend_type>text</frontend_type>-->
+                        <!--<sort_order>310</sort_order>-->
+                        <!--<show_in_default>1</show_in_default>-->
+                        <!--<show_in_website>1</show_in_website>-->
+                        <!--<show_in_store>1</show_in_store>-->
+                        <!--<comment>The default is 100</comment>-->
+                        <!--</text_padding_top>-->
+
+                        <!--<text_padding_left translate="label">-->
+                        <!--<label>Product Information[padding-left]</label>-->
+                        <!--<frontend_type>text</frontend_type>-->
+                        <!--<sort_order>320</sort_order>-->
+                        <!--<show_in_default>1</show_in_default>-->
+                        <!--<show_in_website>1</show_in_website>-->
+                        <!--<show_in_store>1</show_in_store>-->
+                        <!--<comment>The default is 0</comment>-->
+                        <!--</text_padding_left>-->
+
+                        <use_font_for_text translate="label">
+                            <label>Font</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>barcode/system_config_source_fontlist</source_model>
+                            <sort_order>410</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </use_font_for_text>
+
+
+                        <font_size translate="label">
+                            <label>Font size</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>420</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>The default is 9</comment>
+                            <validate>validate-greater-than-zero</validate>
+                        </font_size>
+
+                        <!--<line_height translate="label">-->
+                        <!--<label>Line height</label>-->
+                        <!--<frontend_type>text</frontend_type>-->
+                        <!--<sort_order>350</sort_order>-->
+                        <!--<show_in_default>1</show_in_default>-->
+                        <!--<show_in_website>1</show_in_website>-->
+                        <!--<show_in_store>1</show_in_store>-->
+                        <!--<comment>The default is 9</comment>-->
+                        <!--<validate>validate-greater-than-zero</validate>-->
+                        <!--<depends>-->
+                        <!--<use_font_for_text>1</use_font_for_text>-->
+                        <!--</depends>-->
+                        <!--</line_height>-->
+
+                    </fields>
+
+
+                </product>
+
+                <order>
+                    <label>Order Barcode</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>0</expanded>
+                    <frontend_class>complex</frontend_class>
+                    <fields>
+
+
+                        <heading_barcode_content translate="label">
+                            <label>Content</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_barcode_content>
+
+                        <enabled_leading_digits translate="label">
+                            <label>Leading Digits</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[
+                                        <span style="color:red;">Note</span>:This output is not working with Code 128C, i25 and EAN13.
+                                        ]]>
+                            </comment>
+                        </enabled_leading_digits>
+
+
+                        <heading_barcode_position translate="label">
+                            <label>Position</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_barcode_position>
+
+
+                        <invoice_enabled>
+                            <label>Show On Invoice</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Select 'Yes' if you want to show barcode on Invoice</comment>
+                        </invoice_enabled>
+
+                        <invoice_position translate="label">
+                            <label>Position on Invoice</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>barcode/system_config_source_barcodeposition</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Barcode position on Invoice.</comment>
+                            <depends>
+                                <invoice_enabled>1</invoice_enabled>
+                            </depends>
+                        </invoice_position>
+
+                        <packingslip_enabled>
+                            <label>Show On Packingslip</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Select 'Yes' if you want to show barcode on Packingslip</comment>
+                        </packingslip_enabled>
+
+
+                        <packingslip_position translate="label">
+                            <label>Position on Packingslip</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>barcode/system_config_source_barcodeposition</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Barcode position on Packingslip</comment>
+                            <depends>
+                                <packingslip_enabled>1</packingslip_enabled>
+                            </depends>
+                        </packingslip_position>
+<!--
+                        <padding_top translate="label">
+                            <label>Padding Top</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-digits</validate>
+                            <comment>The default is 0</comment>
+                        </padding_top>
+
+                        <padding_left translate="label">
+                            <label>Padding Left</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-digits</validate>
+                            <comment>The default is 0</comment>
+                        </padding_left>
+-->
+
+                        <include_logo translate="label">
+                            <label>Include logo</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Show logo along with barcode in Invoice and Packingslip</comment>
+                        </include_logo>
+
+
+                        <heading_barcode_width translate="label">
+                            <label>Size</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>79</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_barcode_width>
+
+                        <barcode_width translate="label">
+                            <label>Width of Label</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-greater-than-zero</validate>
+                        </barcode_width>
+
+                        <barcode_height translate="label">
+                            <label>Height of Label</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-greater-than-zero</validate>
+                        </barcode_height>
+
+
+                        <heading_order_barcode_preview translate="label">
+                            <label>Preview Order Barcode</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_order_barcode_preview>
+
+                        <order_barcode_preview translate="label">
+                            <label></label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>barcode/adminhtml_system_config_form_field_orderpreview</frontend_model>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <comment>Enter a Order ID, then click Preview. E.g: 100000001</comment>
+                        </order_barcode_preview>
+
+                    </fields>
+
+
+                </order>
+
+                <rma>
+                    <label>RMA</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>0</expanded>
+                    <fields>
+                        <valid_duration translate="label">
+                            <label>Validity Duration</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-not-negative-number</validate>
+                            <default>30</default>
+                            <comment>Number of days after order completion allowed to request RMA</comment>
+                        </valid_duration>
+
+                        <handling_fee_default translate="label">
+                            <label>Default Handling Fee Per Each Item</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <default>10</default>
+                            <comment>Default handling fee for return each product</comment>
+                        </handling_fee_default>
+
+                        <stock_update translate="label">
+                            <label>Update stock</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <default>1</default>
+                            <comment>Enable/Disable stock update</comment>
+                        </stock_update>
+                    </fields>
+                </rma>
+
+            </groups>
+        </barcode>
+    </sections>
+</config>

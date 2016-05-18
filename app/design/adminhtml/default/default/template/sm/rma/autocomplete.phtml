@@ -1,0 +1,59 @@
+<script>
+    var defaultText = "Search product to add";
+</script>
+<div id="product-search-area">
+    <span id="product_search_indicator" class="autocomplete-indicator" style="display: none">
+        <img src="<?php echo $this->getSkinUrl('images/ajax-loader.gif') ?>" alt="<?php echo $this->__('Loading...') ?>" class="v-middle"/>
+    </span>
+
+    <input id="product_search" name="query" type="text" class="input-text" value="Search product to add" onfocus="if(this.value==defaultText)this.value=''; " onblur="if(this.value=='')this.value=defaultText;" style="width:180px;" />
+    <div id="product_search_autocomplete" class="autocomplete"></div>
+</div>
+
+<script type="text/javascript">
+    new Ajax.Autocompleter(
+    'product_search',
+    'product_search_autocomplete',
+    '<?php echo $this->getUrl('rma/customer_ajax/productSearch') ?>',
+    {
+        paramName:"query",
+        minChars:3,
+        indicator:"product_search_indicator",
+        updateElement: getSelectionId,
+        evalJSON:'force',
+        autoSelect: false
+    }
+);
+     
+    function getSelectionId(li) {
+        //                                            var id = parseInt($(li).readAttribute('id'));                        
+        //                                            exchangeProduct[id] = {
+        //                                                id: li.readAttribute('id'),
+        //                                                price: li.readAttribute('price'),                                        
+        //                                                name: li.readAttribute('name')
+        //                                            };  
+        $("product_search").value = '';
+        $("product_search").focus();
+        new Ajax.Request('<?php echo Mage::helper('adminhtml')->getUrl('*/*/addxitem/') ?>', {
+            parameters: {
+                rmaid: '<?php echo intval($this->getRequest()->getParam('id')) ?>',
+                id: li.readAttribute('id')
+            },//$('id_of_form_element').serialize(true)
+            onSuccess: function(transport){
+                var response = transport.responseText || "no response text";
+                rmaRmaRequestGridExchangeJsObject.doFilter();
+            }                    
+        }); 
+    }
+
+    $("product_search").observe('keypress',function(event) {    
+        if(event.keyCode == Event.KEY_RETURN && selectedProduct && recentProduct && !$('product_search_autocomplete').visible()) {
+            getSelectionId(recentProduct);
+        } else {
+            recentProduct = null;
+        }   
+    });    
+
+                                        
+    //]]>
+</script>

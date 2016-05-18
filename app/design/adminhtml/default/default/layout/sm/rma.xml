@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <adminhtml_rma_request_grid>
+        <block type="rma/adminhtml_request_grid" name="rma_request_grid" output="toHtml"></block>
+    </adminhtml_rma_request_grid>
+
+    <adminhtml_rma_request_gridedit>
+        <block type="rma/adminhtml_request_edit_tab_items" name="rma_request_grid_edit" output="toHtml"></block>
+    </adminhtml_rma_request_gridedit>
+
+    <adminhtml_rma_request_gridexchange>
+        <block type="rma/adminhtml_request_edit_tab_exchangeitems" name="rma_request_grid_exchange" output="toHtml"></block>
+    </adminhtml_rma_request_gridexchange>
+    <adminhtml_rma_request_autocomplete>
+        <block type="rma/adminhtml_request_edit_tab_autocomplete" name="rma_request_autocomplete" output="toHtml"></block>
+    </adminhtml_rma_request_autocomplete>
+
+    <adminhtml_rma_request_index>
+        <reference name="content">
+            <block type="rma/adminhtml_request" name="adminhtml_rma_grid" />
+        </reference>
+    </adminhtml_rma_request_index>
+
+    <adminhtml_rma_approve_index>
+        <reference name="content">
+            <block type="rma/adminhtml_approve" name="adminhtml_rma_approve" />
+        </reference>
+    </adminhtml_rma_approve_index>
+
+    <adminhtml_rma_approve_grid>
+        <block type="rma/adminhtml_approve_grid" name="rma_bulk_grid" output="toHtml"></block>
+    </adminhtml_rma_approve_grid>
+
+    <adminhtml_rma_bulk_index>
+        <reference name="head">
+            <action method="addJs"><script>sm/xbarcode/jquery-1.10.2.min.js</script></action>
+            <action method="addJs"><name>sm/xbarcode/barcode.js</name></action>
+        </reference>
+        <reference name="content">
+            <block type="rma/adminhtml_bulk" name="adminhtml_rma_bulk" />
+        </reference>
+
+    </adminhtml_rma_bulk_index>
+
+    <adminhtml_rma_bulk_grid>
+        <block type="rma/adminhtml_bulk_grid" name="rma_bulk_grid" template="sm/rma/bulk/grid.phtml" output="toHtml">
+
+        </block>
+    </adminhtml_rma_bulk_grid>
+
+</layout>

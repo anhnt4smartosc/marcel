@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="rma"><name>rma</name><path>rma/customer</path><label>RMA</label></action>
+        </reference>
+    </customer_account>
+    
+    <rma_customer_index>
+        <update handle="customer_account"/>
+        <reference name="content">
+            <block type="rma/customer_requests" name="rma_customer_requests" template="rma/customer/requests.phtml"/>
+		</reference>
+    </rma_customer_index>
+    
+    <rma_customer_new>
+        <update handle="customer_account"/>
+        <reference name="content">
+            <block type="rma/customer_requests_new" name="rma_customer_new" template="rma/customer/new_request.phtml"/>
+		</reference>
+    </rma_customer_new>
+    
+    <rma_customer_view>
+        <update handle="customer_account"/>
+        <reference name="content">
+            <block type="rma/customer_view" name="rma_customer_view" template="rma/customer/view.phtml"/>
+		</reference>
+    </rma_customer_view>
+</layout> 

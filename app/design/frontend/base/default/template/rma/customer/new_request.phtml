@@ -1,0 +1,291 @@
+<?php
+$_orders = $this->getOrders();
+$orders = array();
+$handling_fee = Mage::getStoreConfig("barcode/rma/handling_fee_default");
+$currency_code = Mage::app()->getStore()->getCurrentCurrencyCode();
+$currency_symbol = Mage::app()->getLocale()->currency( $currency_code )->getSymbol();
+
+foreach ($_orders as $_key => $_order) {
+
+    $shipmentCollection = Mage::getResourceModel('sales/order_shipment_collection')
+            ->setOrderFilter($_order)
+            ->load();
+    $latestShipmentDate = null;
+    foreach ($shipmentCollection as $shipment) {
+        $tmpDate = strtotime($shipment->getUpdatedAt());
+        if ($latestShipmentDate == null)
+            $latestShipmentDate = $tmpDate;
+        if ($tmpDate > $latestShipmentDate)
+            $latestShipmentDate = $tmpDate;
+    }
+    $validDuration = Mage::getStoreConfig('barcode/rma/valid_duration'); //get valid duration from config
+    $validDuration = $validDuration * 24 * 60 * 60; // convert to seconds
+    if ($latestShipmentDate != null){
+        $latestShipmentDate = (date('m/d/y h:i:s', Mage::getModel('core/date')->timestamp($latestShipmentDate)));
+        $validDate = date('m/d/y h:i:s', Mage::getModel('core/date')->timestamp(time() - $validDuration));
+        if (strtotime($latestShipmentDate) >= strtotime($validDate)) {
+            // order is valid for RMA => add to array
+            $orders[] = $_order;
+        }
+    }
+}
+?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<script>
+    exchangeProduct = new Array();
+</script>    
+<div class="page-title">
+    <h1><?php echo $this->__('New RMA Request') ?></h1>
+</div>
+
+<form id="form-new-request" method="post" action="<?php echo $this->getUrl('rma/customer/save') ?>">
+    <input type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" name="form_key">
+    <fieldset class="group-select" style="width:91%;">
+        <h4 class="legend"><?php echo $this->__('Request Information') ?></h4>
+        <p>Orders older than <strong><?php echo Mage::getStoreConfig('barcode/rma/valid_duration')?> days</strong> are not available for return.<?php if($handling_fee!=0){ ?> A return fee of <?php echo '&nbsp;'.$currency_symbol.$handling_fee ?> is added for handling the refund. <?php } ?> Please contact customer service for any issues regarding our return policy.</p>
+        <ul class="form-list">
+            <li>
+                <div class="customer-name">
+
+                    <div class="input-box name-firstname">
+                        <label class="required" for="firstname">
+                            <?php echo $this->__('Orders') ?>            <em>*</em>
+                        </label>
+
+                        <br>
+                        <select name="order" id="orders" onchange="getOrderItems(this);">
+                            <option value="0"><?php echo $this->__('Select order') ?></option>
+                            <?php foreach ($orders as $_order): ?>
+                                <option value="<?php echo $_order->getId() ?>" <?php if ($_order->getId() == $this->getCustomer()->getOrder()) echo 'selected="selected"'; ?>><?php echo "#" . $_order->getIncrementId() . ", " . $this->formatDate($_order->getCreatedAt()) . ", " . $_order->formatPrice($_order->getGrandTotal()) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <div id="loading-mask" style="display: none;">
+                            <div class="loader" id="loading-mask-loader"><img src="<?php echo str_replace("index.php/", "", $this->getUrl()) ?>skin/adminhtml/default/default/images/ajax-loader-tr.gif" alt="<?php echo $this->__('Loading...') ?>"/><?php echo $this->__('Loading...') ?></div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div id="items" class="input-box" style="width: 100%;"></div>
+            </li>
+            <li>
+                <div class="customer-name">
+
+                    <div class="input-box name-firstname">
+                        <label for="firstname" class="required">
+                            <?php echo $this->__('Package Opened') ?>            <em>*</em>
+                        </label>
+                        <br>
+                        <select name="package_opened">
+                            <option value="0">No</option>
+                            <option value="1" selected="selected">Yes</option>
+                        </select>
+                    </div>
+
+                    <div class="input-box name-lastname">
+                        <label for="lastname" class="required">
+                            <?php echo $this->__('Request Type') ?>            <em>*</em>
+                        </label>
+                        <br>
+                        <select name="request_type" onchange="changeType(this);">
+                            <option value="1">Exchange</option>
+                            <option value="2" selected="selected">Refund</option>
+                        </select>
+                    </div>
+            </li>
+            <li id="exchange-items" style="display: none;">
+
+                <div class="box-account box-recent">
+                    <div class="box-head">
+                        <h2>Exchange items</h2>
+                        <div class="global-search-wrapper">
+                            <div class="global-search">
+                                <fieldset>
+                                    <span id="global_search_indicator" class="autocomplete-indicator" style="display: none">
+                                        <img src="<?php echo $this->getSkinUrl('images/ajax-loader.gif') ?>" alt="<?php echo $this->__('Loading...') ?>" class="v-middle"/>
+                                    </span>
+
+                                    <input id="global_search" name="query" type="text" class="input-text" value="Product search" onfocus="if(this.value=='Product search')this.value=''; " onblur="if(this.value=='')this.value='Product search';" style="width:180px;" />
+                                    <div id="global_search_autocomplete" class="autocomplete"></div>
+                                    <script type="text/javascript">
+                                        //<![CDATA[
+                                        var recentProduct = {};
+                                        var selectedProduct = [];
+                                        var orderTotal = 0;
+                                        var priceFormat = <?php echo json_encode(Mage::app()->getLocale()->getJsPriceFormat()); ?>;
+                                        new Ajax.Autocompleter(
+                                        'global_search',
+                                        'global_search_autocomplete',
+                                        '<?php echo $this->getUrl('rma/customer_ajax/productSearch') ?>',
+                                        {
+                                            paramName:"query",
+                                            minChars:3,
+                                            indicator:"global_search_indicator",
+                                            updateElement: getSelectionId,
+                                            evalJSON:'force',
+                                            autoSelect: false
+                                        }
+                                    );
+                                        function removeRow(event){
+                                            var element = event.element();
+                                            exchangeProduct[element.readAttribute('pid')].id = null;
+                                            element.up(1).remove();
+                                            return false;
+                                        }
+     
+                                        function getSelectionId(li) {
+                                            var id = parseInt($(li).readAttribute('id'));                        
+                                            exchangeProduct[id] = {
+                                                id: li.readAttribute('id'),
+                                                price: li.readAttribute('price'),                                        
+                                                name: li.readAttribute('name')
+                                            };  
+                                            $("global_search").value = '';
+                                            $("global_search").focus();
+                                            var html = "";
+                                            for(var index in exchangeProduct) {
+                                                if (null != exchangeProduct[index].id){
+                                                    if (null == exchangeProduct[index].qty)
+                                                        exchangeProduct[index].qty = 1;
+                                                    html += '<tr><td>'+exchangeProduct[index].name+'</td>'
+                                                        +'<td>'+formatCurrency(exchangeProduct[index].price,priceFormat)+'</td>'
+                                                        +'<td><input name="xitems['+exchangeProduct[index].id+']" type="text" class="input-text qty exchange-qty" pid="'+index+'" value="'+exchangeProduct[index].qty+'" /></td>'
+                                                        +'<td><a class="link-reorder" pid="'+exchangeProduct[index].id+'" href="#">Remove</a></td></tr>';
+                                                }
+                                            }
+                                            $$('#my-orders-table tbody tr').each(function(e){
+                                                e.remove();
+                                            });
+                                            $$('#my-orders-table tbody').each(function(e){
+                                                e.update('');
+                                                e.insert({bottom: '<tr>'+html+'</tr>'});
+                                            });     
+                                            decorateTable('my-orders-table');
+                                            $$('.link-reorder').each(function(e){
+                                                e.observe('click', removeRow);
+                                            });
+                                            $$(".exchange-qty").each(function(e){
+                                                e.observe('keyup',function(event) {   
+                                                    exchangeProduct[this.readAttribute('pid')].qty = this.value;
+                                                }); 
+                                            });                                            
+                                        }
+
+                                        $("global_search").observe('keypress',function(event) {                            
+                                            if(event.keyCode == Event.KEY_RETURN && selectedProduct && recentProduct && !$('global_search_autocomplete').visible()) {
+                                                getSelectionId(recentProduct);
+                                            } else {
+                                                recentProduct = null;
+                                            }   
+                                        });    
+
+                                        
+                                        //]]>
+                                    </script>
+                                </fieldset>
+                            </div>
+                        </div>                           
+                    </div>
+                    <table id="my-orders-table" class="data-table">
+                        <colgroup>
+                            <col>
+                            <col width="1">
+                            <col width="1">
+                            <col width="1">
+                        </colgroup>
+                        <thead>
+                            <tr class="first last">
+                                <th>Product name</th>
+                                <th>Price</th>                                
+                                <th>Quantity</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <script type="text/javascript">decorateTable('my-orders-table')</script>
+                </div>
+            </li>
+            <li>
+                <div class="input-box" style="width: 90%;">
+                    <label for="firstname">
+                        <?php echo $this->__('Comment') ?>
+                    </label>
+                    <br>
+                    <textarea name="comment" style="width: 99%; height: 100px;"></textarea>
+                </div>
+            </li>
+        </ul>
+    </fieldset>
+    <div class="buttons-set" style="width:91%;">
+        <p class="required">* Required Fields</p>
+        <p class="back-link"><a href="javascript:history.back();"><small>« </small>Back</a></p>
+        <button class="button" title="Save" type="submit"><span><span>Save</span></span></button>
+    </div>    
+
+</form>
+<script type="text/javascript">
+    function getOrderItems(obj){
+        if(obj.value*1 != 0){
+            Element.show('loading-mask');
+            var url = '<?php echo $this->getUrl('rma/customer_ajax/getItems') ?>';
+            new Ajax.Request(url, {
+                method: 'post',
+                parameters: $('form-new-request').serialize(true),
+                onComplete: function(transport) {
+                    Element.hide('loading-mask');
+                    var data = transport.responseText.evalJSON();
+                    $('items').innerHTML = data.table;
+                    decorateTable('new-request-items');
+                }
+            });
+        }
+    }
+
+    function checkAllItems(obj){
+        checkboxes = $('form-new-request').getInputs('checkbox');
+        checkboxes.each(function(e){ e.checked = obj.checked});
+    }
+    
+    function changeType(e){
+        if (e.value==1){
+            $('exchange-items').show();
+        }else{
+            $('exchange-items').hide();
+        }
+    }
+
+    if($('orders').value != 0){
+        getOrderItems($('orders'));
+    }
+    
+</script>
+
+
+<style>
+    div.autocomplete {
+        background-color: white;
+        border: 1px solid #888888;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        width: 250px;
+        z-index: 10000;
+    }
+    div.autocomplete ul {
+        margin: 0;
+        padding: 0;
+    }
+    div.autocomplete ul li.selected {
+        background-color: #DCEBF0;
+    }
+    div.autocomplete ul li {
+        color: #2F2F2F;
+        cursor: pointer;
+        line-height: 1.3em;
+        min-height: 32px;
+        padding: 0.5em 0.7em;
+        text-align: left;
+    }
+</style>

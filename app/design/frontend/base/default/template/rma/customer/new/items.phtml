@@ -1,0 +1,53 @@
+<?php $items = $this->getItems() ?>
+<label for="firstname" class="required"><?php echo $this->__('Items') ?><em>*</em></label><br>
+<table id="new-request-items" cellspacing="0" class="data-table">
+    <col width="30" />
+    <col width="50" />
+    <col width="180" />
+    <col width="80" />
+    <col width="80" />
+    <col width="80" />
+    <thead>
+        <tr class="first last">
+            <th><input type="checkbox" name="check" onchange="checkAllItems(this);" /></th>
+            <th><?php echo $this->__('Item #') ?></th>
+            <th><?php echo $this->__('Product Name') ?></th>
+            <th><?php echo $this->__('Qty Shipped') ?></th>
+            <th><?php echo $this->__('Qty Returned') ?></th>
+            <th><?php echo $this->__('Qty To Return') ?></th>
+        </tr>
+    </thead>
+    <tbody>
+<?php
+$count=0;
+foreach($items as $item):
+    if(!$item->getParentItem()) {
+        $product = $item;
+    }
+    else {
+        $product = $item->getParentItem();
+    }
+    $qty_to_return = intval($product->getQtyShipped()) - intval($product->getQtyRefunded());
+    ?>
+    <?php if($qty_to_return > 0): ?>
+    <tr class="ticket-row">
+        <td><input type="checkbox" name="items[]" value="<?php echo $item->getId() ?>" /></td>
+        <td style="text-align:center;"><?php echo $item->getId() ?></td>
+        <td><?php echo $product->getName();
+                    $_options = $product->getProductOptions();
+                    foreach($_options['attributes_info'] as $_option){
+                        echo "<br /><em>" . $_option['label'] . ": " . $_option['value'] . "</em>";
+                    }
+            ?>
+        </td>
+        <td style="text-align:center;"><?php echo intval($product->getQtyShipped()) ?></td>
+        <td style="text-align:center;"><?php echo intval($product->getQtyRefunded()) ?></td>
+        <td style="text-align:center;"><input type="text" name="qtys[<?php echo $item->getId() ?>]" value="<?php echo $qty_to_return ?>" class="input-text" style="width:30px;" /></td>
+    </tr>
+    <?php endif; ?>
+<?php
+$count++;
+endforeach;
+?>
+    </tbody>
+</table>
