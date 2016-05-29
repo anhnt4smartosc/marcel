@@ -1,0 +1,11 @@
+<config>
+    <modules>
+        <Alex_Barcode>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <SM_Barcode />
+            </depends>
+        </Alex_Barcode>
+    </modules>
+</config>
