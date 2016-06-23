@@ -36,6 +36,13 @@
     <adminhtml_import_validate>
         <block type="importexport/adminhtml_import_frame_result" template="importexport/import/frame/result.phtml" name="import.frame.result" alias="import_frame_result" output="toHtml"/>
     </adminhtml_import_validate>
+
+    <adminhtml_import_startpreview>
+        <reference name="content">
+            <block type="adminhtml/catalog_product_grid" name="test"/>
+        </reference>
+    </adminhtml_import_startpreview>
+
     <adminhtml_import_start>
         <block type="importexport/adminhtml_import_frame_result" template="importexport/import/frame/result.phtml" name="import.frame.result" alias="import_frame_result" output="toHtml"/>
     </adminhtml_import_start>

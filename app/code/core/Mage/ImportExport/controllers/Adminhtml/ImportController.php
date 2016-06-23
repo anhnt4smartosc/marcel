@@ -120,6 +120,12 @@ class Mage_ImportExport_Adminhtml_ImportController extends Mage_Adminhtml_Contro
         }
     }
 
+    public function startPreviewAction()
+    {
+        $this->loadLayout('popup');
+        $this->renderLayout();
+    }
+
     /**
      * Validate uploaded files action.
      *
