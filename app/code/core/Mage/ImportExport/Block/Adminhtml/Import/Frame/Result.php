@@ -117,7 +117,7 @@ class Mage_ImportExport_Block_Adminhtml_Import_Frame_Result extends Mage_Adminht
                 $this->addNotice($row);
             }
         } else {
-            $this->_messages['notice'][] = $message . ($appendImportButton ? $this->getImportButtonHtml() : '');
+            $this->_messages['notice'][] = $message . ($appendImportButton ? $this->getPreviewButtonHtml() : '');
         }
         return $this;
     }
@@ -136,7 +136,7 @@ class Mage_ImportExport_Block_Adminhtml_Import_Frame_Result extends Mage_Adminht
                 $this->addSuccess($row);
             }
         } else {
-            $this->_messages['success'][] = $message . ($appendImportButton ? $this->getImportButtonHtml() : '');
+            $this->_messages['success'][] = $message . ($appendImportButton ? $this->getPreviewButtonHtml() : '');
         }
         return $this;
     }
@@ -153,6 +153,13 @@ class Mage_ImportExport_Block_Adminhtml_Import_Frame_Result extends Mage_Adminht
             . ' type="button"><span><span><span>' . $this->__('Import') . '</span></span></span></button>';
     }
 
+    public function getPreviewButtonHtml()
+    {
+        return '&nbsp;&nbsp;<button onclick="editForm.startPreview(\'' . $this->getPreviewStartUrl()
+        . '\');" class="scalable save"'
+        . ' type="button"><span><span><span>' . $this->__('Preview') . '</span></span></span></button>';
+    }
+
     /**
      * Import start action URL.
      *
@@ -161,6 +168,16 @@ class Mage_ImportExport_Block_Adminhtml_Import_Frame_Result extends Mage_Adminht
     public function getImportStartUrl()
     {
         return $this->getUrl('*/*/start');
+    }
+
+    /**
+     * Import start action URL.
+     *
+     * @return string
+     */
+    public function getPreviewStartUrl()
+    {
+        return $this->getUrl('*/*/startPreview');
     }
 
     /**
