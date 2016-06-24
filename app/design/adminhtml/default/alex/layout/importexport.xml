@@ -39,7 +39,7 @@
 
     <adminhtml_import_startpreview>
         <reference name="content">
-            <block type="adminhtml/catalog_product_grid" name="test"/>
+            <block type="aleximport/adminhtml_import_catalog_preview_grid" name="test"/>
         </reference>
     </adminhtml_import_startpreview>
 
