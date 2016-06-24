@@ -1,6 +1,6 @@
 <?php
 
-class Alex_Import_Block_Adminhtml_Import_Catalog_Preview_Grid extends Mage_Adminhtml_Block_Catalog_Product_Grid
+class Alex_Import_Block_Adminhtml_Import_Catalog_Preview_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
     public function __construct()
     {
@@ -14,8 +14,6 @@ class Alex_Import_Block_Adminhtml_Import_Catalog_Preview_Grid extends Mage_Admin
 
     protected function _prepareCollection()
     {
-        $store = $this->_getStore();
-
         /*$collection = Mage::getModel('catalog/product')->getCollection()
             ->addAttributeToSelect('sku')
             ->addAttributeToSelect('name')
@@ -84,18 +82,16 @@ class Alex_Import_Block_Adminhtml_Import_Catalog_Preview_Grid extends Mage_Admin
 
         $collection = Mage::getModel('catalog/product')->getCollection();
 
+        $collection = new Varien_Data_Collection();
+
         $product = Mage::getModel('catalog/product');
 
         $product->setSku('testSku');
         $product->setName('Product Name');
-        $product->setAttributeSetId(4);
 
         $collection->addItem($product);
-
         $this->setCollection($collection);
 
-//        parent::_prepareCollection();
-        $this->getCollection()->addWebsiteNamesToResult();
         return $this;
     }
 
@@ -107,73 +103,11 @@ class Alex_Import_Block_Adminhtml_Import_Catalog_Preview_Grid extends Mage_Admin
                 'index' => 'name',
             ));
 
-        $store = $this->_getStore();
-
-        if ($store->getId()) {
-            $this->addColumn('custom_name',
-                array(
-                    'header'=> Mage::helper('catalog')->__('Name in %s', $store->getName()),
-                    'index' => 'custom_name',
-                )
-            );
-        }
-
-        $this->addColumn('type',
-            array(
-                'header'=> Mage::helper('catalog')->__('Type'),
-                'width' => '60px',
-                'index' => 'type_id',
-                'type'  => 'options',
-                'options' => Mage::getSingleton('catalog/product_type')->getOptionArray(),
-            ));
-
-        $sets = Mage::getResourceModel('eav/entity_attribute_set_collection')
-            ->setEntityTypeFilter(Mage::getModel('catalog/product')->getResource()->getTypeId())
-            ->load()
-            ->toOptionHash();
-
-        $this->addColumn('set_name',
-            array(
-                'header'=> Mage::helper('catalog')->__('Attrib. Set Name'),
-                'width' => '100px',
-                'index' => 'attribute_set_id',
-                'type'  => 'options',
-                'options' => $sets,
-            ));
-
         $this->addColumn('sku',
             array(
                 'header'=> Mage::helper('catalog')->__('SKU'),
                 'width' => '80px',
                 'index' => 'sku',
-            ));
-
-        $store = $this->_getStore();
-
-        $this->addColumn('price',
-            array(
-                'header'=> Mage::helper('catalog')->__('Price'),
-                'type'  => 'price',
-                'currency_code' => $store->getBaseCurrency()->getCode(),
-                'index' => 'price',
-            ));
-
-        $this->addColumn('visibility',
-            array(
-                'header'=> Mage::helper('catalog')->__('Visibility'),
-                'width' => '70px',
-                'index' => 'visibility',
-                'type'  => 'options',
-                'options' => Mage::getModel('catalog/product_visibility')->getOptionArray(),
-            ));
-
-        $this->addColumn('status',
-            array(
-                'header'=> Mage::helper('catalog')->__('Status'),
-                'width' => '70px',
-                'index' => 'status',
-                'type'  => 'options',
-                'options' => Mage::getSingleton('catalog/product_status')->getOptionArray(),
             ));
     }
 
