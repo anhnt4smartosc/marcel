@@ -10,14 +10,13 @@ class Alex_Import_Block_Adminhtml_Import_Catalog_Preview_Grid extends Mage_Admin
         $this->setSaveParametersInSession(true);
         $this->setUseAjax(true);
         $this->setVarNameFilter('product_filter');
-
     }
 
     protected function _prepareCollection()
     {
         $store = $this->_getStore();
 
-        $collection = Mage::getModel('catalog/product')->getCollection()
+        /*$collection = Mage::getModel('catalog/product')->getCollection()
             ->addAttributeToSelect('sku')
             ->addAttributeToSelect('name')
             ->addAttributeToSelect('attribute_set_id')
@@ -81,11 +80,21 @@ class Alex_Import_Block_Adminhtml_Import_Catalog_Preview_Grid extends Mage_Admin
             $collection->addAttributeToSelect('price');
             $collection->joinAttribute('status', 'catalog_product/status', 'entity_id', null, 'inner');
             $collection->joinAttribute('visibility', 'catalog_product/visibility', 'entity_id', null, 'inner');
-        }
+        }*/
+
+        $collection = Mage::getModel('catalog/product')->getCollection();
+
+        $product = Mage::getModel('catalog/product');
+
+        $product->setSku('testSku');
+        $product->setName('Product Name');
+        $product->setAttributeSetId(4);
+
+        $collection->addItem($product);
 
         $this->setCollection($collection);
 
-        parent::_prepareCollection();
+//        parent::_prepareCollection();
         $this->getCollection()->addWebsiteNamesToResult();
         return $this;
     }
@@ -140,6 +149,7 @@ class Alex_Import_Block_Adminhtml_Import_Catalog_Preview_Grid extends Mage_Admin
             ));
 
         $store = $this->_getStore();
+
         $this->addColumn('price',
             array(
                 'header'=> Mage::helper('catalog')->__('Price'),
@@ -147,16 +157,6 @@ class Alex_Import_Block_Adminhtml_Import_Catalog_Preview_Grid extends Mage_Admin
                 'currency_code' => $store->getBaseCurrency()->getCode(),
                 'index' => 'price',
             ));
-
-        if (Mage::helper('catalog')->isModuleEnabled('Mage_CatalogInventory')) {
-            $this->addColumn('qty',
-                array(
-                    'header'=> Mage::helper('catalog')->__('Qty'),
-                    'width' => '100px',
-                    'type'  => 'number',
-                    'index' => 'qty',
-                ));
-        }
 
         $this->addColumn('visibility',
             array(
@@ -175,21 +175,11 @@ class Alex_Import_Block_Adminhtml_Import_Catalog_Preview_Grid extends Mage_Admin
                 'type'  => 'options',
                 'options' => Mage::getSingleton('catalog/product_status')->getOptionArray(),
             ));
-
-        if (!Mage::app()->isSingleStoreMode()) {
-            $this->addColumn('websites',
-                array(
-                    'header'=> Mage::helper('catalog')->__('Websites'),
-                    'width' => '100px',
-                    'sortable'  => false,
-                    'index'     => 'websites',
-                    'type'      => 'options',
-                    'options'   => Mage::getModel('core/website')->getCollection()->toOptionHash(),
-                ));
-        }
     }
 
-    protected function _prepareMassaction() {
+    protected function _prepareMassaction()
+    {
+        //Override to remove mass action
         return $this;
     }
 }
