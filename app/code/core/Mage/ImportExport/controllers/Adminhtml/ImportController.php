@@ -120,12 +120,6 @@ class Mage_ImportExport_Adminhtml_ImportController extends Mage_Adminhtml_Contro
         }
     }
 
-    public function startPreviewAction()
-    {
-        $this->loadLayout('popup');
-        $this->renderLayout();
-    }
-
     /**
      * Validate uploaded files action.
      *
@@ -141,8 +135,8 @@ class Mage_ImportExport_Adminhtml_ImportController extends Mage_Adminhtml_Contro
             // common actions
             $resultBlock->addAction('show', 'import_validation_container')
                 ->addAction('clear', array(
-                    Mage_ImportExport_Model_Import::FIELD_NAME_SOURCE_FILE,
-                    Mage_ImportExport_Model_Import::FIELD_NAME_IMG_ARCHIVE_FILE)
+                        Mage_ImportExport_Model_Import::FIELD_NAME_SOURCE_FILE,
+                        Mage_ImportExport_Model_Import::FIELD_NAME_IMG_ARCHIVE_FILE)
                 );
 
             try {

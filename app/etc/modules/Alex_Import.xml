@@ -1,0 +1,8 @@
+<config>
+    <modules>
+        <Alex_Import>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Alex_Import>
+    </modules>
+</config>
