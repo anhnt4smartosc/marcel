@@ -38,8 +38,13 @@
     </adminhtml_import_validate>
 
     <adminhtml_import_startpreview>
+        <reference name="head">
+            <action method="addJs"><script>sm/jquery-1.9.1.js</script></action>
+            <action method="addJs"><script>sm/xpos/table/jquery.dataTables.min.js</script></action>
+            <action method="addItem"><type>skin_css</type><name>sm/xpos/css/plugin/jquery.dataTables.css</name></action>
+        </reference>
         <reference name="content">
-            <block type="aleximport/adminhtml_import_catalog_preview_grid" name="test"/>
+            <block type="aleximport/adminhtml_import_catalog_preview_grid" name="import.preview" template="alex/import/preview.phtml"/>
         </reference>
     </adminhtml_import_startpreview>
 

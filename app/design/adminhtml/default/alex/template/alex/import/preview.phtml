@@ -1,0 +1,50 @@
+<?php
+    /** @var Alex_Import_Block_Adminhtml_Import_Catalog_Preview_Grid $this */
+    $products = $this->getProductsFromCsv();
+    $header = $this->getAllowedPreviewColumns();
+?>
+<div class="content-header">
+    <p class="form-buttons">
+        <button type="button" class="cancel" id="cancel-button"
+                onclick="window.close()"
+        >
+            <span><span><span><?php echo $this->__('Cancel')?></span></span></span>
+        </button>
+
+        <button type="button" class="save" id="import-button"
+                onclick="window.opener.editForm.startImport('<?php echo $this->getImportStartUrl()?>', '<?php echo Mage_ImportExport_Model_Import::FIELD_NAME_SOURCE_FILE ?>'); window.close()">
+            <span><span><span><?php echo $this->__('Import')?></span></span></span>
+        </button>
+    </p>
+</div>
+<table id="preview" class="display" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <?php foreach ($header as $head):?>
+                <th><?php echo $head ?></th>
+            <?php endforeach;?>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <?php foreach ($header as $head):?>
+                <th><?php echo $head ?></th>
+            <?php endforeach;?>
+        </tr>
+    </tfoot>
+    <tbody>
+    <?php foreach ($products as $product):?>
+        <tr>
+            <?php foreach ($product as $value):?>
+                <td><?php echo $value?></td>
+            <?php endforeach;?>
+        </tr>
+    <?php endforeach;?>
+    </tbody>
+</table>
+
+<script>
+    jQuery(document).ready(function () {
+        jQuery('#preview').DataTable();
+    });
+</script>
