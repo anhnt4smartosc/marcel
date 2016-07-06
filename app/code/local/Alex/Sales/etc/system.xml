@@ -1,0 +1,40 @@
+<config>
+    <tabs>
+        <Alex translate="label" module="alexsales">
+            <label>Alex</label>
+            <sort_order>1</sort_order>
+        </Alex>
+    </tabs>
+    <sections>
+        <alexsales_commits translate="label" module="alexsales">
+            <label>Alex Sales Commit</label>
+            <tab>Alex</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <commit_points translate="label">
+                    <label>Payment method's points</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <payment_points translate="label">
+                            <label>Points of specific payment method (active only)</label>
+                            <frontend_model>alexsales/adminhtml_config_paymentPoints</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </payment_points>
+                    </fields>
+                </commit_points>
+            </groups>
+        </alexsales_commits>
+    </sections>
+</config>

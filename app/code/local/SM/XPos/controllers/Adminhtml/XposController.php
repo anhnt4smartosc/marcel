@@ -690,6 +690,11 @@ function checkOrderAction()
         $order = $this->_getOrderCreateModel()
             ->setIsValidate(true)
             ->createOrder();
+        
+        /** Create transaction of sales-commit */
+        /** @var Alex_Sales_Model_Transaction $transaction */
+        $transaction = Mage::getModel('alexsales/transaction');
+        $transaction->createBy($order);
 
         /*TODO: Set to InfoOrder For print Invoice */
         $totalPaid = $this->getRequest()->getPost('cash-in');
@@ -1305,6 +1310,7 @@ function completeAction()
             $orderId = $order->getIncrementId();
             $result['url'] = Mage::getUrl("epay/standard/redirect", array('order_id' => $orderId, 'quote_id' => $quoteId));
         }
+
         $result['status'] = 'ok';
         $result['url'] = $this->getUrl('*/*/');
     } catch (Mage_Payment_Model_Info_Exception $e) {

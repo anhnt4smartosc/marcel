@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <Alex translate="title" module="alexsales">
+            <title>Alex</title>
+            <sort_order>15</sort_order>
+            <children>
+                <commit translate="title" module="alexsales">
+                    <title>Commit</title>
+                    <sort_order>1</sort_order>
+                    <action>adminhtml/commit/index</action>
+                </commit>
+            </children>
+        </Alex>
+    </menu>
+</config>

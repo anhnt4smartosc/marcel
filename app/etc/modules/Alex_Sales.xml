@@ -1,0 +1,11 @@
+<config>
+    <modules>
+        <Alex_Sales>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <SM_XPos />
+            </depends>
+        </Alex_Sales>
+    </modules>
+</config>
