@@ -9,6 +9,5 @@ class Alex_Sales_Block_Adminhtml_Commit extends Mage_Adminhtml_Block_Widget_Grid
         $this->_headerText = Mage::helper('alexsales')->__('Commit of Cashiers');
 
         parent::__construct();
-        $this->_removeButton('add');
     }
 }

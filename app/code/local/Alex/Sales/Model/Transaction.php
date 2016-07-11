@@ -11,18 +11,23 @@ class Alex_Sales_Model_Transaction extends Mage_Core_Model_Abstract
         $this->_init('alexsales/transaction');
     }
 
+    public function getAllTypeOptions()
+    {
+        return array(
+            self::ORDER_TYPE => 'Order',
+            self::BONUS_TYPE => 'Bonus',
+            self::PENALTY_TYPE => 'Penalty'
+        );
+    }
 
     public function createBy($order, $type = self::ORDER_TYPE, $comment = '')
     {
-        //get current commit of xpos-user
-        $commit = Mage::getModel('alexsales/commit')->getCollection()
-            ->addFieldToFilter('time', array('eq' => date('Y-m-d', strtotime(Mage::getSingleton('core/date')->date('Y-m'))) ))
-            ->addFieldToFilter('xpos_user_id', $order->getXposUserId())
-            ->getFirstItem();
-
-        if(!$commit->getId()) {
-            Mage::throwException("Not found needed commit for order {$order->getIncrementId()}");
+        if(!$order->getXposUserId()) {
+            return false;
         }
+
+        //get current commit of xpos-user
+        $commit = Mage::getModel('alexsales/commit')->getByUser($order->getXposUserId());
 
         $this->setCommitId($commit->getId());
         $this->setType($type);
@@ -33,12 +38,29 @@ class Alex_Sales_Model_Transaction extends Mage_Core_Model_Abstract
         /** @var Mage_Sales_Model_Order $order */
         $paymentMethod = $order->getPayment()->getMethod();
         $points = $this->getPointsByPayment($paymentMethod);
-        $this->setPoints($points);
-
-        $this->setCreateTime(Mage::getSingleton('core/date')->date());
+        $this->setPoints( ($points * $order->getGrandTotal()) / 100 );
+        $this->setComment( "A bonus transaction for Order {$order->getIncrementId()}");
+        $this->setCreateTime(date(now()));
         $this->save();
 
         $commit->setBalance($commit->getBalance() + $this->getPoints())->save();
+    }
+
+
+    public function applyToCommit() {
+        //get current commit of xpos-user
+        $type = $this->getType();
+
+        if($type == self::PENALTY_TYPE) {
+            $points = (-1) * $this->getPoints();
+        } else {
+            $points = $this->getPoints();
+        }
+
+        $commit = Mage::getModel('alexsales/commit')->getByUser($this->getXposUserId());
+        $commit->setBalance($commit->getBalance() + $points)->save();
+
+        $this->setCommitId($commit->getId())->save();
     }
 
     public function getPointsByPayment($paymentMethod)

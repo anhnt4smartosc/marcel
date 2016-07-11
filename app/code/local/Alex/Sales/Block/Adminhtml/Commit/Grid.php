@@ -30,8 +30,7 @@ class Alex_Sales_Block_Adminhtml_Commit_Grid extends Mage_Adminhtml_Block_Widget
             $filterDate = $date;
         }
 
-        $collection = Mage::getModel('alexsales/commit')->getCollection()
-            ->addFieldToFilter('time', array('eq' => date('Y-m-d', strtotime(Mage::getSingleton('core/date')->date('Y-m'))) ));
+        $collection = Mage::getModel('alexsales/commit')->getCollection();
 
         $this->setCollection($collection);
         parent::_prepareCollection();
@@ -82,5 +81,10 @@ class Alex_Sales_Block_Adminhtml_Commit_Grid extends Mage_Adminhtml_Block_Widget
     public function getGridUrl()
     {
         return $this->getUrl('*/*/index', array('_current'=>true));
+    }
+
+    public function getRowUrl($row)
+    {
+        return $this->getUrl('*/*/edit', array('id'=>$row->getId()));
     }
 }

@@ -10,6 +10,11 @@
                     <sort_order>1</sort_order>
                     <action>adminhtml/commit/index</action>
                 </commit>
+                <transaction translate="title" module="alexsales">
+                    <title>Transaction</title>
+                    <sort_order>1</sort_order>
+                    <action>adminhtml/transaction/index</action>
+                </transaction>
             </children>
         </Alex>
     </menu>
