@@ -62,7 +62,7 @@ class Alex_Sales_Block_Adminhtml_Commit_Grid extends Mage_Adminhtml_Block_Widget
 
         $this->addColumn('points', array(
             'type'   => 'number',
-            'header' => $helper->__('Points'),
+            'header' => $helper->__('Target'),
             'index'  => 'points'
         ));
 
@@ -72,8 +72,8 @@ class Alex_Sales_Block_Adminhtml_Commit_Grid extends Mage_Adminhtml_Block_Widget
             'index'  => 'time'
         ));
 
-        $this->addExportType('*/*/exportInchooCsv', $helper->__('CSV'));
-        $this->addExportType('*/*/exportInchooExcel', $helper->__('Excel XML'));
+        $this->addExportType('*/*/exportCsv', $helper->__('CSV'));
+        $this->addExportType('*/*/exportExcel', $helper->__('Excel XML'));
 
         return parent::_prepareColumns();
     }
@@ -86,5 +86,17 @@ class Alex_Sales_Block_Adminhtml_Commit_Grid extends Mage_Adminhtml_Block_Widget
     public function getRowUrl($row)
     {
         return $this->getUrl('*/*/edit', array('id'=>$row->getId()));
+    }
+
+    protected function _prepareMassaction()
+    {
+        $this->setMassactionIdField('commit_id');
+        $this->getMassactionBlock()->setFormFieldName('ids');
+
+        $this->getMassactionBlock()->addItem('delete', array(
+            'label'=> Mage::helper('alexsales')->__('Delete'),
+            'url'  => $this->getUrl('*/*/massDelete', array('' => '')),
+            'confirm' => Mage::helper('alexsales')->__('Are you sure ?')
+        ));
     }
 }

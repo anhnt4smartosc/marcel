@@ -31,7 +31,6 @@ class Alex_Sales_Block_Adminhtml_Commit_Edit_Tab_Form extends Mage_Adminhtml_Blo
                     'value' => $cashiers[$currentCommit->getXposUserId()],
                     'label' => Mage::helper('alexsales')->__('User Name'),
                     'title' => Mage::helper('alexsales')->__('User Name'),
-                    'readonly' => true,
                 )
             );
         }
@@ -43,7 +42,6 @@ class Alex_Sales_Block_Adminhtml_Commit_Edit_Tab_Form extends Mage_Adminhtml_Blo
                 'label' => Mage::helper('alexsales')->__('Points'),
                 'title' => Mage::helper('alexsales')->__('Points'),
                 'required' => true,
-                'readonly' => true,
             )
         );
 
@@ -52,8 +50,7 @@ class Alex_Sales_Block_Adminhtml_Commit_Edit_Tab_Form extends Mage_Adminhtml_Blo
                 'name'  => 'balance',
                 'label' => Mage::helper('alexsales')->__('Balance'),
                 'title' => Mage::helper('alexsales')->__('Balance'),
-                'required' => true,
-                'readonly' => true,
+                'required' => true
             )
         );
 

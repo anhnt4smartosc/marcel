@@ -61,7 +61,7 @@ class Alex_Sales_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_Block_W
 
         $this->addColumn('points', array(
             'type'   => 'number',
-            'header' => $helper->__('Points'),
+            'header' => $helper->__('Percent'),
             'index'  => 'points'
         ));
 

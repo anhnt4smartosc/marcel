@@ -10,7 +10,7 @@ class Alex_Sales_Block_Adminhtml_Config_PaymentPoints extends Mage_Adminhtml_Blo
             'renderer' => $this->_getRenderer(),
         ));
         $this->addColumn('points', array(
-            'label' => Mage::helper('alexsales')->__('Points'),
+            'label' => Mage::helper('alexsales')->__('Percent'),
             'style' => 'width:100px',
         ));
 

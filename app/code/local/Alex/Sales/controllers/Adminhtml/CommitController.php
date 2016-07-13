@@ -78,4 +78,46 @@ class Alex_Sales_Adminhtml_CommitController extends Mage_Adminhtml_Controller_Ac
             ));
         }
     }
+
+    public function massDeleteAction()
+    {
+        $params = $this->getRequest()->getParams();
+
+        try {
+            $model = Mage::getModel('alexsales/commit');
+
+            if(isset($params['ids']) && $ids = $params['ids']) {
+                foreach ($ids as $id) {
+                    $model->setId($id)->delete();
+                }
+            }
+
+            Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Deleted successfully!'));
+        }
+        catch (Exception $ex) {
+            Mage::logException($ex);
+            Mage::getSingleton('adminhtml/session')->addError($this->__("Something broken! %s", $ex->getMessage()));
+        }
+
+        $this->_redirect("*/*/index");
+    }
+
+    public function exportCsvAction()
+    {
+        $fileName   = 'commit.csv';
+        $content    = $this->getLayout()->createBlock('alexsales/adminhtml_commit_grid')
+            ->getCsv();
+
+        $this->_prepareDownloadResponse($fileName, $content);
+    }
+
+    public function exportXmlAction()
+    {
+
+        $fileName   = 'commit.xml';
+        $content    = $this->getLayout()->createBlock('alexsales/adminhtml_commit_grid')
+            ->getXml();
+
+        $this->_prepareDownloadResponse($fileName, $content);
+    }
 }
