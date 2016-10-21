@@ -449,7 +449,7 @@ class Alex_Sales_Helper_Product extends SM_XPos_Helper_Product {
         if(sizeof($data)) {
             foreach ($data as $paymentConfig) {
                 $finalRate = ($finalPrice / 100) * $paymentConfig['points'];
-                $formattedRate = Mage::helper('directory')->currencyConvert($finalRate);
+                $formattedRate = Mage::helper('directory')->currencyConvert($finalRate, $this->_bassCurrency, $this->_currentCurrency);
                 $result[$paymentConfig['method_id']] = $formattedRate;
             }
         }
