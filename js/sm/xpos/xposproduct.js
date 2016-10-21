@@ -438,6 +438,7 @@ function getDataFromServer(page) {
     if (warehouseId != null) {
         append += '&warehouse=' + warehouseId.warehouse_id;
     }
+    debugger;
     append += '&storeId=' + window.multiStoreView.getCurrentStoreId();
     jQuery.getJSON(loadProductUrl + append, function (json) {
 
@@ -941,6 +942,7 @@ function addToCart(itemId) {
     /*
      *  if disbale checkout offline then disable add to cart
      * */
+    debugger;
     if (!isOnline()) {
         if (!offlineSearch) {
             alert("Cache of Product has been disabled!");
@@ -1580,6 +1582,7 @@ function addOrder(productId, options, isCustomSales) {
     newOrderItem.tax = product.tax;
     newOrderItem.is_qty_decimal = product.is_qty_decimal;
     newOrderItem.has_manager_inventory = product.has_manager_inventory;
+    newOrderItem.commitRates = product.commitRates;
     //set tax
     if (isNaN(newOrderItem.tax)) {
         newOrderItem.tax = 0;
@@ -1961,6 +1964,8 @@ var orderTemplate =
     + '<td class="subtotal align-right"><div class="subtotal-list">{subtotal}<span></span>'
     + '</div>'
     + '</td>'
+    + '</tr>'
+    + '<tr>' + '{commitRates}'
     + '</tr>';
 var noDiscountTemplate =
     '<tr class="hover {class_item}" {style}>'
@@ -1974,7 +1979,9 @@ var noDiscountTemplate =
     + '     <input {isDisabledDiscountPerItem} id="item-discount-{id}" maxlength="12" value="0" data-item-base-id="{baseId}" data-item-id="{id}" class="checkout-item-discount input-text item-discount" name="item[{id}][discount]" onclick="canUseDisCountPerItem(this)" onchange="xposDiscount.changeDiscountItem(\'{id}\')">'
     + '     <input type="hidden" {isDisabledDiscountPerItem} value="{pid}" name="item[{id}][pId]">'
     + '</td>'
-    + '<td class="subtotal align-right"><div class="subtotal-list">{subtotal}<span></span></div></td></tr>';
+    + '<td class="subtotal align-right"><div class="subtotal-list">{subtotal}<span></span></div></td></tr>'
+    + '<tr><td>' + '{commitRates}'
+    + '</td></tr>';
 /**
  * Author here?
  *
@@ -2081,9 +2088,20 @@ function displayOrder(order, updatePrice) {
         tempOrderItem.tax = orderItem.tax;
         tempOrderItem.subtotal = formatCurrency(orderItem.subtotal, priceFormat);
         tempOrderItem.class_item = class_item;
+
         if(typeof orderItem.price_name != 'string'){
             orderItem.price_name = 'item[' + orderItem.id + '][price]';
-        };
+        }
+
+        var rateHtml = '';
+        for(var method in orderItem.commitRates) {
+            var methodNameArr = method.split('_');
+            var methodName = methodNameArr[methodNameArr.length-1];
+            methodName = methodName.toUpperCase();
+            var rateCommit = parseFloat(orderItem.commitRates[method]) * parseFloat(orderItem.qty);
+            rateHtml += '<td class="commit-rate">' + '<span class="method-label" style="font-weight:bold">' + methodName + '</span>' + ' ' + rateCommit.toFixed(2) + '</td>';
+        }
+        tempOrderItem.commitRates = rateHtml;
         tempOrderItem.price_name = orderItem.price_name;
         tempOrderItem.config_change = config_change;
         tempOrderItem.edit_price = edit_price;
@@ -2142,7 +2160,7 @@ function displayOrder(order, updatePrice) {
             } else {
                 tempOrderItem.price = formatCurrency(orderItem.price, priceFormat);
             }
-
+            debugger;
             orderItemOutput = nano(noDiscountTemplate, tempOrderItem);
         }
 

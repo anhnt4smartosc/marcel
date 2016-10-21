@@ -15,6 +15,11 @@
             <alexsales>
                 <class>Alex_Sales_Helper</class>
             </alexsales>
+            <xpos>
+                <rewrite>
+                    <product>Alex_Sales_Helper_Product</product>
+                </rewrite>
+            </xpos>
         </helpers>
         <models>
             <alexsales>

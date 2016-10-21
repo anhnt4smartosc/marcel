@@ -91,8 +91,9 @@ xposLoadProduct.prototype = {
             append += '&warehouse=' + warehouseId.warehouse_id;
         }
         append += '&storeId=' + window.multiStoreView.getCurrentStoreId();
-        jQuery.getJSON(loadProductUrl + append, function (json) {
 
+        jQuery.getJSON(loadProductUrl + append, function (json) {
+            debugger;
             data = json;
             var totalLoad = data['totalLoad'];
             var totalProduct = data['totalProduct'];
