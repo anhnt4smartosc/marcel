@@ -132,9 +132,6 @@ class Alex_Sales_Helper_Product extends SM_XPos_Helper_Product {
              * @temporary
              */
             $pInfo['qty'] = $pInfo['is_qty_decimal'] == '1' ? $pInfo['qty'] : (int)$pInfo['qty'];
-
-            Zend_Debug::dump($pInfo);
-
             $productInfo[$pInfo['id']] = $pInfo;
         }
         if (!$injectCustomSalesProduct && $page == 1) {
